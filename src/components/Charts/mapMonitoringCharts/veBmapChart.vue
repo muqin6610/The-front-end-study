@@ -1,0 +1,44 @@
+<template>
+  <div>
+    <ve-bmap
+      :settings="chartSettings"
+      :series="chartSeries"
+      :tooltip="chartTooltip">
+    </ve-bmap>
+  </div>
+</template>
+
+<script>
+export default {
+    data() {
+        this.chartSettings = {
+          key: 'oBvDtR6nzWtVchkY4cLHtnah1VVZQKRK',
+          bmap: {
+            center: [120, 30],
+            zoom: 14,
+            roam: true,
+            mapStyle: {}
+          }
+        }
+        this.chartTooltip = { show: true }
+        return {
+          chartSeries: [
+            {
+              type: 'scatter',
+              coordinateSystem: 'bmap',
+              data: [
+                [120, 80, 1] // 经度，维度，value，...
+              ]
+            }
+          ]
+        }
+    },
+    methods: {
+        
+    },
+}
+</script>
+
+<style lang="scss" scpoed>
+    
+</style>
