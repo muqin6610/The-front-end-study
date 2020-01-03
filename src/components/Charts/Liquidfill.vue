@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="liquidFill" :style="{width: '350px', height: '180px'}"></div>
+        <div id="liquidFill" :style="{width: '350px', height: '220px'}"></div>
     </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         liquidFill (){//方法
-           var liquid = this.$echarts.init(document.getElementById('liquidFill'));
+           let liquid = this.$echarts.init(document.getElementById('liquidFill'));
            liquid.setOption({
                 series: [{
                     type: 'liquidFill',//类型
@@ -76,7 +76,7 @@ export default {
                     },
                     color: ['#ff5645'],//水波的颜色 对应的是data里面值
                     shape: 'circle',//水填充图的形状 circle默认圆形  rect圆角矩形  triangle三角形  diamond菱形  pin水滴状 arrow箭头状  还可以是svg的path
-                    center: ['50%','58%'],//图表相对于盒子的位置 第一个是水平的位置 第二个是垂直的值 默认是[50%,50%]是在水平和垂直方向居中 可以设置百分比 也可以设置具体值
+                    center: ['50%','50%'],//图表相对于盒子的位置 第一个是水平的位置 第二个是垂直的值 默认是[50%,50%]是在水平和垂直方向居中 可以设置百分比 也可以设置具体值
                     radius: '80%', //图表的大小 值是圆的直径 可以是百分比 也可以是具体值 100%则占满整个盒子 默认是40%; 百分比下是根据宽高最小的一个为参照依据
                     amplitude:3,   //振幅 是波浪的震荡幅度 可以取具体的值 也可以是百分比 百分比下是按图标的直径来算
                     waveLength:'50%',//波的长度 可以是百分比也可以是具体的像素值  百分比下是相对于直径的 取得越大波浪的起伏越小

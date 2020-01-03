@@ -85,6 +85,7 @@
       <div class='temperature-box'>
         <div class='temperature-chart'>
           <!--<ve-histogram :data="chartData2" :colors="colors" :extend="extendData"></ve-histogram>-->
+          <Histogram/>
         </div>
       </div>
     </el-card>
@@ -188,10 +189,12 @@
 
 <script>
 import Liquidfill from '@/components/Charts/Liquidfill'
+import Histogram from '@/components/Charts/Histogram'
 
 export default {
   components: {
-    Liquidfill
+    Liquidfill,
+    Histogram,
   },
   data () {
     // 环状图颜色
@@ -532,12 +535,12 @@ export default {
 }
 // 中部班级盒子
 .class-box {
-  height: calc(100vh - 505px);
+  height: 500px;
   overflow: hidden;
 }
 // 中部班级信息盒子
 .information-box {
-  height: calc(100vh - 550px);
+  height: calc(100% - 10px);
   overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;

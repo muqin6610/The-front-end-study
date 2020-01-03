@@ -1,0 +1,98 @@
+<template>
+  <div>
+    <div id="histogram" :style="{width: '100%', height: '550px'}"></div>
+  </div>
+</template>
+
+<script>
+
+export default {
+    props: {
+        liquidfillData: {
+            percent: {
+                type: Number,
+                default: 0,
+            }
+        }
+    },
+    data() {
+        return {
+            counter: 1
+        }
+    },
+    created() {
+    
+    },
+    mounted() {//在这个生命周期中初始化
+       this.histogram(); 
+    },
+    methods: {
+        histogram (){//方法
+           // 实例化echarts对象
+           let myChartDrawer = this.$echarts.init(document.getElementById('histogram'))
+
+           // 绘制条形图
+           let option = {
+               legend: {
+                   data: ['人数'],
+                   top: 30
+               },
+               // X轴
+               xAxis: {
+                 // x轴底部横线
+                 axisLine: {show:true},
+                 data: [
+                     '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', 
+                 ],
+                 axisLabel: {
+                      color: '#282c34',
+                      fontSize: 20,
+                  },
+               },
+               // Y轴
+               yAxis: {
+                 type : 'value',
+                 // y轴竖线
+                 axisLine: {show:false},
+　　　　　        //下面的就很简单了，最小是多少，最大是多少，默认一次增加多少
+                  min: 0,
+                  //interval: 50, // y轴显示间隔数
+　　　　　         // 下面是显示格式化，一般来说还是用的上的
+                  axisLabel: {
+                      formatter: '{value} 人',
+                      color: '#282c34',
+                      fontSize: 20,
+                  },
+               },
+               // 数据
+               series: [
+                   {
+                     type: 'bar',
+                     itemStyle: {
+                         normal: {
+　　　　　　　　     　　　　　// 柱子颜色
+                             color: '#657eff',
+　　　　　　　　     　　　　　// 以下为是否显示文本，显示位置和显示格式的设置了
+                             label: {
+                                 show: true,
+                                 position: 'top',
+                                 formatter: '{c}人',
+                                 color: '#282c34',
+                                 fontSize: 20,
+                             }
+                         }
+                     },
+                     //设置柱的宽度，要是数据太少，柱子太宽不美观~
+　　　　　　　　　　   barWidth:60,
+                     data: [66, 248, 108, 40, 215, 53,]
+                   },
+               ]
+           };
+           myChartDrawer.setOption(option);
+       }
+    },
+}
+</script>
+
+<style lang="scss" scoped>
+</style>
