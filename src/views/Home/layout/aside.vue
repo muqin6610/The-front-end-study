@@ -67,7 +67,31 @@ export default {
                               { path: '/webGreenHand', name:'前端入门' },
                               { path: '/webAdvanced', name:'前端进阶' },
                               { path: '/webThorough', name:'前端深入' },
-                              { path: '/undetermined', name:'待定....' },
+                              { path: '/home/dataManagement/demo', name:'充电特效Demo' },
+                              { path: '/home/dataManagement/Css3Demo', name:'css3Demo' },
+                              { path: '/home/dataManagement/lotteryDemo', name:'抽奖案例' },
+                            ] },
+                            { path: '/home/smartCampus', name:'智慧校园', class:'el-icon-s-home', children: [
+                              { path: '/home/smartCampus/waterPoloDemo', name:'体温统计' },
+                              { path: '/home/smartCampus/classManagement', name:'班级管理' },
+                              { path: '/home/smartCampus/blacklist', name:'黑名单列表' },
+                              { path: '/home/smartCampus/disciplinaryRule', name:'违纪规则' },
+                              { path: '/home/smartCampus/disciplinaryStatistics', name:'违纪统计' },
+                              { path: '/home/smartCampus/deviceManagement', name:'设备管理' },
+                            ] },
+                            { path: '/home/swatAuxiliary', name:'特警辅助', class:'el-icon-user-solid', children: [
+                              { path: '/home/swatAuxiliary/tableDemo', name:'成绩考核表格' },
+                              { path: '/home/swatAuxiliary/setCategory', name:'项目类别设置' },
+                              { path: '/home/swatAuxiliary/trainingProgramList', name:'训练计划列表' },
+                              { path: '/home/swatAuxiliary/trainingProjectList', name:'训练项目列表' },
+                              { path: '/home/swatAuxiliary/departList', name:'前端部队列表' },
+                            ] },
+                            { path: '/home/flashlight', name:'手电报警', class:'el-icon-magic-stick', children: [
+                              { path: '/home/flashlight/baiduMapDemo', name:'百度地图报警' },
+                              { path: '/home/flashlight/amapJS', name:'高德地图JS报警' },
+                              { path: '/home/flashlight/trackPlayback', name:'高德地图JS轨迹' },
+                              { path: '/home/flashlight/alarmLog', name:'手电报警日志' },
+                              { path: '/home/flashlight/flashlightList', name:'手电报警列表' },
                             ] },
                           ]
         }

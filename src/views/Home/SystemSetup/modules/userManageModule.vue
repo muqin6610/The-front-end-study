@@ -8,7 +8,7 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
-          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+          <img v-if="form.imageUrl" v-lazy="form.imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -142,7 +142,7 @@ export default {
             //传值给父组件提交数据
             this.$emit('addUserData', this.form)
             // 重置表单
-            this.$refs.ruleForm.resetFields()
+            this.$refs.form.resetFields()
         },
         handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);

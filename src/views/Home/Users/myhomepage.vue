@@ -2,7 +2,7 @@
   <div>
     <el-card class='mycard'>
       <div class='el-avatar-box'>
-        <img class='el-avatar' style="width: 100px; height: 100px" :src="squareUrl"></img>
+        <img class='el-avatar' style="width: 100px; height: 100px" v-lazy="squareUrl"></img>
       </div>
       <div class='data-box'>
         <p style='font-size:20px;font-weight:bold'>慕钦C</p>
@@ -29,13 +29,13 @@ export default {
     data() {
         return {
             // 头像地址
-            squareUrl: "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+            squareUrl: "https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1",
             // 默认选择的tabs项
             activeName: 'first'
         }
     },
     methods: {
-        //编辑个人资料
+        // 编辑个人资料
         editMyNes() {
           this.$router.push('/home/myNes')
         },

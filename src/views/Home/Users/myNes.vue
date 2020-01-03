@@ -6,7 +6,7 @@
       <!--头像区域-->
       <div class='demo-box'>
         <span style='line-height:80px;'>头像</span>
-        <img class='el-avatar' style="width: 80px; height: 80px" :src="squareUrl"></img>
+        <img class='el-avatar' style="width: 80px; height: 80px" v-lazy="squareUrl"></img>
         <el-upload
           class="upload-demo"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -58,7 +58,7 @@ export default {
         return {
             fileList: [],
             // 头像地址
-            squareUrl: "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+            squareUrl: "https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1",
         }
     },
     methods: {

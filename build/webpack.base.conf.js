@@ -67,6 +67,9 @@ module.exports = {
       },
     ]
   },
+  externals: {
+    'AMap': 'AMap'
+  },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
@@ -77,6 +80,6 @@ module.exports = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
-    child_process: 'empty'
-  }
+    child_process: 'empty',
+  },
 }

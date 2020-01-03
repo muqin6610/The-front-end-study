@@ -6,7 +6,7 @@ import axios from "axios"
  * @param data
  * @returns {Promise}
  */
- export function httpGet(url, params = {}) {
+ export function httpGet(url, params ) {
      return new Promise ((resolve, reject) => {
          axios.get(url, {
              params:params
@@ -26,7 +26,7 @@ import axios from "axios"
  * @param delete
  * @returns {Promise}
  */
- export function httpDelete(url, params = {}) {
+ export function httpDelete(url, params ) {
      return new Promise ((resolve, reject) => {
          axios.delete(url, {
              params:params
@@ -46,7 +46,7 @@ import axios from "axios"
  * @param data
  * @returns {Promise}
  */
- export function httpPost(url, data = {}) {
+ export function httpPost(url, data ) {
      return new Promise((resolve,reject) => {
          axios.post(url, data)
               .then(response.data)
@@ -61,7 +61,7 @@ import axios from "axios"
  * @param data
  * @returns {Promise}
  */
- export function httpPut(url, data = {}) {
+ export function httpPut(url, data ) {
      return new Promise((resolve, reject) => {
          axios.put(url, data)
               .then(response.data)

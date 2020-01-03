@@ -7,7 +7,7 @@ let axios = {}
 // 添加install方法
 axios.install = function(Vue) {
     // 统一设置请求的api
-    axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+    axios.defaults.baseURL = 'https://www.easy-mock.com/mock/5d4ab4f260f3f448a4ec933b/example'
     // 设请求超时
     axios.defaults.timeout = 6000
     //给Vue实例添加方法

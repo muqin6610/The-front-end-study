@@ -62,8 +62,8 @@ export default {
 // 主体区域整体样式
 .el-main {
   color: #333;
-  padding:0;
-  height:100%;
+  padding: 0;
+  height: 100%;
   background-color: #eff1f4;
 }
 // 布局容器样式

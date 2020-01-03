@@ -32,12 +32,12 @@
           label="内容">
           <template slot-scope='scope'>
             <span v-if='title === "留言区"'>
-              <img :src='scope.row.avatar' width="30px" height="30px" style='border-radius:50%'>&nbsp;&nbsp;&nbsp;&nbsp;
+              <img v-lazy='scope.row.avatar' width="30px" height="30px" style='border-radius:50%'>&nbsp;&nbsp;&nbsp;&nbsp;
               <span style='font-weight:bold;'>{{ scope.row.name }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
               <span style='color:#8a9aa9;'>{{ scope.row.address }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span v-else-if='title === "反馈区"'>
-              <img :src='scope.row.avatar' width="30px" height="30px" style='border-radius:50%'>&nbsp;&nbsp;&nbsp;&nbsp;
+              <img v-lazy='scope.row.avatar' width="30px" height="30px" style='border-radius:50%'>&nbsp;&nbsp;&nbsp;&nbsp;
               <span style='font-weight:bold;'>{{ scope.row.name }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
               <span style='color:#8a9aa9;'>{{ scope.row.address }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </span>

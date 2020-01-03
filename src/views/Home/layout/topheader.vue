@@ -13,7 +13,7 @@
         <div  class='el-avatar-box'>
           <el-dropdown placement='bottom'>
             <span class="el-dropdown-link">
-              <el-avatar style='cursor:pointer;' slot="reference" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"></el-avatar>
+              <el-avatar style='cursor:pointer;' slot="reference" src="https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"></el-avatar>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item class='detailsUser'>

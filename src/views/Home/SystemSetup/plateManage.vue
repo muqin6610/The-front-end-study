@@ -18,8 +18,8 @@
              placement="right"
              width="200"
              trigger="hover">
-             <img :src="scope.row.avatar" width="100%" height="100%"/>
-             <img style='cursor:pointer;border-radius:5px' slot="reference" :src="scope.row.avatar" width="30" height="30"/>
+             <img v-lazy="scope.row.avatar" width="100%" height="100%"/>
+             <img style='cursor:pointer;border-radius:5px' slot="reference" v-lazy="scope.row.avatar" width="30" height="30"/>
             </el-popover>
           </template>
         </el-table-column>
@@ -72,8 +72,8 @@
              placement="right"
              width="200"
              trigger="hover">
-             <img :src="scope.row.avatar" width="100%" height="100%"/>
-             <img style='cursor:pointer;border-radius:5px' slot="reference" :src="scope.row.avatar" width="30" height="30"/>
+             <img v-lazy="scope.row.avatar" width="100%" height="100%"/>
+             <img style='cursor:pointer;border-radius:5px' slot="reference" v-lazy="scope.row.avatar" width="30" height="30"/>
             </el-popover>
           </template>
         </el-table-column>
@@ -173,7 +173,7 @@ export default {
         return {
             //表格数据源
            tableData: [{
-            avatar: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+            avatar: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
             date: '一天前',
             name: '慕钦C',
             address: '管理员',
@@ -199,7 +199,7 @@ export default {
           }, ] ,
             //表格数据源
            tableData2: [{
-            avatar: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+            avatar: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
             date: '六天前',
             name: '慕钦C',
             address: '管理员',

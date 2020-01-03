@@ -53,8 +53,10 @@ export default {
     methods: {
       // 登录
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
+            // let res = await this.$get('/mock', null)
+            // console.log(res)
             if(this.ruleForm.username === 'admin' && this.ruleForm.password === '111'){
               // 记住密码状态保存到localStorage
               localStorage.setItem('checked',this.checked)

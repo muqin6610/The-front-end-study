@@ -1,56 +1,36 @@
 /**
- * 时间格式化
- * @param value
- * @param fmt
- * @returns {*}
+* 项目常用的JS方法封装
  */
-export function formatDate(value, fmt) {
-  var regPos = /^\d+(\.\d+)?$/;
-  if(regPos.test(value)){
-    //如果是数字
-    let getDate = new Date(value);
-    let o = {
-      'M+': getDate.getMonth() + 1,
-      'd+': getDate.getDate(),
-      'h+': getDate.getHours(),
-      'm+': getDate.getMinutes(),
-      's+': getDate.getSeconds(),
-      'q+': Math.floor((getDate.getMonth() + 3) / 3),
-      'S': getDate.getMilliseconds()
-    };
-    if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
-    }
-    for (let k in o) {
-      if (new RegExp('(' + k + ')').test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
-      }
-    }
-    return fmt;
-  }else{
-    //TODO
-    value = value.trim();
-    return value.substr(0,fmt.length);
-  }
-}
 
 /**
-*时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
+* 判断一个值的数据类型
+*@param 任意值
+*@return 返回对应的数据类型
  */
-export function dateFormat(time) {
-    var date=new Date(time);
-    var year=date.getFullYear();
-    /* 在日期格式中，月份是从0开始的，因此要加0
-     * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
-     * */
-    var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
-    var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
-    var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
-    var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
-    var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
-    // 拼接
-    return year+"年"+month+"月"+day+"日"+" "+hours+":"+minutes+":"+seconds;
+export function type(para) {
+  return Object.prototype.toString.call(para).slice(8,-1)
 }
+
+
+/**
+ * 过滤对象中为空的属性
+ * @param obj
+ * @returns {*}
+ */
+export function filterObj(obj) {
+  if (!(typeof obj == 'object')) {
+    return;
+  }
+
+  for ( var key in obj) {
+    if (obj.hasOwnProperty(key)
+      && (obj[key] == null || obj[key] == undefined || obj[key] === '')) {
+      delete obj[key];
+    }
+  }
+  return obj;
+}
+
 /**
  * 深度克隆对象、数组
  * @param obj 被克隆的对象
@@ -114,4 +94,141 @@ export function underLine2CamelCase(string){
   return string.replace( /_([a-z])/g, function( all, letter ) {
     return letter.toUpperCase();
   });
+}
+
+/**
+ * 随机生成uuid
+ * @return string 生成的uuid
+ */
+export function randomUUID() {
+  let chats = '0123456789abcdef'
+  return randomString(32, chats)
+}
+
+/**
+* 冒泡排序(升序)
+*@param Array 需要排序的数组
+*@return Array 排序完成的数组
+ */
+export function bubbleAsSort(arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - 1 - i; j++) {
+      if (arr[j] > arr[j + 1]) {
+        let temp = arr[j + 1];
+        arr[j + 1] = arr[j];
+        arr[j] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+/**
+* 冒泡排序(降序)
+*@param Array 需要排序的数组
+*@return Array 排序完成的数组
+ */
+export function bubbleDeSort(arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - 1 - i; j++) {
+      if (arr[j] < arr[j + 1]) {
+        let temp = arr[j + 1];
+        arr[j + 1] = arr[j];
+        arr[j] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+/**
+* 数组去重
+*@param Array 需要去重的数组
+*@return Array 去重完成的数组
+ */
+export function arrDemp(arr) {
+  let newArr = [];
+  let m = {};
+  for (let i = 0; i < arr.length; i++) {
+    let n = arr[i];
+    if (m[n]) {
+    } else {
+      newArr.push(arr[i]);
+      m[n] = true;
+    }
+  }
+  return newArr;
+}
+
+/**
+* 数组对象去重
+*@param objArr 需要去重的数组对象
+*@param para 将要进行去重的字段(String类型)
+*@return objArr 去重完成的数组对象
+ */
+export function objArrDemp(objArr, para) {
+  let result = [];
+    let temp = {};
+    for (let i = 0; i < objArr.length; i++) {
+        let parameter = objArr[i][para];
+        if (temp[parameter]) {
+            continue;//不继续执行接下来的代码，跳转至循环开头
+        }
+        temp[parameter] = true;//为temp添加此属性（parameter）且将其值赋为true
+        result.push(objArr[i]);//将这一项复制到结果数组result中去
+    }
+    return result;
+}
+
+/**
+* 数字超过9显示省略号
+*@param number 
+*@return  超过9返回省略号,否则返回原数字
+ */
+export function num_filter(num) {
+  num = num ? num - 0 : 0;
+  if (num > 9 ) {
+    return "…"
+  }else{
+    return num;
+  }
+}
+
+/**
+* 数字超过99显示99+
+*@param number 
+*@return  超过99返回99+,否则返回原数字
+ */
+export function ninenum_filter(num) {
+  num = num ? num - 0 : 0;
+  if (num > 99 ) {
+    return "99+"
+  }else{
+    return num;
+  }
+}
+
+/**
+* 银行卡号分割
+*@param number 银行卡号
+*@return string 分割完成的银行卡号
+ */
+export function bank_filter(val) {
+  val += '';
+  console.log(val)
+  val = val.replace(/(\s)/g,'').replace(/(\d{4})/g,'$1 ').replace(/\s*$/,'');
+  return val;
+}
+
+/**
+* 字符替换
+*@param str 表示将要替换的字符串
+*@param l 表示你将要替换的字符
+*@param r 表示你想要替换的字符
+*@return string 替换完成的字符串 
+ */
+export function transFormat(str, l, r) {
+  let reg = new RegExp(l, 'g') // g表示全部替换，默认替换第一个
+  str = str.replace(reg, r)
+  return str
 }

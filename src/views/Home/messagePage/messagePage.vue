@@ -7,7 +7,7 @@
           <el-card class='mycard'>
             <div>
               <div class='el-avatar-box'>
-                 <img class='el-avatar' style="width: 60px; height: 60px" :src="squareUrl"></img>
+                 <img class='el-avatar' style="width: 60px; height: 60px" v-lazy="squareUrl"></img>
                </div>
                <div class='data-box'>
                  <div style='font-size:18px;font-weight:bold;'>真的搬了一天砖</div>
@@ -21,7 +21,7 @@
           <el-card class='mycard'>
             <div>
               <div class='el-avatar-box'>
-                 <img class='el-avatar' style="width: 60px; height: 60px" :src="squareUrl1"></img>
+                 <img class='el-avatar' style="width: 60px; height: 60px" v-lazy="squareUrl1"></img>
                </div>
                <div class='data-box'>
                  <div style='font-size:18px;font-weight:bold;'>青莲剑仙</div>
@@ -35,7 +35,7 @@
           <el-card class='mycard'>
             <div>
               <div class='el-avatar-box'>
-                 <img class='el-avatar' style="width: 60px; height: 60px" :src="squareUrl2"></img>
+                 <img class='el-avatar' style="width: 60px; height: 60px" v-lazy="squareUrl2"></img>
                </div>
                <div class='data-box'>
                  <div style='font-size:18px;font-weight:bold;'>十二个猴子</div>
@@ -49,7 +49,7 @@
           <el-card class='mycard'>
             <div>
               <div class='el-avatar-box'>
-                 <img class='el-avatar' style="width: 60px; height: 60px" :src="squareUrl3"></img>
+                 <img class='el-avatar' style="width: 60px; height: 60px" v-lazy="squareUrl3"></img>
                </div>
                <div class='data-box'>
                  <div style='font-size:18px;font-weight:bold;'>无大大啊</div>
