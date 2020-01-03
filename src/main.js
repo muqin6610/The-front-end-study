@@ -79,11 +79,6 @@ VueAMap.initAMapApiLoader({
   v: '1.4.4'
 })
 
-//封装的标准日期格式化:yyyy-mm-dd HH:mm
-import { dateFormat } from "./utils/util"
-//挂载到vue原型,所有页面钩子函数均可使用
-Vue.prototype.dateFormat = dateFormat
-
 //设置导航守卫（路由拦截器）
 router.beforeEach((to, from, next) => {
   // 完成登录逻辑,只要请求的不是login就需要登录验证

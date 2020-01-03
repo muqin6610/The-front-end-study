@@ -20,7 +20,7 @@
        </el-form-item>
        <el-form-item label="部队职级:">
          <el-radio-group :border='true' v-model="selectTroopsRank">
-         <el-radio-button v-for='item in troopsRank' :label="item"></el-radio-button>
+         <el-radio-button v-for='(item, index) in troopsRank' :key='index' :label="item"></el-radio-button>
          </el-radio-group>
        </el-form-item>
        <el-form-item label="归 属:" prop='parentId'>

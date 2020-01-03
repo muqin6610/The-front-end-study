@@ -68,12 +68,12 @@
           </template>
         </el-table-column>
         <el-table-column align='center' show-overflow-tooltip prop="dateTime" label="训练时段">
-          <template scope='scope'>
+          <template slot-scope='scope'>
            <span>{{scope.row.dateTime}}</span>
           </template>
         </el-table-column>
         <el-table-column align='center' width='150' prop="time" label="计划时长">
-          <template scope='scope'>
+          <template slot-scope='scope'>
            <span>{{scope.row.time}}小时</span>
           </template>
         </el-table-column>
