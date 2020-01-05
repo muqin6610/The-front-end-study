@@ -151,6 +151,8 @@
         <div class='center-card-title'>2019-10-1至2019-10-07体温占比图</div>
         <div>
           <!--<ve-ring :data="chartData4" :colors="colors2"></ve-ring>-->
+          <!-- 环状图 -->
+          <Ring/>
         </div>
       </el-card>
     </div>
@@ -190,11 +192,13 @@
 <script>
 import Liquidfill from '@/components/Charts/Liquidfill'
 import Histogram from '@/components/Charts/Histogram'
+import Ring from '@/components/Charts/Ring'
 
 export default {
   components: {
     Liquidfill,
     Histogram,
+    Ring
   },
   data () {
     // 环状图颜色

@@ -8,16 +8,11 @@
 
 export default {
     props: {
-        liquidfillData: {
-            percent: {
-                type: Number,
-                default: 0,
-            }
-        }
+
     },
     data() {
         return {
-            counter: 1
+
         }
     },
     created() {
