@@ -150,9 +150,8 @@
       <el-card class='mycard center-card'>
         <div class='center-card-title'>2019-10-1至2019-10-07体温占比图</div>
         <div>
-          <!--<ve-ring :data="chartData4" :colors="colors2"></ve-ring>-->
           <!-- 环状图 -->
-          <Ring/>
+          <Ring :ringData='ringData'/>
         </div>
       </el-card>
     </div>
@@ -201,33 +200,22 @@ export default {
     Ring
   },
   data () {
-    // 环状图颜色
-    this.colors2 = ['#36a3f7', '#d53a35', '#334b5c']
-    // 柱状图顶部文本显示
-    this.extendData = {
-      series: {
-        label: { show: true, position: "top", color: '#000', formatter: '{@score}人' }
-      },
-    }
-    // 柱状图柱子颜色
-    this.colors = ['#657eff']
     return {  
         // 传递给水球图组件数据
         liquidfillData: {
           percent: 0.45,
         },
-        // 柱状图数据
-        chartData2: {
-          columns: ['日期', '人数'],
-          rows: [
-            { '日期': '2019-10-01', '人数': 66,},
-            { '日期': '2019-10-02', '人数': 248,},
-            { '日期': '2019-10-03', '人数': 40,},
-            { '日期': '2019-10-04', '人数': 52,},
-            { '日期': '2019-10-05', '人数': 215,},
-            { '日期': '2019-10-06', '人数': 53,},
-            { '日期': '2019-10-07', '人数': 68, },
-          ]
+        // 传递给柱状图组价数据
+        histogramData: {
+
+        },
+        // 传递给环装图组件数据
+        ringData: {
+          dataArr: [
+              { value: 80, name: "正常体温 36.1-37℃" },
+              { value: 20, name: "低烧体温 37.1-38℃" },
+              { value: 10, name: "高烧体温 38℃以上" },
+            ]
         },
         // 搜索
         input: '',
@@ -267,26 +255,6 @@ export default {
           value: '选项5',
           label: '高二五班'
         }],
-        chartData3: {
-          columns: ['日期','平均体温'],
-          rows: [
-            { '日期': '2019-10-01','平均体温': 36.8 },
-            { '日期': '2019-10-02','平均体温': 37.1 },
-            { '日期': '2019-10-03','平均体温': 36.4 },
-            { '日期': '2019-10-04','平均体温': 35.9 },
-            { '日期': '2019-10-05','平均体温': 36.1 },
-            { '日期': '2019-10-06','平均体温': 36.9 },
-            { '日期': '2019-10-07','平均体温': 37.0 },
-          ]
-        },
-        chartData4: {
-          columns: ['类型', '体温'],
-          rows: [
-            { '类型': '正常体温', '体温': 35 },
-            { '类型': '低烧体温', '体温': 38 },
-            { '类型': '高烧体温', '体温': 39 },
-          ]
-        },
         tableData: [
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',

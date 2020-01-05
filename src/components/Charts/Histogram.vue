@@ -18,11 +18,11 @@ export default {
     created() {
     
     },
-    mounted() {//在这个生命周期中初始化
+    mounted() {// 在这个生命周期中初始化
        this.histogram(); 
     },
     methods: {
-        histogram (){//方法
+        histogram (){// 方法
            // 实例化echarts对象
            let myChartDrawer = this.$echarts.init(document.getElementById('histogram'))
 
@@ -49,7 +49,7 @@ export default {
                  type : 'value',
                  // y轴竖线
                  axisLine: {show:false},
-　　　　　        //下面的就很简单了，最小是多少，最大是多少，默认一次增加多少
+　　　　　        // 下面的就很简单了，最小是多少，最大是多少，默认一次增加多少
                   min: 0,
                   //interval: 50, // y轴显示间隔数
 　　　　　         // 下面是显示格式化，一般来说还是用的上的
@@ -77,7 +77,7 @@ export default {
                              }
                          }
                      },
-                     //设置柱的宽度，要是数据太少，柱子太宽不美观~
+                     // 设置柱的宽度，要是数据太少，柱子太宽不美观~
 　　　　　　　　　　   barWidth:60,
                      data: [66, 248, 108, 40, 215, 53,]
                    },

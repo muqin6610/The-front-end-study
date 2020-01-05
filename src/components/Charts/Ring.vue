@@ -6,7 +6,14 @@
 
 <script>
 export default {
-  props: {},
+  props: {
+    ringData: {
+      dataArr: {
+        type: Array,
+        default: []
+      }
+    }
+  },
   data() {
     return {};
   },
@@ -16,59 +23,47 @@ export default {
     this.init();
   },
   methods: {
-    init() {
-      // 方法
+    init() {// 方法
       // 实例化echarts对象
       let myChart = this.$echarts.init(document.getElementById("ring"));
 
       // 绘制图表
       myChart.setOption({
-        color: ["#4472C5", "#ED7C30", "#80FF80", "#FF8096", "#800080"], //配置颜色
+        color: ["#5393ff", "#fede00", "#fe4646"], //配置颜色
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b}: {c} ({d}%)"
+          formatter: "{b}: {c} ({d}%)"
         },
+        // 提示文本
         legend: {
-          orient: "vertical",
-          x: "left",
-          data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
+          // 提示文本排列方式
+          orient: "vertical", // 垂直排列
+          x: "center", // x轴显示位置
+          y: 'bottom', // y轴显示位置
+          // 提示文本样式
           textStyle: {
-            //------------此处更改表格中的字体颜色
-            fontSize: "12",
-            color: "#fff"
-          }
+            fontSize: "16", // 字体大小
+            color: "#1e1e1e" // 字体颜色
+          },
         },
         series: [
           {
-            name: "访问来源",
-            type: "pie",
-            radius: ["50%", "70%"],
+            type: "pie", // 图表类型
+            radius: ["50%", "65%"], // 环装图内外圈大小
             avoidLabelOverlap: false,
             label: {
               normal: {
                 show: false,
                 position: "center"
               },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: "30",
-                  fontWeight: "bold"
-                }
-              }
             },
             labelLine: {
               normal: {
                 show: false
               }
             },
-            data: [
-              { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" },
-              { value: 234, name: "联盟广告" },
-              { value: 135, name: "视频广告" },
-              { value: 1548, name: "搜索引擎" }
-            ]
+            // 环装图数据
+            data: this.ringData.dataArr,
           }
         ]
       });
