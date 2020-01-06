@@ -84,7 +84,6 @@
       <el-divider></el-divider>
       <div class='temperature-box'>
         <div class='temperature-chart'>
-          <!--<ve-histogram :data="chartData2" :colors="colors" :extend="extendData"></ve-histogram>-->
           <Histogram/>
         </div>
       </div>
@@ -192,7 +191,6 @@
 import Liquidfill from '@/components/Charts/Liquidfill'
 import Histogram from '@/components/Charts/Histogram'
 import Ring from '@/components/Charts/Ring'
-
 export default {
   components: {
     Liquidfill,
@@ -207,7 +205,6 @@ export default {
         },
         // 传递给柱状图组价数据
         histogramData: {
-
         },
         // 传递给环装图组件数据
         ringData: {
@@ -278,7 +275,6 @@ export default {
     }
   },
   mounted () {
-
   },
   created() {
     
@@ -305,7 +301,6 @@ export default {
 
 <style lang="scss" scoped>
 .all-box {
-
 }
 .mycard {
     margin: 10px;
@@ -321,6 +316,8 @@ export default {
 // 顶部卡片标题
 .topcard-title {
   margin: 20px 0 0 20px;
+  color: #282c34;
+  font-size: 18px;
 }
 // 水球卡片
 .liquidfill {
@@ -329,12 +326,13 @@ export default {
 // 水球标题
 .liquidfill-title {
   margin: 20px 0 0 20px;
+  color: #282c34;
+  font-size: 18px;
 }
 // 统计卡片
 .statistics {
     flex: 1;
 }
-
 // 统计卡片内容盒子
 .card-content-box {
     margin: 30px 20px 20px 20px;
@@ -342,7 +340,6 @@ export default {
     justify-content: space-between;
     height: 170px;
 }
-
 // 统计卡片内容
 .card-content {
     width: 24%;
@@ -374,13 +371,11 @@ export default {
 .four-bgcolor {
     background: -webkit-linear-gradient(left, #fc6a6b, #fe6464, #fe5b5c, #ff5555);
 }
-
 // 顶部卡片文本内容盒子
 .text-box {
   margin-top: 50px;
   margin-left: 30px;
 }
-
 // 选择搜索盒子
 .select-search-box {
     height: 30px;
@@ -407,7 +402,6 @@ export default {
     color: #36a3f7;
     cursor: pointer;
 }
-
 // 统计盒子顶部
 .statistics-top {
   height: 50px;
@@ -415,6 +409,8 @@ export default {
 // 统计盒子顶部标题
 .statistics-title {
   line-height: 50px;
+  color: #282c34;
+  font-size: 18px;
 }
 // 体温统计表盒子
 .temperature-box {
@@ -473,7 +469,6 @@ export default {
     float: left;
     font-size: 14px;
 }
-
 // 班级名
 .className {
     float: left;
@@ -490,7 +485,6 @@ export default {
     font-size: 14px;
     cursor: pointer;
 }
-
 // 中部卡片盒子
 .center-card-box {
     display: flex;
@@ -500,10 +494,11 @@ export default {
 .center-card {
     width: 50%;
 }
-
 // 中部卡片标题
 .center-card-title {
   margin-bottom: 20px;
+  color: #282c34;
+  font-size: 18px;
 }
 // 中部班级盒子
 .class-box {
