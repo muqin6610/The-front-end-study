@@ -183,6 +183,19 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        class='el-pagination'
+        background
+        hide-on-single-page
+        @size-change='sizeChange'
+        @current-change='currentChange'
+        :page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        :current-page='pageCurrent'
+        :pager-count='pagerCount'
+        layout="total, prev, pager, next, sizes, jumper"
+        :total="tableData.length">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -252,6 +265,14 @@ export default {
           value: '选项5',
           label: '高二五班'
         }],
+        // 分页器总条数
+        total: null,
+        // 分页器每页条数
+        pageSize: null,
+        // 页码
+        pageCurrent: null,
+        // 显示的页码
+        pagerCount: 5,
         tableData: [
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
@@ -260,6 +281,87 @@ export default {
             studentID: '2091123',
             age: 13,
             bodyTemperature: '38.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
+            sex: '男',
+          },
+            {
+            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+            class: '初一一班',
+            name: '王超',
+            studentID: '2056461',
+            age: 10,
+            bodyTemperature: '39.5',
             sex: '男',
           },
             {
@@ -294,7 +396,15 @@ export default {
     lookDetails(name) {
       localStorage.setItem('name', name)
       this.$router.push('temperaturStatistics/staffDetails')
-    }
+    },
+    // 当前页改变
+    currentChange(val) {
+      this.getListTeacher(val, this.pageSize)
+    },
+    // 每页条数改变
+    sizeChange(val) {
+      this.getListTeacher(1, val)
+    },
   }
 }
 </script>
@@ -518,5 +628,10 @@ export default {
 .lookDetail {
   color: #409eff;
   cursor: pointer;
+}
+// 分页器样式
+.el-pagination {
+  float:right;
+  margin: 20px 0 40px 0 ;
 }
 </style>
