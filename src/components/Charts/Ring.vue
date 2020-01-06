@@ -25,10 +25,9 @@ export default {
   methods: {
     init() {// 方法
       // 实例化echarts对象
-      let myChart = this.$echarts.init(document.getElementById("ring"));
-
+      let ring = this.$echarts.init(document.getElementById("ring"));
       // 绘制图表
-      myChart.setOption({
+      ring.setOption({
         color: ["#5393ff", "#fede00", "#fe4646"], //配置颜色
         tooltip: {
           trigger: "item",
@@ -67,6 +66,7 @@ export default {
           }
         ]
       });
+      window.addEventListener("resize", () => { ring.resize(); })
     }
   }
 };
