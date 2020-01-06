@@ -45,23 +45,25 @@
         <div class='select-box'>
           <el-date-picker
             size="medium"
-            v-model="value1"
+            v-model="startDate"
+            @change='changeDate'
             type="daterange"
+            value-format="yyyy-MM-dd"
             range-separator="~"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
           </el-date-picker>
-          <el-select size="medium" v-model="selectvalue" placeholder="请选择年级">
+          <el-select size="medium" v-model="selectGrade" @change='changGrade' placeholder="请选择年级">
             <el-option
-              v-for="item in options"
+              v-for="item in gradeDatas"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>
-          <el-select size="medium" v-model="selectvalue" placeholder="请选择班级">
+          <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择班级">
             <el-option
-              v-for="item in options2"
+              v-for="item in classDatas"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -94,55 +96,10 @@
         <div class='center-card-title'>体温异常班级信息</div>
         <div class='class-box'>
           <div class='information-box'>
-            <div class='information-item-box'>
-              <div class='number-title-top'>1</div>
-              <div class='className'>初一一班</div>
-              <div class='numberPeople'>100人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title-top'>2</div>
-              <div class='className'>初一二班</div>
-              <div class='numberPeople'>97人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title-top'>3</div>
-              <div class='className'>初一三班</div>
-              <div class='numberPeople'>90人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>4</div>
-              <div class='className'>初一四班</div>
-              <div class='numberPeople'>85人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>5</div>
-              <div class='className'>初一五班</div>
-              <div class='numberPeople'>76人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>6</div>
-              <div class='className'>初一六班</div>
-              <div class='numberPeople'>80人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>7</div>
-              <div class='className'>初一六班</div>
-              <div class='numberPeople'>80人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>8</div>
-              <div class='className'>初一六班</div>
-              <div class='numberPeople'>80人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>9</div>
-              <div class='className'>初一六班</div>
-              <div class='numberPeople'>80人</div>
-            </div>
-            <div class='information-item-box'>
-              <div class='number-title'>10</div>
-              <div class='className'>初一六班</div>
-              <div class='numberPeople'>80人</div>
+            <div v-for='(item, index) in classPeoples' :key='index' class='information-item-box'>
+              <div class='number-title'>{{index + 1}}</div>
+              <div class='className'>{{item.className}}</div>
+              <div class='numberPeople'>{{item.people}}人</div>
             </div>
           </div>
         </div>
@@ -230,13 +187,30 @@ export default {
               { value: 10, name: "高烧体温\xa038℃以上\xa0\xa0" },
             ]
         },
+        // 班级人数信息
+        classPeoples: [
+          {className: '初一一班', people: '100'},
+          {className: '初一二班', people: '80'},
+          {className: '初一三班', people: '75'},
+          {className: '初一四班', people: '130'},
+          {className: '初一五班', people: '60'},
+          {className: '初一六班', people: '70'},
+          {className: '初二一班', people: '100'},
+          {className: '初二二班', people: '90'},
+          {className: '初二三班', people: '80'},
+          {className: '初二四班', people: '110'},
+          {className: '初二五班', people: '140'},
+        ],
         // 搜索
         input: '',
         // 日期选择
-        value1: '',
+        startDate: '',
         // 选择年级
-        selectvalue: '',
-        options: [{
+        selectGrade: '',
+        // 选择班级
+        selectClass: '',
+        // 年级数据
+        gradeDatas: [{
           value: '选项1',
           label: '初一'
         }, {
@@ -252,7 +226,8 @@ export default {
           value: '选项5',
           label: '高二'
         }],
-        options2: [{
+        // 班级数据
+        classDatas: [{
           value: '选项1',
           label: '初一一班'
         }, {
@@ -385,6 +360,18 @@ export default {
     
   },
   methods: {
+    // 选择起始时间
+    changeDate() {
+      console.log(this.startDate,'1111111111111')
+    },
+    // 选择年级
+    changGrade() {
+      console.log(this.selectGrade,'2222222222')
+    },
+    // 选择班级
+    changeClass() {
+      console.log(this.selectClass,'33333333333333')
+    },
     // 搜索
     clickSearch() {
       console.log('搜索!')
@@ -413,18 +400,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.all-box {
-}
 .mycard {
-    margin: 10px;
+  margin: 10px;
 }
 .mybox {
-    margin: 10px;
-    background: #fff;
+  margin: 10px;
+  background: #fff;
 }
 // 顶部盒子
 .top-box {
-    display: flex;
+  display: flex;
 }
 // 顶部卡片标题
 .topcard-title {
@@ -434,7 +419,7 @@ export default {
 }
 // 水球卡片
 .liquidfill {
-    width: 350px;
+  width: 350px;
 }
 // 水球标题
 .liquidfill-title {
@@ -444,20 +429,20 @@ export default {
 }
 // 统计卡片
 .statistics {
-    flex: 1;
+  flex: 1;
 }
 // 统计卡片内容盒子
 .card-content-box {
-    margin: 30px 20px 20px 20px;
-    display: flex;
-    justify-content: space-between;
-    height: 170px;
+  margin: 30px 20px 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  height: 170px;
 }
 // 统计卡片内容
 .card-content {
-    width: 24%;
-    height: 90%;
-    border-radius: 10px;
+  width: 24%;
+  height: 90%;
+  border-radius: 10px;
 }
 // 卡片内容标题
 .card-content-title {
@@ -470,19 +455,19 @@ export default {
 }
 // 顶部第一个盒子背景颜色
 .one-bgcolor {
-    background: -webkit-linear-gradient(left, #61a4ff, #6ba0fe, #729eff, #769bff);
+  background: -webkit-linear-gradient(left, #61a4ff, #6ba0fe, #729eff, #769bff);
 }
 // 顶部第二个盒子背景色
 .two-bgcolor {
-    background: -webkit-linear-gradient(left, #bf51fe, #a825fc, #9d0dfa, #9802f9);
+  background: -webkit-linear-gradient(left, #bf51fe, #a825fc, #9d0dfa, #9802f9);
 }
 // 顶部第三个盒子背景颜色
 .three-bgcolor {
-    background: -webkit-linear-gradient(left, #70e137, #67de2c, #5ad81c, #51d50f);
+  background: -webkit-linear-gradient(left, #70e137, #67de2c, #5ad81c, #51d50f);
 }
 // 顶部第四个盒子背景颜色
 .four-bgcolor {
-    background: -webkit-linear-gradient(left, #fc6a6b, #fe6464, #fe5b5c, #ff5555);
+  background: -webkit-linear-gradient(left, #fc6a6b, #fe6464, #fe5b5c, #ff5555);
 }
 // 顶部卡片文本内容盒子
 .text-box {
@@ -491,29 +476,29 @@ export default {
 }
 // 选择搜索盒子
 .select-search-box {
-    height: 30px;
-    margin-top: 15px;
+  height: 30px;
+  margin-top: 15px;
 }
 // 选择盒子
 .select-box {
-    float: left;
+  float: left;
 }
 // 输入框盒子
 .input-box {
-    float: left;
+  float: left;
 }
 // 搜索盒子
 .search-box {
-    float: right;
+  float: right;
 }
 // 搜索文本
 .search-text {
-    float: right;
-    line-height: 32px;
-    margin-left: 20px;
-    font-size: 24px;
-    color: #36a3f7;
-    cursor: pointer;
+  float: right;
+  line-height: 32px;
+  margin-left: 20px;
+  font-size: 24px;
+  color: #36a3f7;
+  cursor: pointer;
 }
 // 统计盒子顶部
 .statistics-top {
@@ -527,7 +512,7 @@ export default {
 }
 // 体温统计表盒子
 .temperature-box {
-    display: flex;
+  display: flex;
 }
 // 导出按钮
 .export-button {
@@ -537,16 +522,16 @@ export default {
 }
 // 体温图表
 .temperature-chart {
-    flex: 1;
+  flex: 1;
 }
 // 日期选择
 /deep/ .el-date-editor {
-    width: 300px;
+  width: 300px;
 }
 // 选择框
 /deep/ .el-select {
-    width: 120px;
-    margin-left: 10px;
+  width: 120px;
+  margin-left: 10px;
 }
 // input输入框
 /deep/ .el-input__inner {
@@ -554,58 +539,46 @@ export default {
 }
 // 体温异常信息盒子
 .information-item-box {
-    height: 40px;
-    margin-bottom: 10px;
+  height: 40px;
+  margin-bottom: 10px;
 }
-// 数字标题
-.number-title-top {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #314659;
-    color: #fff;
-    text-align: center;
-    line-height: 20px;
-    margin-top: 10px;
-    float: left;
-    font-size: 14px;
-}
+// 班级信息排名数字文本
 .number-title {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #f0f2f5;
-    color: #314659;
-    text-align: center;
-    line-height: 20px;
-    margin-top: 10px;
-    float: left;
-    font-size: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f0f2f5;
+  color: #314659;
+  text-align: center;
+  line-height: 20px;
+  margin-top: 10px;
+  float: left;
+  font-size: 14px;
 }
 // 班级名
 .className {
-    float: left;
-    line-height: 40px;
-    margin-left: 20px;
-    font-size: 14px;
+  float: left;
+  line-height: 40px;
+  margin-left: 20px;
+  font-size: 14px;
 }
 // 人数
 .numberPeople {
-    float: right;
-    line-height: 40px;
-    margin-right: 30px;
-    color: #36a3f7;
-    font-size: 14px;
-    cursor: pointer;
+  float: right;
+  line-height: 40px;
+  margin-right: 30px;
+  color: #36a3f7;
+  font-size: 14px;
+  cursor: pointer;
 }
 // 中部卡片盒子
 .center-card-box {
-    display: flex;
-    margin-top: 10px;
+  display: flex;
+  margin-top: 10px;
 }
 //中部卡片
 .center-card {
-    width: 50%;
+  width: 50%;
 }
 // 中部卡片标题
 .center-card-title {
@@ -623,8 +596,14 @@ export default {
   height: calc(100% - 10px);
   overflow-y: auto;
   scrollbar-width: none; // 隐藏滚动条火狐
-  &::-webkit-scrollbar {// 隐藏滚动条谷歌
+  &::-webkit-scrollbar { // 隐藏滚动条谷歌
     display: none;
+  }
+  .information-item-box:nth-child(-n+3) { // 前三个元素添加不同的背景颜色和字体颜色
+    .number-title {
+      background: #314659;
+      color: #fff;
+    }
   }
 }
 // 查看详情文本
