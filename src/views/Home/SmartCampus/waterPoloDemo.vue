@@ -84,7 +84,8 @@
       <el-divider></el-divider>
       <div class='temperature-box'>
         <div class='temperature-chart'>
-          <Histogram/>
+          <!--引入的柱状图-->
+          <Histogram :histogramData='histogramData'/>
         </div>
       </div>
     </el-card>
@@ -218,6 +219,8 @@ export default {
         },
         // 传递给柱状图组价数据
         histogramData: {
+          dateArr: ['2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', ],
+          numArr: [66, 248, 108, 40, 215, 53,],
         },
         // 传递给环装图组件数据
         ringData: {
