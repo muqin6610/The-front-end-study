@@ -509,7 +509,8 @@ export default {
 .information-box {
   height: calc(100% - 10px);
   overflow-y: auto;
-  &::-webkit-scrollbar {
+  scrollbar-width: none; // 隐藏滚动条火狐
+  &::-webkit-scrollbar {// 隐藏滚动条谷歌
     display: none;
   }
 }
