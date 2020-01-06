@@ -31,7 +31,7 @@ export default {
                // X轴
                xAxis: {
                  // x轴底部横线
-                 axisLine: {show:true},
+                 axisLine: {show:false},
                  data: [
                      '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', 
                  ],
