@@ -7,6 +7,16 @@
 <script>
 export default {
     props: {
+        histogramData: {
+            dateArr: {
+                type: Array,
+                default: []
+            },
+            numArr: {
+                type: Array,
+                default: []
+            }
+        }
     },
     data() {
         return {
@@ -32,9 +42,7 @@ export default {
                xAxis: {
                  // x轴底部横线
                  axisLine: {show:false},
-                 data: [
-                     '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', 
-                 ],
+                 data: this.histogramData.dateArr,
                  axisLabel: {
                       color: '#282c34',
                       fontSize: 20,
@@ -75,7 +83,7 @@ export default {
                      },
                      // 设置柱的宽度，要是数据太少，柱子太宽不美观~
 　　　　　　　　　　   barWidth:60,
-                     data: [66, 248, 108, 40, 215, 53,]
+                     data: this.histogramData.numArr
                    },
                ]
            });
