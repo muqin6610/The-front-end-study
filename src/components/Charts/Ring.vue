@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="ring" :style="{width: '100%', height: '550px'}"></div>
+    <div id="ring" :style="{width: '100%', height: '450px'}"></div>
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     init() {// 方法
+      let that = this
       // 实例化echarts对象
       let ring = this.$echarts.init(document.getElementById("ring"));
       // 绘制图表
@@ -44,11 +45,26 @@ export default {
             fontSize: "16", // 字体大小
             color: "#1e1e1e" // 字体颜色
           },
+          icon: 'pin',
+          // 提示文本格式化设置
+          formatter: function(name) {
+              let data = that.ringData.dataArr
+              let total = 0;
+              let tarValue;
+              for (let i = 0, l = data.length; i < l; i++) {
+                  total += data[i].value;
+                  if (data[i].name == name) {
+                      tarValue = data[i].value;
+                  }
+              }
+              let p = (tarValue / total * 100).toFixed(2);
+              return name + ' ' + ' ' + p + '%';
+          },
         },
         series: [
           {
             type: "pie", // 图表类型
-            radius: ["50%", "65%"], // 环装图内外圈大小
+            radius: ["40%", "55%"], // 环装图内外圈大小
             avoidLabelOverlap: false,
             label: {
               normal: {
