@@ -55,6 +55,7 @@
       </el-table>
       <el-pagination
         class='el-pagination'
+        hide-on-single-page
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
