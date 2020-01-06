@@ -5,29 +5,25 @@
 </template>
 
 <script>
-
 export default {
     props: {
-
     },
     data() {
         return {
-
         }
     },
     created() {
     
     },
     mounted() {// 在这个生命周期中初始化
-       this.histogram(); 
+       this.init(); 
     },
     methods: {
-        histogram (){// 方法
+        init (){// 方法
            // 实例化echarts对象
-           let myChartDrawer = this.$echarts.init(document.getElementById('histogram'))
-
+           let histogram = this.$echarts.init(document.getElementById('histogram'))
            // 绘制条形图
-           let option = {
+           histogram.setOption({
                legend: {
                    data: ['人数'],
                    top: 30
@@ -82,8 +78,8 @@ export default {
                      data: [66, 248, 108, 40, 215, 53,]
                    },
                ]
-           };
-           myChartDrawer.setOption(option);
+           });
+           window.addEventListener("resize", () => { histogram.resize(); })
        }
     },
 }
