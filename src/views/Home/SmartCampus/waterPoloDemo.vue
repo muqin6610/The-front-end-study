@@ -39,7 +39,7 @@
     <el-card class='mycard'>
       <div class='statistics-top'>
         <span class='statistics-title'>体温统计表</span>
-        <el-button type="primary" class='export-button'>导出数据</el-button>
+        <el-button type="primary" class='export-button' @click='exportData'>导出数据</el-button>
       </div>
       <div class='select-search-box'>
         <div class='select-box'>
@@ -99,7 +99,7 @@
             <div v-for='(item, index) in classPeoples' :key='index' class='information-item-box'>
               <div class='number-title'>{{index + 1}}</div>
               <div class='className'>{{item.className}}</div>
-              <div class='numberPeople'>{{item.people}}人</div>
+              <div class='numberPeople' @click='clickPeople'>{{item.people}}人</div>
             </div>
           </div>
         </div>
@@ -360,6 +360,14 @@ export default {
     
   },
   methods: {
+    // 点击导出数据
+    exportData() {
+      alert('导出数据了!')
+    },
+    // 点击班级信息人数
+    clickPeople() {
+      alert('点击了班级人数')
+    },
     // 选择起始时间
     changeDate() {
       console.log(this.startDate,'1111111111111')
