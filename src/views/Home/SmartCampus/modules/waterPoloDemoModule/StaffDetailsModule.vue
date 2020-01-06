@@ -151,7 +151,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 // 顶部卡片
 .mycard-top {
   margin: 10px;
