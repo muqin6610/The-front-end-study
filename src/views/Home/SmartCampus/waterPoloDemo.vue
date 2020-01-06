@@ -227,7 +227,7 @@ export default {
           dataArr: [
               { value: 80, name: "正常体温 36.1-37℃" },
               { value: 20, name: "低烧体温 37.1-38℃" },
-              { value: 10, name: "高烧体温 38℃以上" },
+              { value: 10, name: "高烧体温\xa038℃以上\xa0\xa0" },
             ]
         },
         // 搜索
