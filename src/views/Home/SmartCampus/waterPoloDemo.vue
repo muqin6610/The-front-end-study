@@ -79,6 +79,14 @@
               @keyup.enter.native='clickSearch()'
               clearable>
             </el-input>
+            <transition name="el-zoom-in-top">
+              <div v-if='peoplesShow' class='searchItem-box'>
+                <div class='searchItem'  v-for='(item, index) in peoples' :key='index' @click='clickItem(item)'>
+                  <span style='margin-right: 20px;'>{{item.name}}</span>
+                  <span>学号: {{item.passengerCode}}</span>
+                </div>
+              </div>
+            </transition>
           </div>
           <span class='search-text' @click='clickSearch'>搜索</span>
         </div>
@@ -162,6 +170,8 @@
 import Liquidfill from '@/components/Charts/Liquidfill'
 import Histogram from '@/components/Charts/Histogram'
 import Ring from '@/components/Charts/Ring'
+import { setStore } from '@/utils/storage.js'
+
 export default {
   components: {
     Liquidfill,
@@ -201,6 +211,8 @@ export default {
           {className: '初二四班', people: '110'},
           {className: '初二五班', people: '140'},
         ],
+        // 控制搜索重复人员区域盒子
+        peoplesShow: false,
         // 搜索
         input: '',
         // 日期选择
@@ -273,7 +285,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超二',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -282,7 +294,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超三',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -291,7 +303,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超四',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -300,7 +312,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超五',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -309,7 +321,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超六',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -318,7 +330,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超七',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -327,7 +339,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超八',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -336,7 +348,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超九',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -345,7 +357,7 @@ export default {
             {
             avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
             class: '初一一班',
-            name: '王超',
+            name: '王超十',
             studentID: '2056461',
             age: 10,
             bodyTemperature: '39.5',
@@ -382,18 +394,34 @@ export default {
     },
     // 搜索
     clickSearch() {
-      console.log('搜索!')
-      if(this.input) {
-        localStorage.setItem('name', this.input)
-        this.$router.push('temperaturStatistics/staffDetails')
-      }else {
+      this.peoplesShow = false
+      if(!this.input) {
+        this.$message.warning('请输入学生名字搜索!')
         return false
+      }
+      if(this.input == '钦彪') {
+        let obj = {
+          name: this.input,
+          personId: '11',
+          idImg: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+          classId: '2341123'
+        }
+        this.pushSetUp(obj.personId, obj.name, obj.idImg, obj.classId)
+      }else if(this.input == '王超'){
+        this.peoples = [
+          {name: '王超', passengerCode: '22165'},
+          {name: '王超', passengerCode: '22104'},
+          {name: '王超', passengerCode: '24534'},
+          {name: '王超', passengerCode: '21231'},
+        ]
+        this.peoplesShow = true
+      }else {
+        this.$message.warning('查无此人')
       }
     },
     // 查看详情
     lookDetails(name) {
-      localStorage.setItem('name', name)
-      this.$router.push('temperaturStatistics/staffDetails')
+      this.pushSetUp('1234', name, 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1', 'asf900')
     },
     // 当前页改变
     currentChange(val) {
@@ -403,6 +431,24 @@ export default {
     sizeChange(val) {
       this.getListTeacher(1, val)
     },
+    // 点击搜索重复人员某一项
+    clickItem(item) {
+      this.pushSetUp(item.personId, item.name, item.idImg, item.classId)
+    },
+    // 跳转到人员温度详情页面设置
+    pushSetUp(P, N, I, C) {
+      let objData = {
+        startTime: this.startDate[0],
+        endTime: this.startDate[1],
+        personId: P,
+        name: N,
+        idImg: I,
+        classId: C,
+      }
+      setStore('rowData', objData)
+      this.$router.push('temperaturStatistics/staffDetails')
+      this.input = ''  
+    }
   }
 }
 </script>
@@ -507,6 +553,43 @@ export default {
   font-size: 24px;
   color: #36a3f7;
   cursor: pointer;
+}
+// 搜索提示项盒子
+.searchItem-box {
+  border: 1px solid #e4e7ed;
+  background: #fff;
+  margin-top: 15px;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  z-index: 9999;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  &:before{
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 47px;
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent;
+    margin-bottom: -1px;
+    border-bottom-width: 12px;
+    border-bottom-color: #ffff;
+    color: #e4e7ed;
+  }
+}
+// 搜索提示项
+.searchItem {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 30px;
+  &:hover {
+    background: #f5f7fa;
+    cursor: pointer;
+  }
 }
 // 统计盒子顶部
 .statistics-top {
