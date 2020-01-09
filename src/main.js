@@ -9,6 +9,8 @@ import { httpGet, httpPost, httpPut, httpDelete } from './utils/api'
 import Echarts from 'echarts'//引入echarts
 Vue.prototype.$echarts = Echarts;//把echarts绑定在vue的原型上 这样在组件里面就可以通过this.$echarts来访问了
 
+Vue.prototype.HOST = 'http://localhost:4000'
+
 // 定义请求的全局变量
 Vue.prototype.$post = httpPost
 Vue.prototype.$get = httpGet

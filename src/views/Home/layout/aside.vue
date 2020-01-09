@@ -69,7 +69,6 @@ export default {
                               { path: '/webThorough', name:'前端深入' },
                               { path: '/home/dataManagement/demo', name:'充电特效Demo' },
                               { path: '/home/dataManagement/Css3Demo', name:'css3Demo' },
-                              { path: '/home/dataManagement/lotteryDemo', name:'抽奖案例' },
                             ] },
                             { path: '/home/smartCampus', name:'智慧校园', class:'el-icon-s-home', children: [
                               { path: '/home/smartCampus/waterPoloDemo', name:'体温统计' },

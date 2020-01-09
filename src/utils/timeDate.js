@@ -171,6 +171,8 @@
         case 7:
           return '星期日'
           break;
+        default:
+          break;
       }
     }
  }

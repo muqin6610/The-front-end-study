@@ -21,7 +21,7 @@ import axios from "axios"
  }
 
 /**
- * 封装get方法
+ * 封装delete方法
  * @param url
  * @param delete
  * @returns {Promise}

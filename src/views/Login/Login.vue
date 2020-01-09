@@ -55,23 +55,25 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            // let res = await this.$get('/mock', null)
-            // console.log(res)
-            if(this.ruleForm.username === 'admin' && this.ruleForm.password === '111'){
+            let res = await this.$get(this.HOST + '/api/login',{username:this.ruleForm.username,password:this.ruleForm.password})
+            if(res.success) {
+              this.$message.success(res.message)
               // 记住密码状态保存到localStorage
-              localStorage.setItem('checked',this.checked)
+              localStorage.setItem('checked', this.checked)
               // 账户密码保存到localStorage
-              localStorage.setItem('userInfo',JSON.stringify(this.ruleForm))
+              localStorage.setItem('userInfo', JSON.stringify(this.ruleForm))
+              // 保存token
+              localStorage.setItem('token', JSON.stringify(res.token))
               //跳转到首页
               this.$router.push('/')
-            } else {
-              this.$message.error('请输入正确的账户和密码!')
+            }else {
+              this.$message.error(res.message)
             }
           } else {
             this.$message.error('请填写完整的账户或密码!')
             return false
           }
-        });
+        })
       },
       // 记住密码
       changePassword() {
