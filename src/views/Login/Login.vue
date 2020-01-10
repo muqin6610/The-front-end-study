@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { setStore, getStore } from '@/utils/storage.js'
+
 export default {
     data() {
         return {
@@ -41,8 +43,8 @@ export default {
     },
     created() {
       // 判断是否选择了记住密码
-      if(localStorage.getItem('checked') === 'true') {
-         let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+      if(getStore('checked') === 'true') {
+         let userInfo = JSON.parse(getStore('userInfo'))
          this.checked = true
          this.ruleForm = {
            username: userInfo.username,
@@ -55,15 +57,12 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            let res = await this.$get(this.HOST + '/api/login',{username:this.ruleForm.username,password:this.ruleForm.password})
+            let res = await this.$get(this.HOST + '/api/login', {username:this.ruleForm.username, password:this.ruleForm.password})
             if(res.success) {
               this.$message.success(res.message)
-              // 记住密码状态保存到localStorage
-              localStorage.setItem('checked', this.checked)
-              // 账户密码保存到localStorage
-              localStorage.setItem('userInfo', JSON.stringify(this.ruleForm))
-              // 保存token
-              localStorage.setItem('token', JSON.stringify(res.token))
+              setStore('checked', this.checked)
+              setStore('userInfo', this.ruleForm)
+              setStore('token', res.token)
               //跳转到首页
               this.$router.push('/')
             }else {
@@ -78,7 +77,6 @@ export default {
       // 记住密码
       changePassword() {
         this.checked = !this.checked
-        console.log(this.checked)
       },
       //注册
       register(){
