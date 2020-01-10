@@ -25,7 +25,7 @@
 
 <script>
 import { setStore, getStore } from '@/utils/storage.js'
-import { getApi } from '../../utils/api.js'
+import { getApi } from '@/api/api.js'
 
 export default {
     data() {
