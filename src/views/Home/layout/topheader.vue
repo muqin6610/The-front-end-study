@@ -41,6 +41,7 @@
 
 <script>
 import Breadcrumb from '../modules/Breadcrumb'
+import { earStore } from '@/utils/storage.js'
 
 export default {
     components:{
@@ -80,7 +81,7 @@ export default {
                 message: "退出成功!"
               });
               //退出时清除token
-              localStorage.removeItem("token")
+              clearStore("token")
               //跳转到登录页
               this.$router.push({ name: "login" })
             }).catch(() => {
@@ -95,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 // logo标题区域
 .login-title {
   background-color: #011F3D;
