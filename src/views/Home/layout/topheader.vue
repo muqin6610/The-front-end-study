@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import Breadcrumb from '@/modules/Breadcrumb'
+import Breadcrumb from '../modules/Breadcrumb'
 import { earStore } from '@/utils/storage.js'
 
 export default {
