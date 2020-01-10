@@ -4,18 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import { httpGet, httpPost, httpPut, httpDelete } from './utils/api'
+
+import myaxios from "./utils/axios"
+Vue.use(myaxios)
 
 import Echarts from 'echarts'//引入echarts
 Vue.prototype.$echarts = Echarts;//把echarts绑定在vue的原型上 这样在组件里面就可以通过this.$echarts来访问了
-
-Vue.prototype.HOST = 'http://localhost:4000'
-
-// 定义请求的全局变量
-Vue.prototype.$post = httpPost
-Vue.prototype.$get = httpGet
-Vue.prototype.$put = httpPut
-Vue.prototype.$delete = httpDelete
 
 // 引入裁剪
 import VueCropper from 'vue-cropper'

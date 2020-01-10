@@ -38,7 +38,7 @@ export default {
             password: [{ required: true, message: '请输入密码', trigger: 'blur'  }],
           },
           //记住密码选项
-          checked:false,
+          checked: false,
         }
     },
     created() {
@@ -57,16 +57,22 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            let res = await this.$get(this.HOST + '/api/login', {username:this.ruleForm.username, password:this.ruleForm.password})
-            if(res.success) {
-              this.$message.success(res.message)
+            let res = await this.$http.get('/api/login', {
+              params: {
+                username: this.ruleForm.username, 
+                password: this.ruleForm.password
+              }
+            })
+            let { success, message, token } = res.data
+            if(success) {
+              this.$message.success(message)
               setStore('checked', this.checked)
               setStore('userInfo', this.ruleForm)
-              setStore('token', res.token)
+              setStore('token', token)
               //跳转到首页
               this.$router.push('/')
             }else {
-              this.$message.error(res.message)
+              this.$message.error(message)
             }
           } else {
             this.$message.error('请填写完整的账户或密码!')

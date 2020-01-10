@@ -6,11 +6,12 @@ exports.start = (req,res)=>{
 // 登录注册处理
 exports.login = (req,res)=>{
     let params = url.parse(req.url, true).query
+    console.log(params)
     if(params.username === 'admin' && params.password === '123456') {
         res.send({
             success: true,
             message: '登录成功!',
-            token: '111111111111111111111111'
+            token: 'asfafsa16a51f6a51fa'
         })
     }else {
         res.send({
