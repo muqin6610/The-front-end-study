@@ -44,7 +44,7 @@ export default {
     created() {
       // 判断是否选择了记住密码
       if(getStore('checked') === 'true') {
-         let userInfo = JSON.parse(getStore('userInfo'))
+         let userInfo = getStore('userInfo')
          this.checked = true
          this.ruleForm = {
            username: userInfo.username,
