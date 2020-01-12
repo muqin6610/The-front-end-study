@@ -1,10 +1,10 @@
-// let mysql = require('mysql')
+let mysql = require('mysql')
 exports.base = (sql,data,callback)=>{
 	let connection = mysql.createConnection({
 	host     : 'localhost',
   	user     : 'root',
-  	password : '',
-  	database : 'user'
+  	password : 'root',
+  	database : 'myvue'
 	})
 	connection.connect();
 	connection.query(sql,data, function (error, results, fields) {
