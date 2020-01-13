@@ -5,7 +5,7 @@
       <el-divider></el-divider>
       <p class='clock-title'>时钟显示 :</p>
       <div id="clock">
-        <p class="date">{{ dateFormat(date) }}</p>
+        <p class="date">{{ getTime(date) }}</p>
       </div>
       <el-divider></el-divider>
       <div>
@@ -77,7 +77,9 @@ export default {
       }, 1000)
     },
     methods: {
-
+      getTime(date) {
+        return this.$timeDate.dateFormat(date).ymdhmsCN
+      }
     },
     beforeDestroy() {
       if (this.timer) {
