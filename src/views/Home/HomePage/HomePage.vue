@@ -115,7 +115,7 @@ export default {
 .myCard {
   width: 20%;
   height:100px;
-  box-shadow: 5px 5px 5px #888888;
+  // box-shadow: 5px 5px 5px #888888;
   &:hover {
     background-color: #36a3f7;
     cursor:pointer;
@@ -147,7 +147,7 @@ export default {
 // 折线图表卡片
 .line-chart-card {
   margin:30px 32px 30px 32px;
-  box-shadow: 5px 5px 5px #888888;
+  // box-shadow: 5px 5px 5px #888888;
 }
 // 折线图区域
 .chart-container{
