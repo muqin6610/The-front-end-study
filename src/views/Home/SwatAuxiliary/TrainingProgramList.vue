@@ -8,7 +8,7 @@
        <el-table-column align='center'  label="操作" width="150">
          <template slot-scope="scope">
           <span class='operating-text' @click='seeDetails(scope.row)'>查看详情</span>
-          <span class='operating-text' @click='deleteData(scope.row.value)'>删除</span>
+          <span class='operating-text' @click='deleteData(scope.row.id)'>删除</span>
           </template>
        </el-table-column>
       </el-table>
@@ -18,6 +18,7 @@
 
 <script>
 import { setStore }  from '@/utils/storage.js'
+import { getApi } from '@/api/api.js'
 
   export default {
     name: "TrainingProgramList",
@@ -29,15 +30,6 @@ import { setStore }  from '@/utils/storage.js'
         userInfo:[],
         //表格数据源
         tableData:[],
-        //请求相关
-		    url: {
-          //训练计划分组的查询
-          ProgramByOrgCode: "/judged/trainingProgram/listTrainingProgramByOrgCode",
-          //训练计划删除
-          delete: "/judged/trainingProgram/delete",
-          // 训练计划批量删除接口
-          deleteBatch:'/judged/trainingProgram/deleteBatch',
-       },
      }
   },
   created () {
@@ -89,22 +81,20 @@ import { setStore }  from '@/utils/storage.js'
         });
       },
       //点击查看详情跳转到对应的队伍训练安排详情
-      seeDetails(record){
-        setStore('recordData', record)
+      seeDetails(row){
+        setStore('recordData', row)
         //跳转到对应的队伍训练安排详情
         this.$router.push('/home/swatAuxiliary/programParticulars')
       },
       //获取训练计划清单的数据
-      listTrainingProgram() {
-        //打开加载效果
+      async listTrainingProgram() {
         this.loading = true
-        setTimeout(() => {
-            this.tableData = [
-                {key:'前端训练计划',id:'1'},
-            ]
-            //关闭加载效果
-            this.loading = false
-        }, 500)
+        let res = await getApi('listTrainingProgram', null)
+        console.log(res,'训练计划清单')
+        this.loading = false
+        if(res.success) {
+          this.tableData = res.result
+        }
       }
     }
   }

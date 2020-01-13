@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { getStore } from '@/utils/storage.js'
+import { getApi } from '@/api/api.js'
 
 export default {
 data() {
@@ -176,30 +178,19 @@ data() {
       //获取传过来的对应考核计划数据
       getParticulars() {
           //对应考核计划数据
-          let recordData = JSON.parse(localStorage.getItem("recordData"))
+          let recordData = getStore("recordData")
           //获取计划名称
           this.trainingName = recordData.key
-
           // 获取计划详情
-          this.programDetails = [
-              {value:'徒手3公里',date: '2019-12-12'},
-              {value:'徒手5公里',date: '2019-12-12'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'俯卧撑',date: '2019-12-20'},
-              {value:'俯卧撑',date: '2019-12-20'},
-              {value:'俯卧撑',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'翻轮胎',date: '2019-12-20'},
-              {value:'夜间射击',date: '2019-12-11'},
-              {value:'夜间射击',date: '2019-12-11'},
-              {value:'夜间射击',date: '2019-12-11'},
-              {value:'驾驶坦克',date: '2019-12-2'},
-          ]
+          this.getProgramDetails(recordData.id)
+       },
+       // 获取训练计划详情
+       async getProgramDetails(id) {
+         let res = await getApi('programDetails', {id: id})
+         console.log(res, '训练计划详情')
+         if(res.success) {
+           this.programDetails = res.result
+         }
        },
       //点击返回
       abrogate(){
