@@ -58,7 +58,7 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            let res = await getApi('/api/login', { username: this.ruleForm.username, password: this.ruleForm.password })
+            let res = await getApi('login', { username: this.ruleForm.username, password: this.ruleForm.password })
             if(res.success) {
               this.$message.success(res.message)
               setStore('checked', this.checked)

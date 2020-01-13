@@ -11,7 +11,7 @@ let myaxios = {}
 // 添加install方法
 myaxios.install = function (Vue) {
   // 统一设置请求的api
-  axios.defaults.baseURL = 'http://localhost:4000'
+  axios.defaults.baseURL = 'http://localhost:4000/api/'
   // 给Vue实例对象添加方法
   Vue.prototype.$http = axios
   // 设置请求拦截器
