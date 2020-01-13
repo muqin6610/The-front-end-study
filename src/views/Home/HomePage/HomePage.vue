@@ -6,28 +6,28 @@
         <i class='el-icon-s-custom el-icon'></i>
         <div class='myText'>
           <span class='myText-span'>访问量</span>
-          <p style='font-weight:bold'>25,315</p>
+          <p style='font-weight:bold'>{{viewsData}}</p>
         </div>
       </el-card>
       <el-card class='myCard'>
         <i class='el-icon-edit-outline el-icon'></i>
         <div class='myText'>
           <span class='myText-span'>留言量</span>
-          <p style='font-weight:bold'>5,310</p>
+          <p style='font-weight:bold'>{{messageVolume}}</p>
         </div>
       </el-card>
       <el-card class='myCard'>
         <i class='el-icon-document-copy el-icon'></i>
         <div class='myText'>
           <span class='myText-span'>书籍量</span>
-          <p style='font-weight:bold'>1,395</p>
+          <p style='font-weight:bold'>{{bookeData}}</p>
         </div>
       </el-card>
       <el-card class='myCard'>
         <i class='el-icon-thumb el-icon'></i>
         <div class='myText'>
           <span class='myText-span'>点赞量</span>
-          <p style='font-weight:bold'>2,856</p>
+          <p style='font-weight:bold'>{{likes}}</p>
         </div>
       </el-card>
     </div>
@@ -63,6 +63,7 @@ import VeLineChart from '@/components/Charts/HomePageCharts/veLineChart'
 import VeHistogramChart from '@/components/Charts/HomePageCharts/veHistogramChart'
 import VeWaterfallChart from '@/components/Charts/HomePageCharts/veWaterfallChart'
 import VeScatterChart from '@/components/Charts/HomePageCharts/veScatterChart'
+import { getApi } from '@/api/api.js'
 
 export default {
     components: {
@@ -73,14 +74,32 @@ export default {
     },
     data() {
         return {
-
+          // 访问量
+          viewsData: '',
+          // 留言量
+          messageVolume: '',
+          // 书籍量
+          bookeData: '',
+          // 点赞量
+          likes: '',
         }
     },
     created() {
-    
+      // 获取统计数据
+      this.getStatisticalData()
     },
     methods: {
-      
+      // 获取统计数据
+      async getStatisticalData() {
+        let res = await getApi('statisticalData', null)
+        console.log(res,'统计数据')
+        if(res.success) {
+          this.viewsData = res.result.viewsData
+          this.messageVolume = res.result.messageVolume
+          this.bookeData = res.result.bookeData
+          this.likes = res.result.likes
+        }
+      }
     }
 }
 </script>
