@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="liquidFill" :style="{width: '350px', height: '220px'}"></div>
+        <div id="liquidFill" :style="{width: '100%', height: '220px'}"></div>
     </div>
 </template>
 
@@ -17,14 +17,22 @@ export default {
     },
     data() {
         return {
-            counter: 1
+
         }
+    },
+    watch:{
+      liquidfillData:{
+        handler: function (newval, oldVal) {
+            this.init()
+        },
+        deep: true
+      }
     },
     created() {
     
     },
     mounted() {// 在这个生命周期中初始化
-       this.init(); 
+       this.init()
     },
     methods: {
         init (){// 方法
@@ -45,13 +53,24 @@ export default {
                     },
                     // 水球图显示的文本
                     label: {
-                      // 字体大小
-                      fontSize: 30,
-                      // 字体风格
-                      fontWeight: '200',
-                      // 字体颜色
-                      color: '#000',
-                      insideColor: '#fff'
+                      normal: {
+                        formatter: function(param) {
+                            let value = ''
+                            if(parseFloat((param.value * 100)) == parseInt((param.value * 100))) {
+                                value = (param.value * 100).toFixed(0) + '%'
+                            }else {
+                                value = (param.value * 100).toFixed(5) + '%'
+                            }
+                            return value
+                        },
+                        // 字体大小
+                        fontSize: 30,
+                        // 字体风格
+                        fontWeight: '200',
+                        // 字体颜色
+                        color: '#000',
+                        insideColor: '#fff'
+                      },
                     },
                     backgroundStyle: {
                         color: '#fff',// 图表的背景颜色

@@ -7,25 +7,25 @@
           <div class='card-content one-bgcolor'>
             <div class='text-box'>
               <div class='card-content-title'>学校总人数</div>
-              <div class='card-content-text'>5000人</div>
+              <div class='card-content-text'>{{schoolCount ? schoolCount : 0}}人</div>
             </div>
           </div>
           <div class='card-content two-bgcolor'>
             <div class='text-box'>
               <div class='card-content-title'>累计识别人数</div>
-              <div class='card-content-text'>4200人</div>
+              <div class='card-content-text'>{{totalDiscernCount ? totalDiscernCount : 0}}</div>
             </div>
           </div>
           <div class='card-content three-bgcolor'>
             <div class='text-box'>
               <div class='card-content-title'>体温正常人数</div>
-              <div class='card-content-text'>3900人</div>
+              <div class='card-content-text'>{{normalCount ? normalCount : 0}}</div>
             </div>
           </div>
           <div class='card-content four-bgcolor'>
             <div class='text-box'>
               <div class='card-content-title'>体温异常人数</div>
-              <div class='card-content-text'>400人</div>
+              <div class='card-content-text'>{{abnormalCount ? abnormalCount : 0}}人</div>
             </div>
           </div>
         </div>
@@ -54,19 +54,21 @@
             end-placeholder="结束日期">
           </el-date-picker>
           <el-select size="medium" v-model="selectGrade" @change='changGrade' placeholder="请选择年级">
+            <el-option label="全部" value="all"></el-option>
             <el-option
               v-for="item in gradeDatas"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.id"
+              :label="item.departName"
+              :value="item">
             </el-option>
           </el-select>
           <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择班级">
+            <el-option v-if='classDatas.length' label="全部" value="all"></el-option>
             <el-option
               v-for="item in classDatas"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.id"
+              :label="item.departName"
+              :value="item">
             </el-option>
           </el-select>
         </div>
@@ -171,7 +173,7 @@ import Liquidfill from '@/components/Charts/Liquidfill'
 import Histogram from '@/components/Charts/Histogram'
 import Ring from '@/components/Charts/Ring'
 import { setStore } from '@/utils/storage.js'
-
+import { getApi } from '@/api/api.js' 
 export default {
   components: {
     Liquidfill,
@@ -182,7 +184,7 @@ export default {
     return {  
         // 传递给水球图组件数据
         liquidfillData: {
-          percent: 0.45,
+          percent: 0,
         },
         // 传递给柱状图组价数据
         histogramData: {
@@ -197,6 +199,32 @@ export default {
               { value: 10, name: "高烧体温\xa038℃以上\xa0\xa0" },
             ]
         },
+        // 发送请求的数据
+        sendData: {
+          classId: '0',
+          startTime: '',
+          endTime: '',
+        },
+        // 加载特效
+        loading: false,
+        // 选择区域
+        showSelect: true,
+        // 学校总人数
+        schoolCount: '',
+        // 累计识别人数
+        totalDiscernCount: '',
+        // 体温正常人数
+        normalCount: '',
+        // 体温异常人数
+        abnormalCount: '',
+        // 班级人数信息
+        classPeoples: [],
+        // 班级名称
+        className: '',
+        // 年级名称
+        gradeName: '',
+        // 当天日期
+        todayDate: '',
         // 班级人数信息
         classPeoples: [
           {className: '初一一班', people: '100'},
@@ -222,39 +250,9 @@ export default {
         // 选择班级
         selectClass: '',
         // 年级数据
-        gradeDatas: [{
-          value: '选项1',
-          label: '初一'
-        }, {
-          value: '选项2',
-          label: '初二'
-        }, {
-          value: '选项3',
-          label: '初三'
-        }, {
-          value: '选项4',
-          label: '高一'
-        }, {
-          value: '选项5',
-          label: '高二'
-        }],
+        gradeDatas: [],
         // 班级数据
-        classDatas: [{
-          value: '选项1',
-          label: '初一一班'
-        }, {
-          value: '选项2',
-          label: '初二二班'
-        }, {
-          value: '选项3',
-          label: '初三三班'
-        }, {
-          value: '选项4',
-          label: '高一四班'
-        }, {
-          value: '选项5',
-          label: '高二五班'
-        }],
+        classDatas: [],
         // 分页器总条数
         total: null,
         // 分页器每页条数
@@ -367,11 +365,65 @@ export default {
     }
   },
   mounted () {
+    // 获取学校和班级数据
+    this.loadTree()
+    // 获取温度统计数据
+    this.temperatureStatistics()
+    // // 获取全校体温异常数据
+    // this.getList()
+    // // 获取柱状图数据
+    // this.barChartsList()
+    // // 获取环状图数据
+    // this.getAccountedPercent()
+    // // 获取体温异常班级信息
+    // this.getPersonWarnCount()
   },
   created() {
-    
+    let date = new Date()
+    this.todayDate = date.getFullYear() + '-' + ((date.getMonth() + 1) < 10 ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + date.getDate()
+    // 时间默认值
+    this.startDate = [this.todayDate, this.todayDate]
+    // 班级年级默认值
+    this.selectGrade = 'all'
+    this.selectClass = '全部'
+    // 发送默认请求的默认值
+    this.sendData.startTime = this.startDate[0]
+    this.sendData.endTime = this.startDate[1]
   },
   methods: {
+    // 获取学校和班级信息
+    async loadTree() {
+      let res = await getApi('loadTree', null)
+      console.log(res, '学校和班级信息')
+      if(res.success) {
+        this.schoolData = res.result[0]
+        this.gradeDatas = res.result[0].children
+      }
+    },
+    // 获取今日温度统计数据
+    async temperatureStatistics(id = '0', sTime = this.todayDate, eTime = this.todayDate) {
+      this.schoolCount = 0
+      this.totalDiscernCount = 0
+      this.normalCount = 0
+      this.abnormalCount = 0
+      this.liquidfillData.percent = 0
+      if(id == '0') id = ''
+      let objData = {
+        classId: id,
+        startTime: sTime,
+        endTime: eTime,
+      }
+      console.log(objData,'发送的温度统计参数')
+      let res = await getApi('temperatureStatistics', objData)
+      console.log(res,'温度统计数据')
+      if(res.success) {
+        this.schoolCount = res.result.schoolCount
+        this.totalDiscernCount = res.result.totalDiscernCount
+        this.normalCount = res.result.normalCount
+        this.abnormalCount = res.result.abnormalCount
+        this.liquidfillData.percent = res.result.accountedPercent
+      }
+    },
     // 点击导出数据
     exportData() {
       alert('导出数据了!')
@@ -382,15 +434,56 @@ export default {
     },
     // 选择起始时间
     changeDate() {
-      console.log(this.startDate,'1111111111111')
+      this.sendData.startTime = this.startDate[0]
+      this.sendData.endTime = this.startDate[1]
+      // this.getList()
+      // this.barChartsList()
+      // this.getAccountedPercent()
     },
     // 选择年级
-    changGrade() {
-      console.log(this.selectGrade,'2222222222')
+    changGrade(val) {
+      this.classDatas = []
+      this.selectClass = ''
+      // 判断是否选择了全部
+      if(val === 'all') {
+        this.sendData.classId = '0'
+        this.selectClass = '全部'
+        this.className = ''
+        // this.barChartsList()
+        // this.getAccountedPercent()
+      }else {
+        // 选择完年级出现对应的班级
+        if(this.gradeDatas.length != null) {
+          for(let i = 0;i < this.gradeDatas.length;i++) {
+            if(val.id === this.gradeDatas[i].id) {
+              if(this.gradeDatas[i].children != null) {
+                this.classDatas = this.gradeDatas[i].children
+              }
+            }
+          }
+        }
+        this.gradeName = val.departName
+      }
+      console.log(this.sendData,'需要发送请求的数据')
     },
     // 选择班级
-    changeClass() {
-      console.log(this.selectClass,'33333333333333')
+    changeClass(val) {
+      // 判断是否选择全部
+      if(val === 'all') {
+        this.sendData.classId = []
+        for(let i = 0;i < this.classDatas.length;i++) {
+          this.sendData.classId.push(this.classDatas[i].id)
+        }
+        this.sendData.classId = this.sendData.classId.join(',')
+        this.className = this.gradeName
+      }else {
+        this.sendData.classId = val.id
+        this.className = val.departName
+      }
+      console.log(this.sendData,'需要发送请求的数据')
+      // this.getList()
+      // this.barChartsList()
+      // this.getAccountedPercent()
     },
     // 搜索
     clickSearch() {
