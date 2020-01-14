@@ -109,7 +109,7 @@
             <div v-for='(item, index) in classPeoples' :key='index' class='information-item-box'>
               <div class='number-title'>{{index + 1}}</div>
               <div class='className'>{{item.className}}</div>
-              <div class='numberPeople' @click='clickPeople'>{{item.people}}人</div>
+              <div class='numberPeople' @click='clickPeople'>{{item.warnTotalCount}}人</div>
             </div>
           </div>
         </div>
@@ -217,8 +217,6 @@ export default {
         normalCount: '',
         // 体温异常人数
         abnormalCount: '',
-        // 班级人数信息
-        classPeoples: [],
         // 班级名称
         className: '',
         // 年级名称
@@ -226,19 +224,7 @@ export default {
         // 当天日期
         todayDate: '',
         // 班级人数信息
-        classPeoples: [
-          {className: '初一一班', people: '100'},
-          {className: '初一二班', people: '80'},
-          {className: '初一三班', people: '75'},
-          {className: '初一四班', people: '130'},
-          {className: '初一五班', people: '60'},
-          {className: '初一六班', people: '70'},
-          {className: '初二一班', people: '100'},
-          {className: '初二二班', people: '90'},
-          {className: '初二三班', people: '80'},
-          {className: '初二四班', people: '110'},
-          {className: '初二五班', people: '140'},
-        ],
+        classPeoples: [],
         // 控制搜索重复人员区域盒子
         peoplesShow: false,
         // 搜索
@@ -375,8 +361,8 @@ export default {
     this.barChartsList()
     // // 获取环状图数据
     // this.getAccountedPercent()
-    // // 获取体温异常班级信息
-    // this.getPersonWarnCount()
+    // 获取体温异常班级信息
+    this.getPersonWarnCount()
   },
   created() {
     let date = new Date()
@@ -439,6 +425,14 @@ export default {
         }else {
           this.histogramData.numArr.push(0)
         }
+      }
+    },
+    // 获取体温异常班级信息
+    async getPersonWarnCount() {
+      let res = await getApi('getPersonWarnCount', null)
+      console.log(res,'体温异常班级信息')
+      if(res.success) {
+        this.classPeoples = res.result
       }
     },
     // 点击导出数据
