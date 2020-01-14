@@ -63,6 +63,7 @@ export default {
                  axisLine: {show:false},
 　　　　　        // 下面的就很简单了，最小是多少，最大是多少，默认一次增加多少
                   min: 0,
+                  minInterval: 1, // y轴最小间隔数
                   //interval: 50, // y轴显示间隔数
 　　　　　         // 下面是显示格式化，一般来说还是用的上的
                   axisLabel: {
