@@ -499,6 +499,8 @@ export default {
     },
     // 点击恢复到全校页面
     clickPush() {
+      this.sendData.classId = '0'
+      this.className = ''
       this.showSelect = true
       this.getList()
       this.barChartsList()
