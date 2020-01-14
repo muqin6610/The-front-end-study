@@ -247,107 +247,7 @@ export default {
         pageCurrent: null,
         // 显示的页码
         pagerCount: 5,
-        tableData: [
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '慕钦C',
-            studentID: '2091123',
-            age: 13,
-            bodyTemperature: '38.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超二',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超三',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超四',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超五',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超六',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超七',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超八',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超九',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-            {
-            avatar: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            class: '初一一班',
-            name: '王超十',
-            studentID: '2056461',
-            age: 10,
-            bodyTemperature: '39.5',
-            sex: '男',
-          },
-        ],
+        tableData: [],
     }
   },
   mounted () {
@@ -355,8 +255,8 @@ export default {
     this.loadTree()
     // 获取温度统计数据
     this.temperatureStatistics()
-    // // 获取全校体温异常数据
-    // this.getList()
+    // 获取体温异常表数据
+    this.getList()
     // 获取柱状图数据
     this.barChartsList()
     // 获取环状图数据
@@ -445,6 +345,28 @@ export default {
         this.ringData.dataArr[2].value = res.result.highFever
       }
     },
+    // 获取体温异常表格数据
+    async getList(pageNo = 1, pageSize = 10) {
+      this.tableData = []
+      this.loading = true
+      this.sendData.pageNo = pageNo
+      this.sendData.pageSize = pageSize
+      let url = ''
+      if(this.sendData.classId === '0') {
+        url = 'allAbnormalTemperature'
+      }else {
+        url = 'abnormalTemperature'
+      }
+      let res = await getApi(url, this.sendData)
+      console.log(res,'体温异常表格数据')
+      this.loading = false
+      if(res.success) {
+        this.tableData = res.result.records
+        this.total = res.result.total
+        this.pageSize = res.result.size
+        this.pageCurrent = res.result.current
+      }
+    },
     // 点击导出数据
     exportData() {
       alert('导出数据了!')
@@ -457,9 +379,9 @@ export default {
     changeDate() {
       this.sendData.startTime = this.startDate[0]
       this.sendData.endTime = this.startDate[1]
-      // this.getList()
-      // this.barChartsList()
-      // this.getAccountedPercent()
+      this.getList()
+      this.barChartsList()
+      this.getAccountedPercent()
     },
     // 选择年级
     changGrade(val) {
@@ -470,8 +392,8 @@ export default {
         this.sendData.classId = '0'
         this.selectClass = '全部'
         this.className = ''
-        // this.barChartsList()
-        // this.getAccountedPercent()
+        this.barChartsList()
+        this.getAccountedPercent()
       }else {
         // 选择完年级出现对应的班级
         if(this.gradeDatas.length != null) {
@@ -502,9 +424,9 @@ export default {
         this.className = val.departName
       }
       console.log(this.sendData,'需要发送请求的数据')
-      // this.getList()
-      // this.barChartsList()
-      // this.getAccountedPercent()
+      this.getList()
+      this.barChartsList()
+      this.getAccountedPercent()
     },
     // 搜索
     clickSearch() {
@@ -560,7 +482,7 @@ export default {
         classId: C,
       }
       setStore('rowData', objData)
-      this.$router.push('temperaturStatistics/staffDetails')
+      this.$router.push('/home/smartCampus/staffDetailsModule')
       this.input = ''  
     }
   }
