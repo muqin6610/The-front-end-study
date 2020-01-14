@@ -286,7 +286,7 @@ export default {
     // 获取学校和班级信息
     async loadTree() {
       let res = await getApi('loadTree', null)
-      console.log(res, '学校和班级信息')
+      // console.log(res, '学校和班级信息')
       if(res.success) {
         this.schoolData = res.result[0]
         this.gradeDatas = res.result[0].children
@@ -305,9 +305,9 @@ export default {
         startTime: sTime,
         endTime: eTime,
       }
-      console.log(objData,'发送的温度统计参数')
+      // console.log(objData,'发送的温度统计参数')
       let res = await getApi('temperatureStatistics', objData)
-      console.log(res,'温度统计数据')
+      // console.log(res,'温度统计数据')
       if(res.success) {
         this.schoolCount = res.result.schoolCount
         this.totalDiscernCount = res.result.totalDiscernCount
@@ -321,7 +321,7 @@ export default {
       this.histogramData.dateArr = []
       this.histogramData.numArr = []
       let res = await getApi('barChartsList', this.sendData)
-      console.log(res,'柱状图数据')
+      // console.log(res,'柱状图数据')
       if(res.success) {
         if(res.result.length) {
           for(let i = 0;i < res.result.length;i++) {
@@ -336,7 +336,7 @@ export default {
     // 获取体温异常班级信息
     async getPersonWarnCount() {
       let res = await getApi('getPersonWarnCount', null)
-      console.log(res,'体温异常班级信息')
+      // console.log(res,'体温异常班级信息')
       if(res.success) {
         this.classPeoples = res.result
       }
@@ -344,7 +344,7 @@ export default {
     // 获取环状图数据
     async getAccountedPercent() {
       let res = await getApi('getAccountedPercent', this.sendData)
-      console.log(res,'环状图数据')
+      // console.log(res,'环状图数据')
       if(res.success) {
         this.ringData.dataArr[0].value = res.result.normal
         this.ringData.dataArr[1].value = res.result.lowFever
@@ -364,7 +364,7 @@ export default {
         url = 'abnormalTemperature'
       }
       let res = await getApi(url, this.sendData)
-      console.log(res,'体温异常表格数据')
+      // console.log(res,'体温异常表格数据')
       this.loading = false
       if(res.success) {
         this.tableData = res.result.records
@@ -379,7 +379,7 @@ export default {
     },
     // 点击班级信息人数
     clickPeople(item) {
-      console.log(item)
+      // console.log(item)
       this.sendData.classId = item.classId
       this.className = item.className
       this.showSelect = false
@@ -419,7 +419,7 @@ export default {
         }
         this.gradeName = val.departName
       }
-      console.log(this.sendData,'需要发送请求的数据')
+      // console.log(this.sendData,'需要发送请求的数据')
     },
     // 选择班级
     changeClass(val) {
@@ -435,7 +435,7 @@ export default {
         this.sendData.classId = val.id
         this.className = val.departName
       }
-      console.log(this.sendData,'需要发送请求的数据')
+      // console.log(this.sendData,'需要发送请求的数据')
       this.getList()
       this.barChartsList()
       this.getAccountedPercent()
@@ -504,7 +504,7 @@ export default {
       this.showSelect = true
       this.getList()
       this.barChartsList()
-      this.getPersonWarnCount('', this.startDate[0], this.startDate[1])
+      this.getPersonWarnCount()
     }
   }
 }
