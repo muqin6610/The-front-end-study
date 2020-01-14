@@ -17,6 +17,14 @@ export default {
   data() {
     return {};
   },
+  watch:{
+    ringData:{
+      handler: function (newval, oldVal) {
+          this.init()
+      },
+      deep: true
+    }
+  },
   created() {},
   mounted() {
     // 在这个生命周期中初始化
@@ -57,7 +65,12 @@ export default {
                       tarValue = data[i].value;
                   }
               }
-              let p = (tarValue / total * 100).toFixed(2);
+              let p
+              if(tarValue != 0) {
+                p = (tarValue / total * 100).toFixed(2);
+              }else {
+                p = 0
+              }
               return name + ' ' + ' ' + p + '%';
           },
         },
@@ -65,17 +78,14 @@ export default {
           {
             type: "pie", // 图表类型
             radius: ["40%", "55%"], // 环装图内外圈大小
-            avoidLabelOverlap: false,
+            avoidLabelOverlap: false, // 是否启用防止标签重叠策略，环状图需要设置为false
+            startAngle: 150, // 起始角度
+            // 环状图文本
             label: {
               normal: {
                 show: false,
                 position: "center"
               },
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
             },
             // 环装图数据
             data: this.ringData.dataArr,

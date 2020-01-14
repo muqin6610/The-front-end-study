@@ -194,9 +194,9 @@ export default {
         // 传递给环装图组件数据
         ringData: {
           dataArr: [
-              { value: 80, name: "正常体温 36.1-37℃" },
-              { value: 20, name: "低烧体温 37.1-38℃" },
-              { value: 10, name: "高烧体温\xa038℃以上\xa0\xa0" },
+              { value: 0, name: "正常体温 36.1-37℃" },
+              { value: 0, name: "低烧体温 37.1-38℃" },
+              { value: 0, name: "高烧体温\xa038℃以上\xa0\xa0" },
             ]
         },
         // 发送请求的数据
@@ -359,8 +359,8 @@ export default {
     // this.getList()
     // 获取柱状图数据
     this.barChartsList()
-    // // 获取环状图数据
-    // this.getAccountedPercent()
+    // 获取环状图数据
+    this.getAccountedPercent()
     // 获取体温异常班级信息
     this.getPersonWarnCount()
   },
@@ -433,6 +433,16 @@ export default {
       console.log(res,'体温异常班级信息')
       if(res.success) {
         this.classPeoples = res.result
+      }
+    },
+    // 获取环状图数据
+    async getAccountedPercent() {
+      let res = await getApi('getAccountedPercent', this.sendData)
+      console.log(res,'环状图数据')
+      if(res.success) {
+        this.ringData.dataArr[0].value = res.result.normal
+        this.ringData.dataArr[1].value = res.result.lowFever
+        this.ringData.dataArr[2].value = res.result.highFever
       }
     },
     // 点击导出数据
