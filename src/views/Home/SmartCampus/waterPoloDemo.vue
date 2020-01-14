@@ -3,7 +3,7 @@
     <div class='top-box'>
       <div class='mybox statistics'>
         <div v-if='showSelect' class='topcard-title'>今日温度统计</div>
-        <div v-else class='topcard-title'>温度统计/{{startDate[0]}}至{{startDate[1]}}{{className}}</div>
+        <div v-else class='topcard-title'><span style='cursor: pointer;' @click='clickPush'>温度统计</span>/{{startDate[0]}}至{{startDate[1]}}{{className}}</div>
         <div class='card-content-box'>
           <div class='card-content one-bgcolor'>
             <div class='text-box'>
@@ -496,6 +496,13 @@ export default {
       setStore('rowData', objData)
       this.$router.push('/home/smartCampus/staffDetailsModule')
       this.input = ''  
+    },
+    // 点击恢复到全校页面
+    clickPush() {
+      this.showSelect = true
+      this.getList()
+      this.barChartsList()
+      this.getPersonWarnCount('', this.startDate[0], this.startDate[1])
     }
   }
 }
