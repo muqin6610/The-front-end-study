@@ -22,6 +22,14 @@ export default {
         return {
         }
     },
+    watch:{
+      histogramData:{
+        handler: function (newval, oldVal) {
+            this.init()
+        },
+        deep: true
+      }
+    },
     created() {
     
     },
@@ -82,7 +90,7 @@ export default {
                          }
                      },
                      // 设置柱的宽度，要是数据太少，柱子太宽不美观~
-　　　　　　　　　　   barWidth:60,
+　　　　　　　　　　   barWidth: 50,
                      data: this.histogramData.numArr
                    },
                ]

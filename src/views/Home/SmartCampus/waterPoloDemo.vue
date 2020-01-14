@@ -188,8 +188,8 @@ export default {
         },
         // 传递给柱状图组价数据
         histogramData: {
-          dateArr: ['2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', '2019-12-01', ],
-          numArr: [66, 248, 108, 40, 215, 53,],
+          dateArr: [],
+          numArr: [],
         },
         // 传递给环装图组件数据
         ringData: {
@@ -371,8 +371,8 @@ export default {
     this.temperatureStatistics()
     // // 获取全校体温异常数据
     // this.getList()
-    // // 获取柱状图数据
-    // this.barChartsList()
+    // 获取柱状图数据
+    this.barChartsList()
     // // 获取环状图数据
     // this.getAccountedPercent()
     // // 获取体温异常班级信息
@@ -422,6 +422,23 @@ export default {
         this.normalCount = res.result.normalCount
         this.abnormalCount = res.result.abnormalCount
         this.liquidfillData.percent = res.result.accountedPercent
+      }
+    },
+    // 获取柱状图数据
+    async barChartsList() {
+      this.histogramData.dateArr = []
+      this.histogramData.numArr = []
+      let res = await getApi('barChartsList', this.sendData)
+      console.log(res,'柱状图数据')
+      if(res.success) {
+        if(res.result.length) {
+          for(let i = 0;i < res.result.length;i++) {
+            this.histogramData.dateArr.push(res.result[i].dateTime)
+            this.histogramData.numArr.push(res.result[i].personCount)
+          }
+        }else {
+          this.histogramData.numArr.push(0)
+        }
       }
     },
     // 点击导出数据
