@@ -135,7 +135,6 @@
    methods: {
      // 点击折叠面板
      changeCollapse(a) {
-       console.log(a,'2222222222')
        switch(a) {
           case '' :
             this.tableData = []

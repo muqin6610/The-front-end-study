@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { getStore } from '@/utils/storage.js'
+
 export default {
     data() {
         return {
@@ -82,7 +84,7 @@ export default {
     created() {
         this.getTbaleData()
         // 获取参数
-        this.name = localStorage.getItem('name')
+        this.name = getStore('name')
     },
     methods: {
         // 获取表格数据

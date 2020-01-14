@@ -2,11 +2,12 @@
   <div class='all-box'>
     <div class='top-box'>
       <div class='mybox statistics'>
-        <div class='topcard-title'>今日温度统计</div>
+        <div v-if='showSelect' class='topcard-title'>今日温度统计</div>
+        <div v-else class='topcard-title'>温度统计/{{startDate[0]}}至{{startDate[1]}}{{className}}</div>
         <div class='card-content-box'>
           <div class='card-content one-bgcolor'>
             <div class='text-box'>
-              <div class='card-content-title'>学校总人数</div>
+              <div class='card-content-title'>{{showSelect ? '学校' : className}}总人数</div>
               <div class='card-content-text'>{{schoolCount ? schoolCount : 0}}人</div>
             </div>
           </div>
@@ -31,7 +32,7 @@
         </div>
       </div>
       <div class='mybox liquidfill'>
-        <div class='liquidfill-title'>今日体温异常占比</div>
+        <div class='liquidfill-title'>{{showSelect ? '今日体温异常占比' : '体温异常占比'}}</div>
         <!--引入的水球图-->
         <Liquidfill :liquidfillData='liquidfillData'/>
       </div>
@@ -42,36 +43,38 @@
         <el-button type="primary" class='export-button' @click='exportData'>导出数据</el-button>
       </div>
       <div class='select-search-box'>
-        <div class='select-box'>
-          <el-date-picker
-            size="medium"
-            v-model="startDate"
-            @change='changeDate'
-            type="daterange"
-            value-format="yyyy-MM-dd"
-            range-separator="~"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
-          </el-date-picker>
-          <el-select size="medium" v-model="selectGrade" @change='changGrade' placeholder="请选择年级">
-            <el-option label="全部" value="all"></el-option>
-            <el-option
-              v-for="item in gradeDatas"
-              :key="item.id"
-              :label="item.departName"
-              :value="item">
-            </el-option>
-          </el-select>
-          <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择班级">
-            <el-option v-if='classDatas.length' label="全部" value="all"></el-option>
-            <el-option
-              v-for="item in classDatas"
-              :key="item.id"
-              :label="item.departName"
-              :value="item">
-            </el-option>
-          </el-select>
-        </div>
+        <transition name="el-fade-in">
+          <div class='select-box' v-if='showSelect'>
+            <el-date-picker
+              size="medium"
+              v-model="startDate"
+              @change='changeDate'
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="~"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+            <el-select size="medium" v-model="selectGrade" @change='changGrade' placeholder="请选择年级">
+              <el-option label="全部" value="all"></el-option>
+              <el-option
+                v-for="item in gradeDatas"
+                :key="item.id"
+                :label="item.departName"
+                :value="item">
+              </el-option>
+            </el-select>
+            <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择班级">
+              <el-option v-if='classDatas.length' label="全部" value="all"></el-option>
+              <el-option
+                v-for="item in classDatas"
+                :key="item.id"
+                :label="item.departName"
+                :value="item">
+              </el-option>
+            </el-select>
+          </div>
+        </transition>
         <div class='search-box'>
           <div class='input-box'>
             <el-input
@@ -101,30 +104,33 @@
         </div>
       </div>
     </el-card>
-    <div class='center-card-box'>
-      <el-card class='mycard center-card'>
-        <div class='center-card-title'>体温异常班级信息</div>
-        <div class='class-box'>
-          <div class='information-box'>
-            <div v-for='(item, index) in classPeoples' :key='index' class='information-item-box'>
-              <div class='number-title'>{{index + 1}}</div>
-              <div class='className'>{{item.className}}</div>
-              <div class='numberPeople' @click='clickPeople'>{{item.warnTotalCount}}人</div>
+    <transition name="el-fade-in">
+      <div class='center-card-box' v-if='showSelect'>
+        <el-card class='mycard center-card'>
+          <div class='center-card-title'>体温异常班级信息</div>
+          <div class='class-box'>
+            <div class='information-box'>
+              <div v-for='(item, index) in classPeoples' :key='index' class='information-item-box'>
+                <div class='number-title'>{{index + 1}}</div>
+                <div class='className'>{{item.className}}</div>
+                <div class='numberPeople' @click='clickPeople(item)'>{{item.warnTotalCount}}人</div>
+              </div>
             </div>
           </div>
-        </div>
-      </el-card>
-      <el-card class='mycard center-card'>
-        <div class='center-card-title'>2019-10-1至2019-10-07体温占比图</div>
-        <div>
-          <!-- 环状图 -->
-          <Ring :ringData='ringData'/>
-        </div>
-      </el-card>
-    </div>
+        </el-card>
+        <el-card class='mycard center-card'>
+          <div class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}体温占比图</div>
+          <div>
+            <!-- 环状图 -->
+            <Ring :ringData='ringData'/>
+          </div>
+        </el-card>
+      </div>
+    </transition>
     <el-card style='margin-bottom: 40px;' class='mycard'>
-        <div class='center-card-title'>2015-10-01至2015-10-07全校体温异常排序</div>
-        <el-table border :data="tableData" stripe style="width: 100%;margin-top:20px;" :header-cell-style="{background:'#e7ecff',color:'#2c2626'}">
+        <div v-if='className' class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}{{className}}体温异常排序</div>
+        <div v-else class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}全校体温异常排序</div>
+        <el-table v-loading="loading" element-loading-text="加载中..." element-loading-spinner="el-icon-loading" border :data="tableData" stripe style="width: 100%;margin-top:20px;" :header-cell-style="{background:'#e7ecff',color:'#2c2626'}">
         <el-table-column align='center' prop="avatar" label="头像">
           <template slot-scope='scope'>
             <img style='cursor:pointer;border-radius:20px;' :src="scope.row.avatar" width="40" height="40"/>
@@ -162,7 +168,7 @@
         :current-page='pageCurrent'
         :pager-count='pagerCount'
         layout="total, prev, pager, next, sizes, jumper"
-        :total="tableData.length">
+        :total="total">
       </el-pagination>
     </el-card>
   </div>
@@ -189,7 +195,7 @@ export default {
         // 传递给柱状图组价数据
         histogramData: {
           dateArr: [],
-          numArr: [],
+          numArr: [0],
         },
         // 传递给环装图组件数据
         ringData: {
@@ -372,8 +378,14 @@ export default {
       alert('导出数据了!')
     },
     // 点击班级信息人数
-    clickPeople() {
-      alert('点击了班级人数')
+    clickPeople(item) {
+      console.log(item)
+      this.sendData.classId = item.classId
+      this.className = item.className
+      this.showSelect = false
+      this.getList()
+      this.barChartsList()
+      this.temperatureStatistics(item.classId, this.startDate[0], this.startDate[1])
     },
     // 选择起始时间
     changeDate() {
