@@ -309,11 +309,12 @@ export default {
       let res = await getApi('temperatureStatistics', objData)
       // console.log(res,'温度统计数据')
       if(res.success) {
-        this.schoolCount = res.result.schoolCount
-        this.totalDiscernCount = res.result.totalDiscernCount
-        this.normalCount = res.result.normalCount
-        this.abnormalCount = res.result.abnormalCount
-        this.liquidfillData.percent = res.result.accountedPercent
+        let { schoolCount, totalDiscernCount, normalCount, abnormalCount, accountedPercent } = res.result
+        this.schoolCount = schoolCount
+        this.totalDiscernCount = totalDiscernCount
+        this.normalCount = normalCount
+        this.abnormalCount = abnormalCount
+        this.liquidfillData.percent = accountedPercent
       }
     },
     // 获取柱状图数据
@@ -346,9 +347,10 @@ export default {
       let res = await getApi('getAccountedPercent', this.sendData)
       // console.log(res,'环状图数据')
       if(res.success) {
-        this.ringData.dataArr[0].value = res.result.normal
-        this.ringData.dataArr[1].value = res.result.lowFever
-        this.ringData.dataArr[2].value = res.result.highFever
+        let { normal, lowFever, highFever} = res.result
+        this.ringData.dataArr[0].value = normal
+        this.ringData.dataArr[1].value = lowFever
+        this.ringData.dataArr[2].value = highFever
       }
     },
     // 获取体温异常表格数据
@@ -367,10 +369,11 @@ export default {
       // console.log(res,'体温异常表格数据')
       this.loading = false
       if(res.success) {
-        this.tableData = res.result.records
-        this.total = res.result.total
-        this.pageSize = res.result.size
-        this.pageCurrent = res.result.current
+        let { records, total, size, current } = res.result
+        this.tableData = records
+        this.total = total
+        this.pageSize = size
+        this.pageCurrent = current
       }
     },
     // 点击导出数据
@@ -380,12 +383,13 @@ export default {
     // 点击班级信息人数
     clickPeople(item) {
       // console.log(item)
-      this.sendData.classId = item.classId
-      this.className = item.className
+      let { classId, className } = item
+      this.sendData.classId = classId
+      this.className = className
       this.showSelect = false
       this.getList()
       this.barChartsList()
-      this.temperatureStatistics(item.classId, this.startDate[0], this.startDate[1])
+      this.temperatureStatistics(classId, this.startDate[0], this.startDate[1])
     },
     // 选择起始时间
     changeDate() {
@@ -397,6 +401,7 @@ export default {
     },
     // 选择年级
     changGrade(val) {
+      let { id, departName } = val
       this.classDatas = []
       this.selectClass = ''
       // 判断是否选择了全部
@@ -410,19 +415,20 @@ export default {
         // 选择完年级出现对应的班级
         if(this.gradeDatas.length != null) {
           for(let i = 0;i < this.gradeDatas.length;i++) {
-            if(val.id === this.gradeDatas[i].id) {
+            if(id === this.gradeDatas[i].id) {
               if(this.gradeDatas[i].children != null) {
                 this.classDatas = this.gradeDatas[i].children
               }
             }
           }
         }
-        this.gradeName = val.departName
+        this.gradeName = departName
       }
       // console.log(this.sendData,'需要发送请求的数据')
     },
     // 选择班级
     changeClass(val) {
+      let { id, departName } = val
       // 判断是否选择全部
       if(val === 'all') {
         this.sendData.classId = []
@@ -432,8 +438,8 @@ export default {
         this.sendData.classId = this.sendData.classId.join(',')
         this.className = this.gradeName
       }else {
-        this.sendData.classId = val.id
-        this.className = val.departName
+        this.sendData.classId = id
+        this.className = departName
       }
       // console.log(this.sendData,'需要发送请求的数据')
       this.getList()
@@ -454,13 +460,14 @@ export default {
           idImg: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
           classId: '2341123'
         }
-        this.pushSetUp(obj.personId, obj.name, obj.idImg, obj.classId)
+        let { personId, name, idImg, classId } = obj
+        this.pushSetUp(personId, name, idImg, classId)
       }else if(this.input == '王超'){
         this.peoples = [
-          {name: '王超', passengerCode: '22165'},
-          {name: '王超', passengerCode: '22104'},
-          {name: '王超', passengerCode: '24534'},
-          {name: '王超', passengerCode: '21231'},
+          {name: '王超', passengerCode: '22165', personId: '165324', classId: '65aagq4f2'},
+          {name: '王超', passengerCode: '22104', personId: '16af54', classId: '65aqwwe4f'},
+          {name: '王超', passengerCode: '24534', personId: '165124', classId: '65aqwer4f'},
+          {name: '王超', passengerCode: '21231', personId: '165af4', classId: '65aqwr4f3'},
         ]
         this.peoplesShow = true
       }else {
@@ -481,7 +488,8 @@ export default {
     },
     // 点击搜索重复人员某一项
     clickItem(item) {
-      this.pushSetUp(item.personId, item.name, item.idImg, item.classId)
+      let { personId, name, idImg, classId } = item
+      this.pushSetUp(personId, name, idImg, classId)
     },
     // 跳转到人员温度详情页面设置
     pushSetUp(P, N, I, C) {

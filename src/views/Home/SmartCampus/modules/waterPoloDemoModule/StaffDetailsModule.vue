@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-card class='mycard-top'>
-      <span class='temperature-text' @click='routerGo'>温度统计</span>/<span class='name-text'>{{name}}温度统计</span>
+      <span class='temperature-text' @click='routerGo'>温度统计</span>/<span class='name-text'>{{rowData.name}}温度统计</span>
       <div class='temperature-content'>
         <div class='img-box'>
           <img class='img-style' src="https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg" width="150" height="150"/>
-          <div class='img-text-box'>{{name}}温度情况统计</div>
+          <div class='img-text-box'>{{rowData.name}}温度情况统计</div>
         </div>
         <div class='top-card-box'>
           <div class='top-card one-bgcolor'>
@@ -30,7 +30,7 @@
       </div>
     </el-card>
     <el-card class='mycard-bottom'>
-      <div class='bottom-table-title'>{{name}}异常体温详情</div>
+      <div class='bottom-table-title'>{{rowData.name}}异常体温详情</div>
       <el-table border :header-cell-style="{background:'#e7ecff',color:'#2c2626'}" stripe :data="tableData" style="width: 100%;margin-top:15px;">
         <el-table-column prop="img" label="照片" align='center'>
           <template slot-scope='scope'>
@@ -77,14 +77,14 @@ export default {
            tableData: [], 
            // 当前页
            currentPage: 1,
-           // 传过来的名字
-           name: '',
+           // 传过来的数据
+           rowData: {},
         }
     },
     created() {
         this.getTbaleData()
         // 获取参数
-        this.name = getStore('name')
+        this.rowData = getStore('rowData')
     },
     methods: {
         // 获取表格数据
