@@ -195,16 +195,19 @@ export default {
 }
 // 顶部卡片文本内容盒子
 .text-box {
-  margin-top: 35px;
-  margin-left: 30px;
+  position: relative;
+  top: 50%; /*偏移*/
+  transform: translateY(-50%);
+  margin-left: 13%;
 }
 // 卡片内容标题
 .card-content-title {
   color: #fff;
+  font-size: 0.9vw;
 }
 // 卡片内容文本
 .card-content-text {
-  font-size: 24px;
+  font-size: 1.3vw;
   color: #fff;
 }
 // 头像区域盒子

@@ -560,16 +560,17 @@ export default {
 // 统计卡片内容
 .card-content {
   width: 24%;
-  height: 90%;
+  height: 80%;
   border-radius: 10px;
 }
 // 卡片内容标题
 .card-content-title {
   color: #fff;
+  font-size: 1vw;
 }
 // 卡片内容文本
 .card-content-text {
-  font-size: 30px;
+  font-size: 2vw;
   color: #fff;
 }
 // 顶部第一个盒子背景颜色
@@ -590,8 +591,10 @@ export default {
 }
 // 顶部卡片文本内容盒子
 .text-box {
-  margin-top: 50px;
-  margin-left: 30px;
+  position: relative;
+  top: 50%; /*偏移*/
+  transform: translateY(-50%);
+  margin-left: 13%;
 }
 // 选择搜索盒子
 .select-search-box {
