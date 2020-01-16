@@ -49,8 +49,8 @@ export default {
 }
 // 顶部区域整体样式
 .el-header {
-  padding:0;
-  border-bottom:2px solid #eaeefb;
+  padding: 0;
+  border-bottom: 2px solid #eaeefb;
   background-color: #fff;
 }
 // 侧边区域整体样式

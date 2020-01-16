@@ -282,7 +282,7 @@ export default {
           console.log(data)
           // 跳转到更多页面
           this.$router.push({path:'/home/systemSetup/plateManage/lookPlateMore',query:{
-            palteData:JSON.stringify(data),
+            palteData: JSON.stringify(data),
             title: str,
           }})
         }
@@ -293,27 +293,27 @@ export default {
 <style lang="scss" scoped>
 // 卡片样式
 .mycard {
-    margin:20px 0 10px 0;
-    width:48%;
+    margin: 20px 0 10px 0;
+    width: 48%;
     box-shadow: 5px 5px 5px #888888;
 }
 // 包裹卡片盒子的样式
 .mycard-box {
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }   
 // 板块标题文本样式
 .my-text {
-    font-size:18px;
-    font-weight:bold;
+    font-size: 18px;
+    font-weight: bold;
 }
 // 板块更多文本样式
 .my-more-text {
-  float:right;
-  margin-top:20px;
-  font-size:14px;
-  cursor:pointer;
+  float: right;
+  margin-top: 20px;
+  font-size: 14px;
+  cursor: pointer;
   &:hover {
     color: #1890ff;
   }

@@ -126,7 +126,6 @@ export default {
             }
           }
           this.sendData.orgCode = this.selectBattalionCode
-          console.log(this.selectBattalionCode,'2222222222')
           // 判断是否有训练性质
           if(this.sendData.trainingCategory){
             this.$emit('sendData',this.sendData)

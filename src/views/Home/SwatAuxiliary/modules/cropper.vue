@@ -62,16 +62,16 @@ import { VueCropper } from "vue-cropper";
 export default {
   data() {
     return {
-      //加载效果
-      loading:false,
+      // 加载效果
+      loading: false,
       headImg: "",
-      //剪切图片上传
+      // 剪切图片上传
       crap: false,
       previews: {},
       option: {
         img: "",
-        outputSize: 1, //剪切后的图片质量（0.1-1）
-        full: false, //输出原图比例截图 props名full
+        outputSize: 1, // 剪切后的图片质量（0.1-1）
+        full: false, // 输出原图比例截图 props名full
         outputType: "png",
         canMove: true,
         original: false,
@@ -81,10 +81,10 @@ export default {
         autoCropHeight: 150,
         fixedBox: true
       },
-      fileName: "", //本机文件地址
+      fileName: "", // 本机文件地址
       downImg: "#",
       imgFile: "",
-      uploadImgRelaPath: "", //上传后的图片的地址（不带服务器域名）
+      uploadImgRelaPath: "", // 上传后的图片的地址（不带服务器域名）
     };
   },
   components: {

@@ -75,24 +75,24 @@ export default {
 <style lang="scss" scoped>
 // 卡片样式
 .mycard {
-  margin:30px 30px 0 30px;
+  margin: 30px 30px 0 30px;
 }  
 // 个人资料整体盒子样式
 .myNes-box {
-  margin:10px 10px 0 10px;
+  margin: 10px 10px 0 10px;
   // background-color: red;
 }
 // 头像样式
 .el-avatar {
-  margin-left:100px;
+  margin-left: 100px;
 }
 // 上传区域样式
 .upload-demo {
-  width:300px;
-  margin:15px 0 0 30px;
+  width: 300px;
+  margin: 15px 0 0 30px;
 }
 // 头像区域样式
 .demo-box {
-  display:flex;
+  display: flex;
 }
 </style>

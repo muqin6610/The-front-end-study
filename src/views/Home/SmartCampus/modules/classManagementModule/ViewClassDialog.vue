@@ -111,10 +111,12 @@ export default {
           default: false,
         },
         gradeVal: {
-          type: Boolean,
+          type: String,
+          default: '',
         },
         classVal: {
-          type: Boolean,
+          type: String,
+          default: '',
         }
       }
     },

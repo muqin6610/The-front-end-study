@@ -94,10 +94,11 @@ export default {
         let res = await getApi('statisticalData', null)
         console.log(res,'统计数据')
         if(res.success) {
-          this.viewsData = res.result.viewsData
-          this.messageVolume = res.result.messageVolume
-          this.bookeData = res.result.bookeData
-          this.likes = res.result.likes
+          let { viewsData, messageVolume, bookeData, likes } = res.result
+          this.viewsData = viewsData
+          this.messageVolume = messageVolume
+          this.bookeData = bookeData
+          this.likes = likes
         }
       }
     }

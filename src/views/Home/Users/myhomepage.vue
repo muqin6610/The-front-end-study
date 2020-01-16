@@ -73,7 +73,7 @@ export default {
 }
 // tabs栏样式
 .el-tabs-box {
-  folat:left;
-  height:800px;
+  folat: left;
+  height: 800px;
 }
 </style>

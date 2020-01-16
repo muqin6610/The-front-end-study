@@ -216,7 +216,7 @@ export default {
 <style lang="scss" scoped>
 // 卡片样式
 .mycard {
-  margin: 20px 20px 20px 20px;
+  margin: 20px;
 }
 
 // 表格总样式

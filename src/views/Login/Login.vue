@@ -45,11 +45,11 @@ export default {
     created() {
       // 判断是否选择了记住密码
       if(getStore('checked') === 'true') {
-         let userInfo = getStore('userInfo')
+         let { username, password } = getStore('userInfo')
          this.checked = true
          this.ruleForm = {
-           username: userInfo.username,
-           password: userInfo.password
+           username: username,
+           password: password
          }
       }
     },
@@ -92,26 +92,26 @@ export default {
   width: 300px;
   position:absolute;
   left: 50%;
-  margin-left:-150px;
-  top:200px;
+  margin-left: -150px;
+  top: 200px;
 }
 .loginBox .mybtn {
   width: 100%;
 }
 .loginTitle {
-    wdith:100%;
-    font-size:28px;
-    font-weight:bold;
-    text-align:center;
+    wdith: 100%;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
 }
 /deep/.el-button {
-    background-color:#0D2743;
-    border-color:#0D2743;
+    background-color: #0D2743;
+    border-color: #0D2743;
 }
 /deep/.register-box {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 /deep/.password-box {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 </style>

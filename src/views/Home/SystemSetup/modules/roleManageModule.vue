@@ -100,6 +100,6 @@ export default {
 <style lang="scss" scoped>
 // 标题区域样式
 /deep/ .el-dialog__header {
-    border:1px solid #dcdfe6;
+    border: 1px solid #dcdfe6;
 }  
 </style>

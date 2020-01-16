@@ -116,22 +116,22 @@ export default {
 <style lang="scss" scoped>
 .loginBox {
   width: 360px;
-  position:absolute;
+  position: absolute;
   left: 50%;
-  margin-left:-180px;
-  top:200px;
+  margin-left: -180px;
+  top: 200px;
 }
 .loginBox .mybtn {
   width: 50%;
 }
 .loginTitle {
-    wdith:100%;
-    font-size:28px;
-    font-weight:bold;
-    text-align:center;
+    wdith: 100%;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
 }
 /deep/.el-button {
-    background-color:#0D2743;
-    border-color:#0D2743;
+    background-color: #0D2743;
+    border-color: #0D2743;
 }
 </style>

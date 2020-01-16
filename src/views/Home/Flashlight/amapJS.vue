@@ -544,8 +544,8 @@ export default {
 
 <style lang="scss" scpoed>
 .mybox {
-    margin: 10px 10px 10px 10px;
-    position:relative;
+    margin: 10px;
+    position: relative;
 }
 
 // 地图整体
@@ -563,7 +563,7 @@ export default {
    z-index: 1000; 
    border-top: 0;
    border-right: 0;
-   padding:10px;
+   padding: 10px;
    border: 5px solid #fff;
    animation: glow 100ms ease-out infinite alternate;
    &:hover {
@@ -605,11 +605,11 @@ export default {
 
 // 消息弹窗标题样式
 .messagebox-title-text {
-  text-align:center;
-  color:#488cb5;
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:10px;
+  text-align: center;
+  color: #488cb5;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 // 弹框具体消息标题样式
 .title-text {
@@ -634,7 +634,7 @@ export default {
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
-  width:210px
+  width: 210px
 }
 // 待处理样式
 .dangerBtn {
@@ -646,14 +646,14 @@ export default {
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
-  width:210px
+  width: 210px
 }
 // 按钮盒子
 .button-box {
-  display:flex;
+  display: flex;
   justify-content: space-around;
-  margin-top:10px;
-  width:450px;
+  margin-top: 10px;
+  width: 450px;
   margin-left: 10px;
 }
 // 定位点样式

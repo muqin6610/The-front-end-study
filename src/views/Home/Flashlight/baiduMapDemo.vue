@@ -177,7 +177,7 @@ export default {
 
 <style lang="scss" scoped>
 .mycard {
-  margin: 20px 20px 20px 20px;
+  margin: 20px;
 }
 .map {
   width: 100%;

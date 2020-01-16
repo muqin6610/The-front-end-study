@@ -167,7 +167,7 @@ export default {
 <style lang="scss" scoped>
 // 卡片
 .mycard-box {
-    margin: 10px 10px 10px 10px;
+    margin: 10px;
 }
 // 查询区域
 .inquire-box {

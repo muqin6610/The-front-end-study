@@ -96,16 +96,16 @@ export default {
 <style lang="scss" scoped>
 // tabs区域样式
 .el-tabs-box {
-    margin-top:20px;
+    margin-top: 20px;
 } 
 // tabs样式 
 .el-tabs {
-    margin-left:10px;
-    text-align:center;
+    margin-left: 10px;
+    text-align: center;
 }  
 // 卡片样式
 .mycard {
-  margin:20px 20px 20px 20px;
+  margin: 20px;
 }
 // 头像样式
 .el-avatar {
@@ -120,14 +120,14 @@ export default {
 .data-box {
   float: left;
   margin-left: 40px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 // 具体消息区域样式
 .message-box {
   background-color: #f8f8f8;
-  float:left;
-  margin-top:35px;
-  margin-left:50px;
+  float: left;
+  margin-top: 35px;
+  margin-left: 50px;
 
 }
 // 消息文本颜色
@@ -144,7 +144,7 @@ export default {
 }
 // 具体消息鼠标移入样式
 .content-span:hover {
-  color:#007fff;
-  cursor:pointer;
+  color: #007fff;
+  cursor: pointer;
 }
 </style>

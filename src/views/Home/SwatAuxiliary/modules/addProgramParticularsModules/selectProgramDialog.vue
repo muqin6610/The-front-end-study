@@ -22,18 +22,21 @@
 <script>
 export default {
     props:{
-      sendSelectProgram:{
-        showTransfer:{
-            type:Boolean,
-            defaultL:false,
+      sendSelectProgram: {
+        showTransfer: {
+            type: Boolean,
+            defaultL: false,
         },
-        trainingName:String,
+        trainingName: {
+          type: String,
+          default: '',
+        },
       }  
     },
     data() {
         return {
           selectProgram: [],
-          options:[],
+          options: [],
           //树形选择器数据源
           data: [{
             label: '基础训练',
@@ -152,6 +155,8 @@ export default {
                   {value:3,label:'引体向上'},
                   {value:4,label:'翻轮胎'},
                 ]
+            break;
+           default:
             break;
          }
        },

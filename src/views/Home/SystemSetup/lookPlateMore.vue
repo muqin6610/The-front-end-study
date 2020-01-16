@@ -87,7 +87,7 @@ export default {
 }   
 // 标题样式
 .my-title {
-  font-weight:bold;
-  font-size:20px;
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>

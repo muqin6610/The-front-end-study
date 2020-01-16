@@ -98,7 +98,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 .el-menu-box {
   width:201px;
 }

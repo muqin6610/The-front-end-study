@@ -171,9 +171,11 @@ export default {
         },
         // 新建年级
         newGrade() {
-            this.gradeAndClass.dialog = true
-            this.gradeAndClass.title = '新建年级'
-            this.gradeAndClass.inputNmae = '年级名称'
+            this.gradeAndClass = {
+                dialog: true,
+                title: '新建年级',
+                inputNmae: '年级名称',
+            }
         },
         // 关闭新建年级抽屉
         shutDown() {
@@ -191,16 +193,17 @@ export default {
         },
         // 点击年级
         clickGrade(data, index) {
+            let { departName, id } = data
             // 保存当前选中的年级名称
-            this.gradeTitle = data.departName
+            this.gradeTitle = departName
             // 保存当前选中的年级ID
-            this.gradeID = data.id
+            this.gradeID = id
             // 打开年级显示区域
             this.showGrade = true
 
             // 获取班级
             for(let i = 0;i < this.gradeDatas.length;i++) {
-                if(this.gradeDatas[i].id === data.id) {
+                if(this.gradeDatas[i].id === id) {
                     console.log(this.gradeDatas[i])
                     if(this.gradeDatas[i].children !== null) {
                         this.classDatas = this.gradeDatas[i].children
@@ -226,9 +229,11 @@ export default {
         },
         // 新建班级
         newClass() {
-            this.gradeAndClass.dialog = true
-            this.gradeAndClass.title = '新建班级'
-            this.gradeAndClass.inputNmae = '班级名称'
+            this.gradeAndClass = {
+                dialog: true,
+                title: '新建班级',
+                inputNmae: '班级名称',
+            }
         },
         // 确认新建班级
         determineClass(data) {
@@ -237,15 +242,18 @@ export default {
         },
         // 点击查看班级
         classInformation(data) {
-            this.classObj.classDrawer = true
-            // 年级名称
-            this.classObj.gradeVal = this.gradeTitle
-            // 班级名称
-            this.classObj.classVal = data.departName
-            // 学校名称
-            this.classObj.school = this.schoolData.departName
-            // 班级ID
-            this.classObj.classID = data.id
+            let { departName, id } = data
+            this.classObj = {
+                classDrawer: true,
+                // 年级名称
+                gradeVal: this.gradeTitle,
+                // 班级名称
+                classVal: departName,
+                // 学校名称
+                school: this.schoolData.departName,
+                // 班级ID
+                classID: id,
+            }
         },
         // 点击班级盒子
         clickClassBox(index) {

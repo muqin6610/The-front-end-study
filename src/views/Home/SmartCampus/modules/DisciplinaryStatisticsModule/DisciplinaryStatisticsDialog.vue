@@ -115,19 +115,20 @@ export default {
     },
     methods: {
         init(data) {
-         let day
+         let dayObj
    
          if (data) {
            console.log(data,'data')
-           day = this.$timeDate.getFormat(data)
+           dayObj = this.$timeDate.getFormat(data)
          }else {
-           day = this.$timeDate.getFormat()
+           dayObj = this.$timeDate.getFormat()
          }
-   
-         this.currentDay = day.day
-         this.currentYear = day.year
-         this.currentMonth = day.month
-         this.currentWeek = day.week
+
+         let { day, year, month, week } = dayObj
+         this.currentDay = day
+         this.currentYear = year
+         this.currentMonth = month
+         this.currentWeek = week
    
          if (!this.currentWeek) {
            this.currentWeek = 7

@@ -168,7 +168,7 @@ export default {
 }
 // 主体卡片
 .main-card {
-  margin: 10px 10px 10px 10px;
+  margin: 10px;
 }
 // 表格操作区域
 .operating {

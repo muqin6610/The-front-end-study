@@ -146,55 +146,55 @@ export default {
     VueCropper
   },
     props:{
-      PersonData:{
-        editPersonDialog:{
-          type:Boolean,
-          default:false
+      PersonData: {
+        editPersonDialog: {
+          type: Boolean,
+          default: false
         },
-        rowData:Object,
+        rowData: Object,
       }
     },
     data() {
         return {
-           //加载效果
-           loading:false,
-           //显示裁剪区域
-           showCropper:false,
-           //控制照片上传区域的显示和隐藏
-           uploadLoading:false,
-           //表单
-           formData:{
-             //选中的功能手
-             policeCategory:'',
-             //选中的权限
-             selectedroles:'',
-             //上传照片的地址
-             avatar:'',
-             //是否参训
-             entryTraining:'',
-             //性别
-             sex:null,
-             //选中的职级
-             rankCode:'',
-             //年龄
-             age:'',
-             //警员编号
-             policeCode:'',
-             //姓名
-             realname:'',
-             //警员ID
-             id:'',
+           // 加载效果
+           loading: false,
+           // 显示裁剪区域
+           showCropper: false,
+           // 控制照片上传区域的显示和隐藏
+           uploadLoading: false,
+           // 表单
+           formData: {
+             // 选中的功能手
+             policeCategory: '',
+             // 选中的权限
+             selectedroles: '',
+             // 上传照片的地址
+             avatar: '',
+             // 是否参训
+             entryTraining: '',
+             // 性别
+             sex: null,
+             // 选中的职级
+             rankCode: '',
+             // 年龄
+             age: '',
+             // 警员编号
+             policeCode: '',
+             // 姓名
+             realname: '',
+             // 警员ID
+             id: '',
            },
-          //功能手
-          policeCategory:[],
-           //职级数据
-           ranks:[],
-           //权限数据
-           jurisdictions:[],
-           //字典查询的功能手数据源
-           trainingPoliceCategory:[],
+          // 功能手
+          policeCategory: [],
+           // 职级数据
+           ranks: [],
+           // 权限数据
+           jurisdictions: [],
+           // 字典查询的功能手数据源
+           trainingPoliceCategory: [],
            headImg: "",
-           //剪切图片上传
+           // 剪切图片上传
            crap: false,
            previews: {},
            option: {
@@ -217,16 +217,16 @@ export default {
         }
     },
     created() {
-      //页面打开调用查询职级的方法
+      // 页面打开调用查询职级的方法
       this.getRankInfo()
-      //页面打开调用查询权限角色的方法
+      // 页面打开调用查询权限角色的方法
       this.getRole()
     },
     watch: {
         PersonData:{
           handler: function (newVal, oldVal) {
               console.log(newVal)
-              //先清除之前的数据以本次为准
+              // 先清除之前的数据以本次为准
               if(newVal.editPersonDialog === true){
                 this.formData = {
                   age : newVal.rowData.age,

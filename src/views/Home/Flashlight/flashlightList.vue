@@ -201,7 +201,7 @@ export default {
 <style lang="scss" scoped>
 // 卡片
 .mycard-box {
-    margin: 10px 10px 10px 10px;
+    margin: 10px;
 }
 // 查询区域
 .inquire-box {
@@ -223,8 +223,8 @@ export default {
 }
 // 表格操作区域
 .operating {
-    margin-right:15px;
+    margin-right: 15px;
     cursor: pointer;
-    color:#409eff;
+    color: #409eff;
 }
 </style>

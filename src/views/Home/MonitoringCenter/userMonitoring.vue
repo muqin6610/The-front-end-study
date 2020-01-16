@@ -52,22 +52,22 @@ export default {
 <style lang="scss" scoped>
 // 卡片样式
 .mycard {
-    margin:20px 20px 20px 20px;
+    margin: 20px;
 } 
 // 标题样式
 .title-text {
-  font-weight:bold;
-  font-size:20px;
+  font-weight: bold;
+  font-size: 20px;
 }
 // 包裹图表的盒子
 .mybox {
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 // 图表卡片样式
 .mybox-chart {
-  margin:20px 0 10px 0;
-  width:48%;
+  margin: 20px 0 10px 0;
+  width: 48%;
 }
 </style>

@@ -135,6 +135,6 @@ export default {
 
 <style lang="scss" scoped>
 .mycard {
-    margin: 10px 10px 10px 10px;
+    margin: 10px;
 }
 </style>

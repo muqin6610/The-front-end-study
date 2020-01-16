@@ -221,7 +221,7 @@ export default {
 
 <style lang="scss" scoped>
 .box-card {
-  margin: 10px 10px 10px 10px;
+  margin: 10px;
 }
 // 标题
 .box-card-title {

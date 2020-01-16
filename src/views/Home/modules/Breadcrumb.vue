@@ -30,10 +30,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 // 面包屑区域样式
 .el-breadcrumb-box {
-  float:left;
-  margin:35px 0 0 20px;
+  float: left;
+  margin: 35px 0 0 20px;
 }
 </style>

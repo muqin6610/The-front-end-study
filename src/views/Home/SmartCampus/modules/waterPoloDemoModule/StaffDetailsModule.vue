@@ -162,7 +162,7 @@ export default {
 .temperature-text {
   font-weight: bold;
   color: #7d7d7d;
-  cursor:pointer;
+  cursor: pointer;
 }
 // 温度内容盒子
 .temperature-content {

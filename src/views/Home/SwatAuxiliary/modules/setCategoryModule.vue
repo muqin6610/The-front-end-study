@@ -40,7 +40,7 @@
 export default {
     props: {
         showAddCategory: {
-            type:Boolean,
+            type: Boolean,
             default: false,
         }
     },

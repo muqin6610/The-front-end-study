@@ -81,7 +81,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 /**考核成绩输入框的文字描述 */
   .myform {
     padding-left:25px;

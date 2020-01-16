@@ -104,20 +104,20 @@ export default {
   line-height: 60px;
   font-size: 18px;
   width: 200px;
-  padding-left:20px;
-  box-sizing:border-box;
-  float:left;
+  padding-left: 20px;
+  box-sizing: border-box;
+  float: left;
 }
 // 用户区域
 .exit-user {
-  float:right;
-  width:150px;
-  margin-top:10px;
-  margin-right:30px;
+  float: right;
+  width: 150px;
+  margin-top: 10px;
+  margin-right: 30px;
 }
 // 用户区域文本
 .exit-user-text {
-  margin-left:15px;
+  margin-left: 15px;
 }
 // 移入通知图标样式
 .el-icon-message-solid:hover {
@@ -125,30 +125,30 @@ export default {
 }
 // 通知图标样式
 .el-icon-message-solid {
-  font-size:24px;
-  cursor:pointer;
+  font-size: 24px;
+  cursor: pointer;
 }
 // 通知图标区域样式
 .el-icon-message-solid-box {
-  width:40px;
-  float:left;
-  margin-top:15px;
+  width: 40px;
+  float: left;
+  margin-top: 15px;
 }
 // 头像区域样式
 .el-avatar-box {
-  width:80px;
-  margin-left:15px;
-  float:right;
+  width: 80px;
+  margin-left: 15px;
+  float: right;
 }
 // 头像区域样式
 .left-el-avatar {
-  float:left;
+  float: left;
 }
 // 头像更多区域样式
 .detailsUser {
-  cursor:pointer;
-  height:40px;
-  line-height:40px;
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
 }
 // 鼠标移入头像更多区域样式
 .detailsUser:hover {
