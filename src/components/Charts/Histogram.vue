@@ -96,7 +96,11 @@ export default {
                    },
                ]
            });
-           window.addEventListener("resize", () => { histogram.resize(); })
+           window.addEventListener("resize", () => { 
+               if(this.$route.path === '/home/smartCampus/waterPoloDemo') {
+                 histogram.resize();
+               } 
+            })
        }
     },
 }

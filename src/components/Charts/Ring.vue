@@ -92,7 +92,11 @@ export default {
           }
         ]
       });
-      window.addEventListener("resize", () => { ring.resize(); })
+      window.addEventListener("resize", () => { 
+         if(this.$route.path === '/home/smartCampus/waterPoloDemo') {
+           ring.resize();
+         } 
+      })
     }
   }
 };

@@ -113,7 +113,11 @@ export default {
                 }],
                 // backgroundColor: 'rgba(255,0,0,0.1)' // 容器背景颜色
            })
-           window.addEventListener("resize", () => { liquid.resize(); })
+           window.addEventListener("resize", () => { 
+               if(this.$route.path === '/home/smartCampus/waterPoloDemo') {
+                 liquid.resize();
+               } 
+            })
        }
     },
 }
