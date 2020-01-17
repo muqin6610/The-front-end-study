@@ -24,6 +24,7 @@
 
 <script>
 import DisciplinaryRuleDrawer from './modules/DisciplinaryRuleModule/DisciplinaryRuleDrawer'
+import { getApi } from '@/api/api.js'
 
 export default {
     components: {
@@ -32,12 +33,21 @@ export default {
     data() {
         return {
            DisciplinaryRuleShow: false,
-           tableData: [
-               {rule:'晚归',time:'23:00:00-24:00:00'},
-           ] 
+           tableData: [] 
         }
     },
+    created() {
+        // 获取违纪规则数据
+        this.getDisciplinaryRule()
+    },
     methods: {
+        // 获取违纪规则数据
+        async getDisciplinaryRule() {
+            let res = await getApi('getDisciplinaryRule', null)
+            if(res.success) {
+                this.tableData = res.result
+            }
+        },
         // 点击新增规则
         addRule() {
             this.DisciplinaryRuleShow = true
