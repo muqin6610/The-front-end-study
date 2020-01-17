@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { getApi } from '@/api/api.js'
+
 export default {                                                                                                                                                                                         
     props: {
       statisticsObj: {
@@ -85,33 +87,32 @@ export default {
             currentWeek: null,
             weeks: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
             days: [],
-            lateReturn: [
-              {month: 1, time: '22:30'},
-              {month: 5, time: '23:30'},
-              {month: 9, time: '23:30'},
-              {month: 13, time: '22:30'},
-              {month: 15, time: '23:30'},
-            ],
+            // 晚归数据
+            lateReturn: [],
+            // 环状图数据
             chartData: {
               columns: ['类型', '天数'],
               rows: [
-                { '类型': '晚归', '天数': null },
-                { '类型': '正常', '天数': 13 },
+                { '类型': '晚归', '天数': 0 },
+                { '类型': '正常', '天数': 0 },
               ]
             }
         }
     },
     created() {
-        
     },
     watch: {
         statisticsObj: {
             handler(newVal, oldVal) {
               console.log(newVal)
-              if(newVal.statisticsShow === true) this.init(newVal.date)
+              if(newVal.statisticsShow === true) {
+                this.init(newVal.date)
+                this.ringData()
+                this.getLateReturn()
+              }
             },
             deep: true
-        }
+        },
     },
     methods: {
         init(data) {
@@ -144,8 +145,6 @@ export default {
              day: d
            });
          }
-
-         this.chartData.rows[0].天数 = this.lateReturn.length
        }, 
        //其他月加class名'other'
        chooseClass(day) {
@@ -175,6 +174,21 @@ export default {
        chooseStyle(key) {
          if (key === 5 || key === 6) return "font-weight: bold"
        },
+       // 获取环状图数据
+       async ringData() {
+         let res = await getApi('ringData', null)
+         if(res.success) {
+           this.chartData.rows[0].天数 = res.result.lateReturn
+           this.chartData.rows[1].天数 = res.result.normal
+         }
+       },
+       // 获取晚归数据
+       async getLateReturn() {
+         let res = await getApi('getLateReturn', null)
+         if(res.success) {
+           this.lateReturn = res.result
+         }
+       }
     },
 }
 </script>

@@ -12,7 +12,7 @@
         <span style='margin-right: 20px;margin-left:20px;'>班级</span>
         <el-select v-model="selectClass" placeholder="请选择班级">
           <el-option
-            v-for="item in options"
+            v-for="item in classDatas"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -72,6 +72,7 @@
 import DisciplinaryStatisticsDialog from './modules/DisciplinaryStatisticsModule/DisciplinaryStatisticsDialog'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
+import { getApi } from '@/api/api.js'
 
 export default {
     components: {
@@ -88,11 +89,7 @@ export default {
             // 选择的班级
             selectClass: '',
             // 班级数据源
-            options: [
-              {label:'初一(1)',value:'1'},
-              {label:'初一(2)',value:'2'},
-              {label:'初一(3)',value:'3 '},
-            ],
+            classDatas: [],
             // 传递给弹出框
             statisticsObj: {
               statisticsShow: false,
@@ -105,7 +102,7 @@ export default {
         }
     },
     created() {
-      
+      this.getClassData()
     },
     watch:{
       selectDate(val,oldVal){
@@ -128,39 +125,22 @@ export default {
       }
     },
     methods: {
+        // 获取班级
+        async getClassData() {
+          let res = await getApi('getClassData', null)
+          console.log(res)
+          if(res.success) {
+            this.classDatas = res.result
+          }
+        },
         // 获取人员
-        getPersonnel() {
+        async getPersonnel() {
           this.tableData = []
-          this.tableData = [
-            {
-              img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
-              name: '小王',
-              className: '初一一班',
-              schoolName: '前端中学',
-              time: '20',
-            },
-            {
-              img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
-              name: '小夏',
-              className: '初一二班',
-              schoolName: '前端中学',
-              time: '30',
-            },
-            {
-              img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
-              name: '小瓜',
-              className: '初一三班',
-              schoolName: '前端中学',
-              time: '15',
-            },
-            {
-              img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
-              name: '小许',
-              className: '初一四班',
-              schoolName: '前端中学',
-              time: '30',
-            },
-          ]
+          let res = await getApi('getPersonnel', null)
+          console.log(res)
+          if(res.success) {
+            this.tableData = res.result
+          }
         },
         // 搜索
         clickSearch() {
