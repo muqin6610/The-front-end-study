@@ -35,6 +35,7 @@
 
 <script>
 import BlacklistDrawer from './modules/blacklistModule/blacklistDrawer'
+import { getApi } from '@/api/api.js'
 
 export default {
     components: {
@@ -44,17 +45,21 @@ export default {
         return {
             // 传递给新增黑名单组件
             blacklistDrawer: false,
-            tableData: [
-                {id:'1',img:'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',name:'李三',type:'小混混'},
-                {id:'2',img:'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',name:'王五',type:'其他'},
-                {id:'3',img:'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',name:'徐四',type:'不欢迎人群'},
-            ]
+            tableData: []
         }
     },
     created() {
-        
+        // 获取黑名单数据
+        this.getBlacklist()
     },
     methods: {
+        // 获取黑名单数据
+        async getBlacklist() {
+          let res = await getApi('getBlacklist', null)
+          if(res.success) {
+            this.tableData = res.result
+          }
+        },
         // 点击新增黑名单
         addBlacklist() {
             this.blacklistDrawer = true
