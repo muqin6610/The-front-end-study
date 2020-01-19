@@ -72,6 +72,27 @@ export default {
                       fontSize: 20,
                   },
                },
+               // 设置x轴拖动条
+               dataZoom: {
+                  start: 0,// 默认为0
+                  end:40,// 默认为100
+                  type: 'slider',
+                  show: true,
+                  xAxisIndex: [0],
+                  handleSize: 0,// 滑动条的 左右2个滑动条的大小
+                  height: 14,// 组件高度
+                  left: '10%', // 左边的距离
+                  right: '10%',// 右边的距离
+                  bottom: 20,// 底边的距离
+                  borderColor: "#ffffff",
+                  fillerColor: '#cdcdcd',
+                  borderRadius: 5,
+                  backgroundColor: '#f0f2f5',// 两边未选中的滑动条区域的颜色
+                  showDataShadow: false,// 是否显示数据阴影 默认auto
+                  showDetail: false,// 即拖拽时候是否显示详细数值信息 默认true
+                  realtime: true, // 是否实时更新
+                  filterMode: 'filter',
+                },
                // 数据
                series: [
                    {

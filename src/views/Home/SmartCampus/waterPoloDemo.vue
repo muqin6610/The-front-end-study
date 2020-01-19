@@ -331,6 +331,7 @@ export default {
           }
         }else {
           this.histogramData.numArr.push(0)
+          this.histogramData.dateArr.push('')
         }
       }
     },
