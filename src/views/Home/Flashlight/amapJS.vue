@@ -271,7 +271,6 @@ export default {
     }
   },
   mounted () {
-    // 开启地图初始化
     this.init()
   },
   created() {
@@ -280,7 +279,6 @@ export default {
   methods: {
     // 初始化高德地图
     init() {
-      // 实例化地图
       let map = new AMap.Map('container', {
         resizeEnable: true,
         zoom: this.zoom,
@@ -475,7 +473,6 @@ export default {
        
       // 鼠标移入定位点
       function markerClick(e) {
-        console.log(e,'移入的定位点')
         // 弹窗信息
         infoWindow.setContent(e.target.content)
         // 弹窗位置
@@ -491,21 +488,17 @@ export default {
 		   	throw alert("对不起，您的浏览器不支持")
          return false
 		   }
-       console.log(value,'报警提示语音文字')
        let utterThis = new window.SpeechSynthesisUtterance(value)
        window.speechSynthesis.speak(utterThis)
      },
      // 点击弹框按钮
      clickButton(e) {
-       console.log(e, 'e')
        // 通过类名判断点击的具体是哪个按钮
        if(e.target.className === 'successBtn') {
-         console.log(e.target.innerHTML)
          this.dealImmediately = '已处理'
          this.showInformation = false
          this.init()
        }else if(e.target.className === 'dangerBtn') {
-         console.log(e.target.innerHTML)
          this.pending = '已处理'
          this.showInformation = false
          this.init()
@@ -529,11 +522,9 @@ export default {
            this.devices[i] = window.getMessage
            // 设置报警点标识
            this.devices[i].status = 'CTP'
-           console.log(this.devices,'xxxxxx')
            // 设置按钮文本
            this.dealImmediately = '马上处理'
            this.pending = '待处理'
-           // 初始化地图
            this.init()
          }
        }
@@ -542,7 +533,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 .mybox {
     margin: 10px;
     position: relative;

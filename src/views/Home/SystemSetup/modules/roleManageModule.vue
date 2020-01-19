@@ -81,16 +81,12 @@ export default {
     methods: {
         // 取消
         cancelTheReset(){
-          // 传值给父组件关闭弹出界面
-          this.$emit('colseDialog', false)
-          // 重置表单
+          this.$emit('colseDialog')
           this.$refs.form.resetFields()
         },
         // 确定
         addDialog(formName) {
-            //传值给父组件提交数据
-            this.$emit('addUserData', this.form)
-            // 重置表单
+            this.$emit('colseDialog', this.form)
             this.$refs.ruleForm.resetFields()
         },
     },

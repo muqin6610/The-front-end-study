@@ -223,24 +223,16 @@ export default {
     methods: {
         // 取消
         cancelTheReset(){
-          // 传值给父组件关闭弹出界面
           this.$emit('colseDialog')
-          // 重置表单
           this.$refs.form.resetFields()
-          // 清除裁剪框数据
           this.option.img = ''
-          // 隐藏裁剪区域
           this.showCropper = true
         },
         // 确定
         addDialog(formName) {
-            //传值给父组件提交数据
             this.$emit('colseDialog', this.form)
-            // 重置表单
             this.$refs.form.resetFields()
-            // 清除裁剪框数据
             this.option.img = ''
-            // 隐藏裁剪区域
             this.showCropper = true
         },
         submitUpload(file) {
@@ -310,9 +302,7 @@ export default {
           console.log("finish");
           let _this = this;
           let form = new FormData();
-          // 输出
           if (type === "blob") {
-            // 打开加载特效
             this.loading = true
             this.$refs.cropper.getCropBlob(data => {
               let img = window.URL.createObjectURL(data);
@@ -334,12 +324,10 @@ export default {
                     this.form.avatar = res.message
                     this.showCropper = false
                   }
-                  // 关闭加载特效
                   this.loading = false
                 }).catch((err) => {
                   console.log(err,'错误!!!!!')
                   this.$message.error(err,'上传头像失败,请刷新重试!')
-                  // 关闭加载特效
                   this.loading = false
                 })
             });
@@ -362,7 +350,6 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(async () => {
-            //打开裁剪区域
              this.showCropper = true
           }).catch(() => {
             Message({
@@ -374,9 +361,7 @@ export default {
         //取消选择裁剪
         cancelUpload(){
           if(this.option.img){
-            //清除裁剪框数据
             this.option.img = ''
-            //隐藏裁剪区域
             this.showCropper = true
           }else {
             this.$message.warning('请先选取图片!')

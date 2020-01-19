@@ -94,7 +94,6 @@ export default {
         },
         // 选择表格
         handleSelectionChange(val) {
-          // 清除旧值以本次为准
           this.multipleSelection = []
           // 添加选中的学生id到数组
           for (let i = 0; i < val.length; i++) {

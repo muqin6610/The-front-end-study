@@ -31,9 +31,11 @@ export default {
             },
             title: {
                 type: String,
+                default: '',
             },
             inputNmae: {
                 type: String,
+                default: '',
             }
         }
     },
@@ -51,9 +53,8 @@ export default {
         }
         return {
            form: {
-              gradeClassName: '',
-            }, 
-           // 自定义验证
+             gradeClassName: '',
+           }, 
            rules: {
             gradeClassName: [
               { required: true, validator: validateGradeClass, trigger: 'blur' }
@@ -70,7 +71,6 @@ export default {
         },
         // 确定
         determine(form) {
-            // 表单验证
             this.$refs[form].validate((valid) => {
               if (valid) {
                 let data = this.form.gradeClassName
@@ -79,8 +79,6 @@ export default {
                 }else {
                     this.$emit('determineClass', data)
                 }
-                
-                // 重置表单
                 this.$refs.form.resetFields()
               } else {
                 console.log('error submit!!')

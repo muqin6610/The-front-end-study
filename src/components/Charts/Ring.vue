@@ -27,13 +27,11 @@ export default {
   },
   created() {},
   mounted() {
-    // 在这个生命周期中初始化
-    this.init();
+    this.init()
   },
   methods: {
-    init() {// 方法
+    init() {
       let that = this
-      // 实例化echarts对象
       let ring = this.$echarts.init(document.getElementById("ring"));
       // 绘制图表
       ring.setOption({
@@ -57,21 +55,21 @@ export default {
           // 提示文本格式化设置
           formatter: function(name) {
               let data = that.ringData.dataArr
-              let total = 0;
-              let tarValue;
+              let total = 0
+              let tarValue
               for (let i = 0, l = data.length; i < l; i++) {
-                  total += data[i].value;
+                  total += data[i].value
                   if (data[i].name == name) {
-                      tarValue = data[i].value;
+                      tarValue = data[i].value
                   }
               }
               let p
               if(tarValue != 0) {
-                p = (tarValue / total * 100).toFixed(2);
+                p = (tarValue / total * 100).toFixed(2)
               }else {
                 p = 0
               }
-              return name + ' ' + ' ' + p + '%';
+              return name + ' ' + ' ' + p + '%'
           },
         },
         series: [
@@ -94,7 +92,7 @@ export default {
       });
       window.addEventListener("resize", () => { 
          if(this.$route.path === '/home/smartCampus/waterPoloDemo') {
-           ring.resize();
+           ring.resize()
          } 
       })
     }

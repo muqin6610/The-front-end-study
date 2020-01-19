@@ -75,7 +75,6 @@ export default {
               let res = await deleteAction(this.url.deleteBatch,{ids:ids})
               if(res.success){
                 this.$message.success('删除成功')
-                //删除成功重新请求刷新数据
                 this.getPliceUserList()
               }else {
                 this.$message.error('删除失败')
@@ -99,7 +98,6 @@ export default {
             let res = await httpDelete(this.url.delete,{id:id})
             if(res.success){
               this.$message.success('删除成功')
-              //删除成功重新请求刷新数据
               this.getPliceUserList()
             }else {
               this.$message.error('删除失败')
@@ -119,7 +117,6 @@ export default {
         },
         //表格多选值
         handleSelectionChange(val) {
-          //每次选择人员信息的时候都先清除之前的选中值
            this.multipleSelection = []
            for (let i = 0; i < val.length; i++) {
                if (this.multipleSelection.indexOf(val[i].id) === -1) {

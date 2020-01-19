@@ -69,6 +69,7 @@
 <script>
   import { MessageBox,Message } from 'element-ui'
   import EditPersonDialog from './modules/editPersonDialog/EditPersonDialog.vue'
+  import { getStore, setStore } from '@/utils/storage.js'
 
 
 export default {
@@ -109,12 +110,9 @@ export default {
     watch: {
       //监听路由是否变化
       '$route' (to, from) {
-        //路由发生变化调用获取警员信息的方法
         this.getPliceUserList(this.pageNo)
-        //路由发生变化进行相应的取值赋值等操作
-        let id = localStorage.getItem("id")
-        let depart_name = localStorage.getItem("depart_name")
-        //部队名称
+        let id = getStore("id")
+        let depart_name = getStore("depart_name")
         this.depart_name = depart_name
       },
       //监听到搜索内容
@@ -148,10 +146,8 @@ export default {
     methods: {
       // 获取对应的警员信息
       getPliceUserList(pageNo,pageSize){
-        //获取参数
-        let org_code = localStorage.getItem("org_code")
-        let depart_name = localStorage.getItem("depart_name")
-        //部队名称
+        let org_code = getStore("org_code")
+        let depart_name = getStore("depart_name")
         this.depart_name = depart_name
 
         this.tableData = [
@@ -178,19 +174,17 @@ export default {
       //页码改变
       currentChange(val){
         this.pageNo = val
-        //查询对应页码的数据
         this.getPliceUserList(this.pageNo)
       },
       //点击添加警员,跳转到新增警员页面
       addFuzz(){
-        //获取参数
-        let departId = localStorage.getItem("departId")
-        localStorage.setItem("departId", departId)
+
+        let departId = getStore("departId")
+        setStore("departId", departId)
         this.$router.push('/home/swatAuxiliary/addFuzz')
       },
       //点击编辑按钮获取id对应的角色权限,并弹出编辑框
       editPerson(row){
-        //给子组件传值
         this.PersonData.rowData = row
         this.PersonData.editPersonDialog = true
       },
@@ -204,15 +198,12 @@ export default {
       },
       //表格多选值
       handleSelectionChange(val) {
-        // console.log("人员信息val-",val)
-        //每次选择人员信息的时候都先清除之前的选中值
          this.multipleSelection = []
          for (let i = 0; i < val.length; i++) {
              if (this.multipleSelection.indexOf(val[i].userId) === -1) {
                  this.multipleSelection.push(val[i].userId)
              }
          }
-        // console.log("人员信息val--人员选中-",this.multipleSelection)
       },
       //点击删除按钮
        deletePerson(userId){
@@ -237,7 +228,6 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(async () => {
-            //将数组转为字符串用逗号隔开
             let userId = this.multipleSelection.join(',')
 
           }).catch(() => {

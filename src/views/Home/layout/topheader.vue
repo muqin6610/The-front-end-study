@@ -80,9 +80,7 @@ export default {
                 type: "success",
                 message: "退出成功!"
               });
-              //退出时清除token
               clearStore("token")
-              //跳转到登录页
               this.$router.push({ name: "login" })
             }).catch(() => {
               this.$message({

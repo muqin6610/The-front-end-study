@@ -85,14 +85,12 @@ export default {
         }
     },
     created() {
-      // 获取统计数据
       this.getStatisticalData()
     },
     methods: {
       // 获取统计数据
       async getStatisticalData() {
         let res = await getApi('statisticalData', null)
-        console.log(res,'统计数据')
         if(res.success) {
           let { viewsData, messageVolume, bookeData, likes } = res.result
           this.viewsData = viewsData

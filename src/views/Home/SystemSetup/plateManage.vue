@@ -279,8 +279,6 @@ export default {
     methods: {
         // 查看更多
         lookMore(data, str) {
-          console.log(data)
-          // 跳转到更多页面
           this.$router.push({path:'/home/systemSetup/plateManage/lookPlateMore',query:{
             palteData: JSON.stringify(data),
             title: str,

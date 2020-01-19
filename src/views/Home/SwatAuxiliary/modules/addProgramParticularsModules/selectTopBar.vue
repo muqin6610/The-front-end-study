@@ -85,13 +85,11 @@ export default {
         }
     },
     created() {
-       // 页面打开获取角色对应的部队数据
        this.getDepartByParentId()
     },
     watch: {
       // 监听路由是否变化
       '$route' (to, from) {
-        // 路由发生变化调用获取角色对应的部队数据
         this.getDepartByParentId()
       },
       // 监控父组件传值有无变化
@@ -99,7 +97,6 @@ export default {
         handler(newVal, oldVal) {
             console.log(oldVal,newVal,'父组件点击+时段')
             if(oldVal !== newVal){
-              // 重置顶部栏
               this.selectBattalionCode = '',
               this.selectSquadronCode = '',
               this.selectSquadCode = '',
@@ -113,10 +110,8 @@ export default {
       // 监听选择大队
       selectBattalionCode(newVal,oldVal) {
         if(oldVal != newVal) {
-          // 选择大队,中队分队默认为全部
           this.selectSquadronCode = 'all'
           this.selectSquadCode = 'all'
-          // 清除旧的中队分队数据源,以本次为准
           this.Squadron = []  
           this.Squad = []
           // 获取中队数据
@@ -137,7 +132,6 @@ export default {
         if(oldVal != newVal && newVal != 'all') {
           // 选择中队,分队默认为全部
           this.selectSquadCode = 'all'
-          // 清除旧的分队数据源,以本次为准 
           this.Squad = []
           // 判断中队是否选择的全部
           if(this.selectSquadronCode === 'all'){

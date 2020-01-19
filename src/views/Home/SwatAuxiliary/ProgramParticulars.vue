@@ -101,9 +101,7 @@ data() {
       }
     },
     created() {
-      //调用获取传过来的对应考核计划数据数据的方法
       this.getParticulars()
-      // 初始化日历
       this.initData()
       // 设置日历默认时间
       let year = this.$timeDate.getFormat().year
@@ -136,7 +134,6 @@ data() {
        getLunarCalendar(year,month,day) {
          // 调用农历转化方法获取农历日期:IDayCn和节气:Term
          let data = this.$calendar.solar2lunar(year, month, day)
-        //  console.log(data,'公历转农历返回的数据')
          if(!data.festival && !data.lunarFestival && !data.Term) {// 都没有则返回农历日期
            return data.IDayCn
          }
@@ -177,24 +174,19 @@ data() {
        },
       //获取传过来的对应考核计划数据
       getParticulars() {
-          //对应考核计划数据
           let recordData = getStore("recordData")
-          //获取计划名称
           this.trainingName = recordData.key
-          // 获取计划详情
           this.getProgramDetails(recordData.id)
        },
        // 获取训练计划详情
        async getProgramDetails(id) {
          let res = await getApi('programDetails', {id: id})
-         console.log(res, '训练计划详情')
          if(res.success) {
            this.programDetails = res.result
          }
        },
       //点击返回
       abrogate(){
-        //返回上级页面
         this.$router.go(-1)
       },
       // 初始化日历
