@@ -54,6 +54,7 @@ export default {
                  axisLabel: {
                       color: '#282c34',
                       fontSize: 20,
+                      interval: 0, // 坐标轴刻度标签的显示间隔
                   },
                },
                // Y轴
@@ -83,7 +84,7 @@ export default {
                   height: 14,// 组件高度
                   left: '10%', // 左边的距离
                   right: '10%',// 右边的距离
-                  bottom: 20,// 底边的距离
+                  bottom: 10,// 底边的距离
                   borderColor: "#ffffff",
                   fillerColor: '#cdcdcd',
                   borderRadius: 5,
