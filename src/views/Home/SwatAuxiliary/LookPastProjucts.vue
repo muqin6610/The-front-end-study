@@ -41,7 +41,6 @@ export default {
     methods: {
         //点击返回
         cancelReturn(){
-            //返回上一级页面
             this.$router.go(-1)
         }
     },

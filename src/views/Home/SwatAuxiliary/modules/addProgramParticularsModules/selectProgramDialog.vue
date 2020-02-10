@@ -98,7 +98,6 @@ export default {
     },
     methods: {
        handleNodeClick(data) {
-         console.log(data)
          switch(data.label) {
            case '习近平重要讲话' :
             this.options = [

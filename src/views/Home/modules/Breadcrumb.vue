@@ -15,7 +15,6 @@ export default {
         }
     },
     created() {
-      //调用获取面包屑数据
       this.getBreadcrumb()
     },
     methods: {

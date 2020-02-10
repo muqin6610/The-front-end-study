@@ -133,7 +133,6 @@ export default {
         }
     },
     created() {
-        // 获取报警列表数据
         this.getAlarmList()
     },
     methods: {

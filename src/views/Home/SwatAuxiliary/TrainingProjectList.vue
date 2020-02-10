@@ -108,7 +108,7 @@
 </template>
 
 <script>
-
+import { setStore } from '@/utils/storage.js'
 
   export default {
     data () {
@@ -179,18 +179,12 @@
      },
      //编辑
      editProjectList(record){
-       sessionStorage.setItem("record", JSON.stringify(record))
-       //跳转到编辑页面
+       setStore("record", record)
        this.$router.push({name:'editProjectList'})
      },
       // 搜索按回车
       submitForm() {
          this.searchQuery()
-      },
-      //查看历史项目
-      lookPastProjucts(){
-        //跳转到历史项目页面
-        this.$router.push('/judged/lookPastProjucts')
       },
       // 新增项目
       addProject() {
@@ -198,7 +192,6 @@
       },
       //查看历史项目
       lookPastProjucts(){
-        //跳转到历史项目页面
         this.$router.push('/home/swatAuxiliary/lookPastProjucts')
       },
       // 列入历史项目

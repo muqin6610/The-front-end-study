@@ -81,7 +81,6 @@ export default {
         }
     },
     created () {
-      //页面打开调用获取所有队伍数据的方法
       this.getQueryIdTreeList();
     },
     computed:{
@@ -90,7 +89,6 @@ export default {
     watch: {
       //监听路由是否变化
       '$route' (to, from) {
-        //路由发生变化调用获取所有队伍数据的方法
         this.getQueryIdTreeList()
       },
       // 监听选择职级
@@ -123,7 +121,6 @@ export default {
     methods: {
        //获取所有队伍的数据
       getQueryIdTreeList(){
-        // 所有部队数据
         this.detachment = [
           {id:'0',departName:'第一支队',children: [
             {id:'1',departName:'第一大队',children:[
@@ -189,19 +186,14 @@ export default {
       addDepartList(formName){
          this.$refs[formName].validate(async  (valid) => {
           if (valid) {
-            // for(let i = 0;i < this.affiliation.length;i++){}
-            // 提交数据
             let res = await httpAction(this.url.add,this.ruleForm,'post')
             if(res.success){
               this.$message.success(res.message)
-              //跳转到部队管理页面
               this.$router.push('/swatUnit/unit')
-              //重置form表单和单选框
               this.$refs.ruleForm.resetFields()
               this.selectTroopsRank = ''
               this.picUrl = ''
             }else {
-              //失败提示
              this.$message.error(res.message)
            }
           } 
@@ -210,7 +202,6 @@ export default {
       //点击取消重置数据并返回上级页面
       abrogate(){
         this.$router.go(-1)
-        //重置form表单和单选框
         this.$refs.ruleForm.resetFields()
         this.selectTroopsRank = ''
         this.picUrl = ''

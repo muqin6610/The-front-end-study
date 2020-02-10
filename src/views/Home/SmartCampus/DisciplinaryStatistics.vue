@@ -128,7 +128,6 @@ export default {
         // 获取班级
         async getClassData() {
           let res = await getApi('getClassData', null)
-          console.log(res)
           if(res.success) {
             this.classDatas = res.result
           }
@@ -137,7 +136,6 @@ export default {
         async getPersonnel() {
           this.tableData = []
           let res = await getApi('getPersonnel', null)
-          console.log(res)
           if(res.success) {
             this.tableData = res.result
           }

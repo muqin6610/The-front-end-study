@@ -34,7 +34,6 @@ export default {
         }
     },
     created() {
-       // 加载地点数据
        this.getTrainAddrs()
     },
     methods: {
@@ -56,12 +55,10 @@ export default {
        },
        // 地点input获得焦点
        focusIput(){
-         // 清除单选值
          this.trainingAddr = ''
        },
        // 单选地点值发生变化
        changeRadio(){
-         // 清除inut值
          this.inputTrainingAddr = ''
        },
       // 训练地点数据

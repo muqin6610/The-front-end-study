@@ -139,7 +139,8 @@
 
 <script>
   import { MessageBox,Message } from 'element-ui'
-  import { VueCropper } from "vue-cropper";
+  import { VueCropper } from "vue-cropper"
+  import { getStore } from '@/utils/storage.js'
 
 export default {
   components: {
@@ -217,16 +218,12 @@ export default {
         }
     },
     created() {
-      // 页面打开调用查询职级的方法
       this.getRankInfo()
-      // 页面打开调用查询权限角色的方法
       this.getRole()
     },
     watch: {
         PersonData:{
           handler: function (newVal, oldVal) {
-              console.log(newVal)
-              // 先清除之前的数据以本次为准
               if(newVal.editPersonDialog === true){
                 this.formData = {
                   age : newVal.rowData.age,
@@ -258,35 +255,24 @@ export default {
       },
       //点击弹框确定按钮
       editDialog(){
-          //打开加载效果
           this.loading = true
-          //获取参数
           if(this.policeCategory.length){
-             //将功能手用逗号隔开成字符串
             this.formData.policeCategory = this.policeCategory.join(',')
           }else {
             this.formData.policeCategory = this.policeCategory
             return
           }
-          //获取部门id
-          let departId = sessionStorage.getItem("departId")
+          let departId = getStore("departId")
           this.formData.selecteddeparts = departId
-          console.log(this.formData)
-          //传给父组件
           this.$emit('submitEditPerson',this.formData)
-          //关闭加载效果
           this.loading = false
-          //清除裁剪框数据
           this.option.img = ''
-          //隐藏裁剪区域
           this.showCropper = false
       },
     //点击弹框取消按钮
     cancelTheReset(){
         this.$emit('colseEditPerson')
-        //清除裁剪框数据
         this.option.img = ''
-        //隐藏裁剪区域
         this.showCropper = false
     },
     submitUpload(file) {
@@ -402,9 +388,7 @@ export default {
       },
       //取消选择裁剪
       cancelUpload(){
-        //清除裁剪框数据
         this.option.img = ''
-        //隐藏裁剪区域
         this.showCropper = false
       }
   },

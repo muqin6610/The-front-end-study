@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import { MessageBox,Message } from 'element-ui'
+  import { MessageBox, Message } from 'element-ui'
   import TableContainer from './modules/addProgramParticularsModules/selectTopBar.vue'
   import SelectProgramDialog from './modules/addProgramParticularsModules/selectProgramDialog.vue'
   import AddrDialog from './modules/addProgramParticularsModules/addrDialog.vue'
@@ -145,7 +145,6 @@
      }
   },
   created () {
-    // 页面打开获取所有部队数据
     this.getDepartData()
   },
   watch: {
@@ -173,25 +172,24 @@
        },
        // 顶部栏选择完成数据,data:顶部栏选择的部队code和训练性质
        sendData(data){
-         console.log(data,'data')
+         let { orgCode, trainingCategory } = data
          this.sendDatas = {
-           orgCode: data.orgCode,
-           trainingCategory: data.trainingCategory,
+           orgCode: orgCode,
+           trainingCategory: trainingCategory,
          }
          // 获得对应的队伍数据
-         console.log(this.allDepart.children)
          for(let i = this.allDepart.children.length;i--;){
-           if(this.allDepart.children[i].orgCode === data.orgCode){
+           if(this.allDepart.children[i].orgCode === orgCode){
              this.sendDatas.departName = this.allDepart.children[i].departName
            }else {
              if(this.allDepart.children[i].children){
                for(let j = this.allDepart.children[i].children.length;j--;){
-                 if(this.allDepart.children[i].children[j].orgCode === data.orgCode){
+                 if(this.allDepart.children[i].children[j].orgCode === orgCode){
                    this.sendDatas.departName = this.allDepart.children[i].children[j].departName
                  }else {
                    if(this.allDepart.children[i].children[j].children){
                      for(let z = this.allDepart.children[i].children[j].children.length;z--;){
-                       if(this.allDepart.children[i].children[j].children[z].orgCode === data.orgCode){
+                       if(this.allDepart.children[i].children[j].children[z].orgCode === orgCode){
                          this.sendDatas.departName = this.allDepart.children[i].children[j].children[z].departName
                        }
                      }
@@ -201,7 +199,6 @@
              }
            }
          }
-        //  console.log(this.sendDatas,'表格需要的数据')
        },  
       // 选择开始时间点
       slecetStartTime(){
@@ -214,7 +211,6 @@
             this.$message.warning('开始时间不能晚于结束时间!')
             return
           }else if(this.endTime){
-            // 调用获取时段,打开项目按钮的方法
             this.timeDifference(startTime,endTime)
           }
         }else {
@@ -231,15 +227,14 @@
           this.$message.warning('结束时间不能早于开始时间!')
           return
         }else if(this.startTime){
-          // 调用获取时差,时段,打开项目按钮的方法
           this.timeDifference(startTime,endTime)
         }
       },
       // 点击选择项目
       clickSelectProgram(){
         this.sendSelectProgram = {
-          showTransfer:true,
-          trainingName:this.$route.query.date + ' ' + this.$timeDate.dateFormat(this.startTime).hm + '-' + this.$timeDate.dateFormat(this.endTime).hm + '训练项目',
+          showTransfer: true,
+          trainingName: this.$route.query.date + ' ' + this.$timeDate.dateFormat(this.startTime).hm + '-' + this.$timeDate.dateFormat(this.endTime).hm + '训练项目',
         }
       },
       // 点击+时段
@@ -247,7 +242,6 @@
         // 重置所有选项
         this.startTime = ''
         this.endTime = ''
-        // 传值给顶部栏
         this.resetTopBar = !this.resetTopBar
       },
        // 点击地点
@@ -270,14 +264,12 @@
              })
            }
          }
-         console.log(this.tableData,'表格数据')
          // 关闭弹框
          this.sendSelectProgram.showTransfer = false
        },
        // 地点确定或取消,data:选择的地点
        selectAddr(data){
          if(data){
-           console.log(data,'选择的地点')
            for(let i = this.tableData.length;i--;){
              if(this.tableData[i].program === this.clickaddr.program){
                this.tableData[i].addr = data
@@ -288,15 +280,11 @@
        },
        // 页面取消
        cancelReturn(){
-         // 返回上级页面
          this.$router.go(-1)
-         // 重置所有选项
          this.startTime = ''
          this.endTime = ''
          this.tableData = []
-         // 传值给顶部栏
          this.resetTopBar = !this.resetTopBar
-         // 关闭项目选择按钮
          this.selectButtont = true
        },
        // 页面确定提交
@@ -327,13 +315,10 @@
        },
        // 获取时差,时段并打开选择项目按钮
        timeDifference(startTime,endTime){
-         // 获取训练时段
           this.sendDatas.dateTime = this.$route.query.date + " " + startTime + '-' + endTime
-          // 调用计算时间差的方法
           let time = this.$timeDate.getHour(startTime,endTime)
           console.log(time,'时间差')
           this.sendDatas.time = time
-          // 选择完时间段开启选择项目按钮
           this.selectButtont = false
        },
     }

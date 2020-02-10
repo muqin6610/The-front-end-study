@@ -150,6 +150,7 @@
 <script>
   import Cropper from "./modules/cropper.vue"
   import { MessageBox,Message } from 'element-ui'
+  import { getStore } from '@/utils/storage.js'
 
 export default {
   components: {
@@ -228,31 +229,26 @@ export default {
           },
           //功能手
           policeCategory:[],
-          //表单验证
-           rules: {
-            realname: [{ required: true, message: '请输入姓名', trigger: 'blur' },],
-            avatar: [{ required: true, message: '请输上传照片', trigger: 'blur' },],
-            age: [{ required: true,message: '请输入年龄', trigger: 'blur' },],
-            // age: [{ required: true,message: '请选择生日', trigger: 'blur' },],
-            policeCode: [{ required: true,validator: this.validateUsername, trigger: 'blur' },],
-            password: [{ required: true,validator: validatePass, trigger: 'blur' },],
-            confirmpassword: [{ required: true,validator: validatePass2, trigger: 'blur' },],
-            rankCode: [{ required: true, message: '请选择职级', trigger: 'blur' },],
-            sex: [{ required: true, message: '请选择性别', trigger: 'change' },],
-            entryTraining: [{ required: true, message: '请选择是否参训', trigger: 'change' },],
-            selectedroles: [{ required: true, message: '请选择角色权限', trigger: 'change' },],
-            policeCategory: [{ required: true, validator: validateCategory, trigger: 'change' },],
-            },
+          rules: {
+           realname: [{ required: true, message: '请输入姓名', trigger: 'blur' },],
+           avatar: [{ required: true, message: '请输上传照片', trigger: 'blur' },],
+           age: [{ required: true,message: '请输入年龄', trigger: 'blur' },],
+           // age: [{ required: true,message: '请选择生日', trigger: 'blur' },],
+           policeCode: [{ required: true,validator: this.validateUsername, trigger: 'blur' },],
+           password: [{ required: true,validator: validatePass, trigger: 'blur' },],
+           confirmpassword: [{ required: true,validator: validatePass2, trigger: 'blur' },],
+           rankCode: [{ required: true, message: '请选择职级', trigger: 'blur' },],
+           sex: [{ required: true, message: '请选择性别', trigger: 'change' },],
+           entryTraining: [{ required: true, message: '请选择是否参训', trigger: 'change' },],
+           selectedroles: [{ required: true, message: '请选择角色权限', trigger: 'change' },],
+           policeCategory: [{ required: true, validator: validateCategory, trigger: 'change' },],
+          },
         }
     },
     created () {
-      //页面的显示隐藏
       this.showPage = true
-      //隐藏照片显示,开启裁剪区域显示
       this.showCropper = true
-      //页面打开调用查询职级的方法
       this.getRankInfo()
-      //页面打开调用查询权限角色的方法
       this.getRole()
     },
     computed:{
@@ -261,9 +257,7 @@ export default {
     watch: {
       //监听路由是否变化
       '$route' (to, from) {
-        //路由发生变化隐藏照片显示,开启裁剪区域显示
        this.showCropper = true
-       //页面的显示隐藏
        this.showPage = true
       }
     },
@@ -278,11 +272,8 @@ export default {
       },
       //裁剪框传过来的值,data:图片地址,buer:裁剪框显示隐藏的布尔值
       sendFiles(data,buer){
-        //隐藏裁剪区域
         this.showCropper = buer
-        //获取裁剪之后的图片地址
         this.ruleForm.avatar = data
-        console.log(this.ruleForm.avatar,'获取到的图片地址')
       },
       //点击照片显示区域重新打开裁剪区域
       clickImg(){
@@ -302,16 +293,10 @@ export default {
       },
       //点击取消重置数据并返回上级页面
       abrogate(){
-        //返回上一级页面
         this.$router.go(-1)
-        //返回成功重置页面中选中的值
-        //重置form表单
         this.$refs.ruleForm.resetFields()
-        //重置功能手
         this.policeCategory = []
-        //去除裁剪区的照片
         this.showCropper = false
-        //页面的显示隐藏
         this.showPage = false
       },
       //新增警员
@@ -319,22 +304,19 @@ export default {
         this.$refs[formName].validate(async  (valid) => {
           if (valid) {
             if(this.policeCategory.length){
-              //将功能手和角色权限数组用逗号隔开成字符串
               this.ruleForm.policeCategory = this.policeCategory.join(',')
             }else {
               this.$message.warning('功能手不能为空!')
               return
             }
             //获取部门id
-            let departId = sessionStorage.getItem("departId")
+            let departId = getStore("departId")
             this.ruleForm.selecteddeparts = departId
-            console.log(this.ruleForm)
           } 
         })
       },
       //警员编号验证是否重复
       validateUsername(rule, value, callback){
-        console.log(value)
         if(!value){
           callback(new Error('请输入警员编号!'))
         }else{

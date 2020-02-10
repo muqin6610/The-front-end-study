@@ -196,9 +196,7 @@
       },
       //点击取消重置数据并返回上级页面
       abrogate(){
-        //返回上一级页面
         this.$router.go(-1)
-        //返回成功重置页面中选中的值
         this.$refs.ruleForm.resetFields()
       },
     }

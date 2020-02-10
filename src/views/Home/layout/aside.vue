@@ -37,7 +37,6 @@ export default {
         }
     },
     created() {
-        //调用获取菜单栏数据
         this.getAside()
     },
     methods: {

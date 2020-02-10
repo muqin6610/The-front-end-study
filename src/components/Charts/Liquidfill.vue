@@ -31,16 +31,16 @@ export default {
     created() {
     
     },
-    mounted() {// 在这个生命周期中初始化
+    mounted() {
        this.init()
     },
     methods: {
-        init (){// 方法
+        init (){
            let liquid = this.$echarts.init(document.getElementById('liquidFill'));
            liquid.setOption({
                 series: [{
                     type: 'liquidFill',// 类型
-                    data: [this.liquidfillData.percent, this.liquidfillData.percent],//数据是个数组 数组的每一项的值是0-1
+                    data: [this.liquidfillData.percent, this.liquidfillData.percent],// 数据是个数组 数组的每一项的值是0-1
                     outline: {
                         show: true , // 是否显示轮廓 布尔值
                         borderDistance: 3, // 外部轮廓与图表的距离 数字
@@ -115,7 +115,7 @@ export default {
            })
            window.addEventListener("resize", () => { 
                if(this.$route.path === '/home/smartCampus/waterPoloDemo') {
-                 liquid.resize();
+                 liquid.resize()
                } 
             })
        }

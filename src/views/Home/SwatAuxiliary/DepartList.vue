@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { setStore } from '@/utils/storage.js'
 
 export default {
     data() {
@@ -73,23 +74,18 @@ export default {
         }
     },
     created () {
-      //页面打开调用获取队伍数据的方法
       this.getQueryIdTreeList()
     },
     watch: {
       //监听路由是否变化
       '$route' (to, from) {
-        //路由发生变化调用获取所有部队数据的方法
         this.getQueryIdTreeList()
-        //清除数据
         this.selectBattalionValue = ''
         this.selectSquadronValue = ''
       },
       // 监听选择大队
       selectBattalionValue(newVal,oldVal) {
         if(newVal != oldVal) {
-          console.log(this.Battalion)
-          console.log('大队id:' + this.selectBattalionValue)
           this.tableData = []
           this.selectSquadronValue = ''
           for(let i = 0;i < this.Battalion.length;i++){
@@ -141,17 +137,13 @@ export default {
          },
          //点击查看详情
          seeDetails(data){
-           console.log(data)
-           //将ID和队名通过localstorage传给详情页面
-           localStorage.setItem("org_code", data.org_code)
-           localStorage.setItem("departId", data.id)
-           localStorage.setItem("depart_name", data.depart_name)
-           //跳转到人员名单
+           setStore("org_code", data.org_code)
+           setStore("departId", data.id)
+           setStore("depart_name", data.depart_name)
            this.$router.push('/home/swatAuxiliary/listOfPersons')
          },
         //点击新增部队,跳转到新增部队页面
         addDepartList(){
-           //跳转之前清空队伍数据
            this.selectBattalionValue = ''
            this.selectSquadronValue = ''
            this.tableData = []

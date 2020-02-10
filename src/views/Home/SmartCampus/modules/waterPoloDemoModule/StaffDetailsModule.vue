@@ -83,7 +83,6 @@ export default {
     },
     created() {
         this.getTbaleData()
-        // 获取参数
         this.rowData = getStore('rowData')
     },
     methods: {

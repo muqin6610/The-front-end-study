@@ -103,13 +103,11 @@ export default {
         }
     },
     created() {
-        // 获取账号所属学校和班级
         this.loadTree()
     },
     methods: {
-        // 获取账号所属学校和班级
+        // 获取学校和班级
         loadTree(num) {
-           // 学校数据
            this.schoolData = [{
                children: [
                    {
@@ -157,7 +155,6 @@ export default {
            this.gradeDatas = this.schoolData[0].children
            // 判断num是否为1来确定是否为新建班级
            if(num === 1) {
-             // 新建班级，重新获取班级数据
              for(let i = 0;i < this.gradeDatas.length;i++) {
                  if(this.gradeDatas[i].id === this.gradeID) {
                      if(this.gradeDatas[i].children !== null) {
@@ -194,11 +191,8 @@ export default {
         // 点击年级
         clickGrade(data, index) {
             let { departName, id } = data
-            // 保存当前选中的年级名称
             this.gradeTitle = departName
-            // 保存当前选中的年级ID
             this.gradeID = id
-            // 打开年级显示区域
             this.showGrade = true
 
             // 获取班级
@@ -216,7 +210,6 @@ export default {
 
             // 获取所有需要添加类名的元素
             let arr = document.getElementsByClassName("gradeData")
-            // 判断类名的添加和移除
             for(let i = 0;i < arr.length;i++) {
                 if(i === index) {
                     // 给当前点击元素添加类名
@@ -245,13 +238,9 @@ export default {
             let { departName, id } = data
             this.classObj = {
                 classDrawer: true,
-                // 年级名称
                 gradeVal: this.gradeTitle,
-                // 班级名称
                 classVal: departName,
-                // 学校名称
                 school: this.schoolData.departName,
-                // 班级ID
                 classID: id,
             }
         },
@@ -259,7 +248,6 @@ export default {
         clickClassBox(index) {
             // 获取所有需要添加类名的元素
             let arr = document.getElementsByClassName("classBox")
-            // 判断类名的添加和移除
             for(let i = 0;i < arr.length;i++) {
                 if(i === index) {
                     // 给当前点击元素添加类名

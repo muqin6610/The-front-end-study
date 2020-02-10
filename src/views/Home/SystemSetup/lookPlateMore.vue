@@ -67,14 +67,12 @@ export default {
         }
     },
     created() {
-      // 页面打开获取传过来的数据
       this.getPlateData()
     },
     methods: {
         getPlateData() {
           this.plateData = JSON.parse(this.$route.query.palteData)
           this.title = this.$route.query.title
-          console.log(this.plateData)
         }
     },
 }

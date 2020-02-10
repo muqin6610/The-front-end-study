@@ -326,7 +326,6 @@ export default {
     methods: {
         //输入成绩或分数
         blurResult(){
-            //传值给父组件
             this.$emit('sendPartSexAge',this.projectAssessmentCriteriaList)
         },
     },

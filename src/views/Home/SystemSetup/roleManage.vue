@@ -58,7 +58,7 @@
     </el-pagination>
 
     <!--新增角色组件-->
-    <RoleManageModule :showRoleModule='showRoleModule' @colseDialog='colseDialog' @addRoleData='addRoleData'/>
+    <RoleManageModule :showRoleModule='showRoleModule' @colseDialog='colseDialog'/>
   </div>
 </template>
 
@@ -183,14 +183,11 @@ export default {
           this.showRoleModule = true
         },
         // 关闭子组件
-        colseDialog(bur) {
-          this.showRoleModule = bur
-        },
-        // 确定新增用户
-        addRoleData(data) {
-          console.log(data,'新增用户的数据')
-          // 关闭弹框
-          this.showRoleModule =false
+        colseDialog(data) {
+          this.showRoleModule = false
+          if(data) {
+            // 确定新增用户
+          }
         },
         // 点击删除
         deleteUser(id) {
@@ -202,7 +199,6 @@ export default {
             let res = await httpDelete(this.url.delete,{id:id})
             if(res.success){
               this.$message.success('删除成功')
-              //删除成功重新请求刷新数据
               this.getPliceUserList()
             }else {
               this.$message.error('删除失败')
@@ -222,12 +218,10 @@ export default {
               cancelButtonText: '取消',
               type: 'warning'
             }).then(async () => {
-              //将数组转为字符串用逗号隔开
               let ids = this.multipleSelection.join(',')
               let res = await deleteAction(this.url.deleteBatch,{ids:ids})
               if(res.success){
                 this.$message.success('删除成功')
-                //删除成功重新请求刷新数据
                 this.getPliceUserList()
               }else {
                 this.$message.error('删除失败')
@@ -244,14 +238,12 @@ export default {
         },
         //表格多选值
         handleSelectionChange(val) {
-          //每次选择人员信息的时候都先清除之前的选中值
            this.multipleSelection = []
            for (let i = 0; i < val.length; i++) {
                if (this.multipleSelection.indexOf(val[i].id) === -1) {
                    this.multipleSelection.push(val[i].id)
                }
            }
-          console.log("人员选中-",this.multipleSelection)
         },
         //修改角色状态
         chageSwitch(id, state) {

@@ -257,17 +257,11 @@ export default {
     }
   },
   mounted () {
-    // 获取学校和班级数据
     this.loadTree()
-    // 获取温度统计数据
     this.temperatureStatistics()
-    // 获取体温异常表数据
     this.getList()
-    // 获取柱状图数据
     this.barChartsList()
-    // 获取环状图数据
     this.getAccountedPercent()
-    // 获取体温异常班级信息
     this.getPersonWarnCount()
   },
   created() {
@@ -286,7 +280,6 @@ export default {
     // 获取学校和班级信息
     async loadTree() {
       let res = await getApi('loadTree', null)
-      // console.log(res, '学校和班级信息')
       if(res.success) {
         this.schoolData = res.result[0]
         this.gradeDatas = res.result[0].children
@@ -305,9 +298,7 @@ export default {
         startTime: sTime,
         endTime: eTime,
       }
-      // console.log(objData,'发送的温度统计参数')
       let res = await getApi('temperatureStatistics', objData)
-      // console.log(res,'温度统计数据')
       if(res.success) {
         let { schoolCount, totalDiscernCount, normalCount, abnormalCount, accountedPercent } = res.result
         this.schoolCount = schoolCount
@@ -322,7 +313,6 @@ export default {
       this.histogramData.dateArr = []
       this.histogramData.numArr = []
       let res = await getApi('barChartsList', this.sendData)
-      // console.log(res,'柱状图数据')
       if(res.success) {
         if(res.result.length) {
           for(let i = 0;i < res.result.length;i++) {
@@ -331,13 +321,13 @@ export default {
           }
         }else {
           this.histogramData.numArr.push(0)
+          this.histogramData.dateArr.push('')
         }
       }
     },
     // 获取体温异常班级信息
     async getPersonWarnCount() {
       let res = await getApi('getPersonWarnCount', null)
-      // console.log(res,'体温异常班级信息')
       if(res.success) {
         this.classPeoples = res.result
       }
@@ -345,7 +335,6 @@ export default {
     // 获取环状图数据
     async getAccountedPercent() {
       let res = await getApi('getAccountedPercent', this.sendData)
-      // console.log(res,'环状图数据')
       if(res.success) {
         let { normal, lowFever, highFever} = res.result
         this.ringData.dataArr[0].value = normal
@@ -366,7 +355,6 @@ export default {
         url = 'abnormalTemperature'
       }
       let res = await getApi(url, this.sendData)
-      // console.log(res,'体温异常表格数据')
       this.loading = false
       if(res.success) {
         let { records, total, size, current } = res.result
@@ -382,7 +370,6 @@ export default {
     },
     // 点击班级信息人数
     clickPeople(item) {
-      // console.log(item)
       let { classId, className } = item
       this.sendData.classId = classId
       this.className = className
@@ -424,7 +411,6 @@ export default {
         }
         this.gradeName = departName
       }
-      // console.log(this.sendData,'需要发送请求的数据')
     },
     // 选择班级
     changeClass(val) {
@@ -441,7 +427,6 @@ export default {
         this.sendData.classId = id
         this.className = departName
       }
-      // console.log(this.sendData,'需要发送请求的数据')
       this.getList()
       this.barChartsList()
       this.getAccountedPercent()

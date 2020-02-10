@@ -64,7 +64,6 @@ export default {
              type: '',
              faceImg: '',
            },
-           // 表单验证
            rules: {
             realName: [
               { required: true, message: '请输入姓名', trigger: 'blur' }

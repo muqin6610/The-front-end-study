@@ -33,7 +33,6 @@ import { getApi } from '@/api/api.js'
      }
   },
   created () {
-    //页面打开调用获取训练计划清单的数据的方法
     this.listTrainingProgram()
   },
   watch: {
@@ -46,29 +45,23 @@ import { getApi } from '@/api/api.js'
     methods: {
       //点击新建项目计划跳转到新增训练计划页面
       handleAdd(){
-        //跳转到新增训练计划页面
         this.$router.push("/home/swatAuxiliary/trainingProgramAdd")
       },
       //删除
       async deleteData(val){
-        console.log('删除的训练计划id:',val)
-        //声明一个空数组存放ids
         let ids = []
         this.$confirm('你确定要删除吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          //获取ids
           for(let i = 0;i< val.length;i++){
             ids.push(val[i].termValue[0].trainingId)
           }
           ids = ids.join(',')
-          console.log(ids,'要删除得所有id')
           let res = await deleteAction(this.url.deleteBatch,{ids:ids})
           if(res.success){
             this.$message.success(res.message)
-            //删除成功重新请求刷新数据
             this.listTrainingProgram()
           }else {
             this.$message.error(res.message)
@@ -83,14 +76,12 @@ import { getApi } from '@/api/api.js'
       //点击查看详情跳转到对应的队伍训练安排详情
       seeDetails(row){
         setStore('recordData', row)
-        //跳转到对应的队伍训练安排详情
         this.$router.push('/home/swatAuxiliary/programParticulars')
       },
       //获取训练计划清单的数据
       async listTrainingProgram() {
         this.loading = true
         let res = await getApi('listTrainingProgram', null)
-        console.log(res,'训练计划清单')
         this.loading = false
         if(res.success) {
           this.tableData = res.result
