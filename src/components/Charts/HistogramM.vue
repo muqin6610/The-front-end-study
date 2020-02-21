@@ -57,8 +57,11 @@ export default {
                  data: this.histogramData.dateArr,
                  axisLabel: {
                       color: '#282c34',
-                      fontSize: 20,
+                      fontSize: 12,
+                      // fontSize: 20,
                       interval: 0, // 坐标轴刻度标签的显示间隔
+                      
+                      rotate:25,
                   },
                },
                // Y轴
@@ -74,13 +77,14 @@ export default {
                   axisLabel: {
                       formatter: '{value} 人',
                       color: '#282c34',
-                      fontSize: 20,
+                      fontSize: 12,
+                      // fontSize: 20,
                   },
                },
                // 设置x轴拖动条
                dataZoom: {
                   start: 0,// 默认为0
-                  end: 40,// 默认为100
+                  end: 30,// 默认为100
                   type: 'slider',
                   show: true,
                   xAxisIndex: [0],
@@ -112,12 +116,14 @@ export default {
                                  position: 'top',
                                  formatter: '{c}人',
                                  color: '#282c34',
-                                 fontSize: 20,
+                                 fontSize: 14,
+                                //  fontSize: 20,
                              }
                          }
                      },
                      // 设置柱的宽度
-　　　　　　　　　　   barWidth: 50,
+　　　　　　　　　　   barWidth: 10,
+// 　　　　　　　　　　   barWidth: 50,
                      data: this.histogramData.numArr
                    },
                ]

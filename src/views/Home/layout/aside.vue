@@ -71,6 +71,7 @@ export default {
                             ] },
                             { path: '/home/smartCampus', name:'智慧校园', class:'el-icon-s-home', children: [
                               { path: '/home/smartCampus/waterPoloDemo', name:'体温统计' },
+                              { path: '/home/smartCampus/waterPoloDemoM', name:'体温统计移动端' },
                               { path: '/home/smartCampus/classManagement', name:'班级管理' },
                               { path: '/home/smartCampus/blacklist', name:'黑名单列表' },
                               { path: '/home/smartCampus/disciplinaryRule', name:'违纪规则' },

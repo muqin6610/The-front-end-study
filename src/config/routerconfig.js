@@ -278,6 +278,13 @@ export const constantRouterMap = [
                 title:'体温统计demo'
             } },
         { 
+            path: '/home/smartCampus/waterPoloDemoM',
+            name: 'waterPoloDemoM', 
+            component: () => import ('@/views/Home/SmartCampus/waterPoloDemoM.vue'), 
+            meta:{
+                title:'体温统计移动端'
+            } },
+        { 
             path: '/home/smartCampus/staffDetailsModule',
             name: 'staffDetailsModule', 
             component: () => import ('@/views/Home/SmartCampus/modules/waterPoloDemoModule/StaffDetailsModule.vue'), 
