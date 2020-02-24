@@ -6,7 +6,7 @@
         <div class='card-content-box'>
           <div class='card-content one-bgcolor'>
             <div class='text-box'>
-              <div class='card-content-title'>{{showSelect ? '学校' : className}}总人数</div>
+              <div class='card-content-title'>{{showSelect ? '公司' : className}}总人数</div>
               <div class='card-content-text'>{{schoolCount ? schoolCount : 0}}人</div>
             </div>
           </div>
@@ -62,7 +62,7 @@
                 :value="item">
               </el-option>
             </el-select>
-            <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择班级">
+            <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择部门">
               <el-option v-if='classDatas.length' label="全部" value="all"></el-option>
               <el-option
                 v-for="item in classDatas"
@@ -77,7 +77,7 @@
           <div class='input-box'>
             <el-input
               size="medium"
-              placeholder="请输入班级或学生名字"
+              placeholder="请输入部门或员工名字"
               v-model="input"
               @keyup.enter.native='clickSearch()'
               clearable>
@@ -86,7 +86,7 @@
               <div v-if='peoplesShow' class='searchItem-box'>
                 <div class='searchItem'  v-for='(item, index) in peoples' :key='index' @click='clickItem(item)'>
                   <span style='margin-right: 20px;'>{{item.name}}</span>
-                  <span>学号: {{item.passengerCode}}</span>
+                  <span>工号: {{item.passengerCode}}</span>
                 </div>
               </div>
             </transition>
@@ -104,7 +104,7 @@
     </div>
     <transition name="el-fade-in">
       <div class='my-card' v-if='showSelect'>
-          <div class='center-card-title'>体温异常班级信息</div>
+          <div class='center-card-title'>体温异常部门信息</div>
           <div class='class-box'>
             <div class='information-box'>
               <div v-for='(item, index) in classPeoples' :key='index' class='information-item-box'>
@@ -125,18 +125,18 @@
     </div>
     <div style='margin-bottom: 40px;' class='my-card'>
         <div v-if='className' class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}{{className}}体温异常排序</div>
-        <div v-else class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}全校体温异常排序</div>
+        <div v-else class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}公司体温异常排序</div>
         <el-table v-loading="loading" element-loading-text="加载中..." element-loading-spinner="el-icon-loading" border :data="tableData" stripe style="width: 100%;margin-top:20px;" :header-cell-style="{background:'#e7ecff',color:'#2c2626'}">
         <el-table-column align='center' prop="avatar" label="头像">
           <template slot-scope='scope'>
             <img style='cursor:pointer;border-radius:20px;' :src="scope.row.avatar" width="40" height="40"/>
           </template>
         </el-table-column>
-        <el-table-column prop="studentID" label="学号" align='center'>
+        <el-table-column prop="studentID" label="工号" align='center'>
         </el-table-column>
         <el-table-column align='center' prop="name" label="姓名">
         </el-table-column>
-        <el-table-column align='center' prop="class" label="班级">
+        <el-table-column align='center' prop="class" label="部门">
         </el-table-column>
         <el-table-column align='center' prop="age" label="年龄">
         </el-table-column>
@@ -213,7 +213,7 @@ export default {
         loading: false,
         // 选择区域
         showSelect: true,
-        // 学校总人数
+        // 公司总人数
         schoolCount: '',
         // 累计识别人数
         totalDiscernCount: '',
@@ -221,13 +221,13 @@ export default {
         normalCount: '',
         // 体温异常人数
         abnormalCount: '',
-        // 班级名称
+        // 部门名称
         className: '',
         // 年级名称
         gradeName: '',
         // 当天日期
         todayDate: '',
-        // 班级人数信息
+        // 部门人数信息
         classPeoples: [],
         // 控制搜索重复人员区域盒子
         peoplesShow: false,
@@ -237,11 +237,11 @@ export default {
         startDate: '',
         // 选择年级
         selectGrade: '',
-        // 选择班级
+        // 选择部门
         selectClass: '',
         // 年级数据
         gradeDatas: [],
-        // 班级数据
+        // 部门数据
         classDatas: [],
         // 分页器总条数
         total: null,
@@ -267,7 +267,7 @@ export default {
     this.todayDate = date.getFullYear() + '-' + ((date.getMonth() + 1) < 10 ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + date.getDate()
     // 时间默认值
     this.startDate = [this.todayDate, this.todayDate]
-    // 班级年级默认值
+    // 部门年级默认值
     this.selectGrade = 'all'
     this.selectClass = '全部'
     // 发送默认请求的默认值
@@ -275,7 +275,7 @@ export default {
     this.sendData.endTime = this.startDate[1]
   },
   methods: {
-    // 获取学校和班级信息
+    // 获取公司和部门信息
     async loadTree() {
       let res = await getApi('loadTree', null)
       if(res.success) {
@@ -323,7 +323,7 @@ export default {
         }
       }
     },
-    // 获取体温异常班级信息
+    // 获取体温异常部门信息
     async getPersonWarnCount() {
       let res = await getApi('getPersonWarnCount', null)
       if(res.success) {
@@ -366,7 +366,7 @@ export default {
     exportData() {
       alert('导出数据了!')
     },
-    // 点击班级信息人数
+    // 点击部门信息人数
     clickPeople(item) {
       let { classId, className } = item
       this.sendData.classId = classId
@@ -397,7 +397,7 @@ export default {
         this.barChartsList()
         this.getAccountedPercent()
       }else {
-        // 选择完年级出现对应的班级
+        // 选择完年级出现对应的部门
         if(this.gradeDatas.length != null) {
           for(let i = 0;i < this.gradeDatas.length;i++) {
             if(id === this.gradeDatas[i].id) {
@@ -410,7 +410,7 @@ export default {
         this.gradeName = departName
       }
     },
-    // 选择班级
+    // 选择部门
     changeClass(val) {
       let { id, departName } = val
       // 判断是否选择全部
@@ -433,7 +433,7 @@ export default {
     clickSearch() {
       this.peoplesShow = false
       if(!this.input) {
-        this.$message.warning('请输入学生名字搜索!')
+        this.$message.warning('请输入员工名字搜索!')
         return false
       }
       if(this.input == '钦彪') {
@@ -488,7 +488,7 @@ export default {
       this.$router.push('/home/smartCampus/staffDetailsModule')
       this.input = ''  
     },
-    // 点击恢复到全校页面
+    // 点击恢复到公司页面
     clickPush() {
       this.sendData.classId = '0'
       this.className = ''
@@ -669,12 +669,12 @@ export default {
   font-size: 18px;
 }
 
-// 中部班级盒子
+// 中部部门盒子
 .class-box {
   height: 500px;
   overflow: hidden;
 }
-// 中部班级信息盒子
+// 中部部门信息盒子
 .information-box {
   height: calc(100% - 10px);
   overflow-y: auto;
@@ -690,7 +690,7 @@ export default {
   }
 }
 
-// 班级信息排名数字文本
+// 部门信息排名数字文本
 .number-title {
   width: 20px;
   height: 20px;
@@ -703,7 +703,7 @@ export default {
   float: left;
   font-size: 14px;
 }
-// 班级名
+// 部门名
 .className {
   float: left;
   line-height: 40px;
