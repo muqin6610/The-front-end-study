@@ -292,6 +292,13 @@ export const constantRouterMap = [
                 title:'体温统计人员详情'
             } },
         { 
+            path: '/home/smartCampus/staffDetailsMModule',
+            name: 'staffDetailsMModule', 
+            component: () => import ('@/views/Home/SmartCampus/modules/waterPoloDemoMModule/StaffDetailsMModule.vue'), 
+            meta:{
+                title:'体温统计人员详情移动端'
+            } },
+        { 
             path: '/home/smartCampus/classManagement',
             name: 'classManagement', 
             component: () => import ('@/views/Home/SmartCampus/classManagement.vue'), 

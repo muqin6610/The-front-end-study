@@ -485,7 +485,7 @@ export default {
         classId: C,
       }
       setStore('rowData', objData)
-      this.$router.push('/home/smartCampus/staffDetailsModule')
+      this.$router.push('/home/smartCampus/staffDetailsMModule')
       this.input = ''  
     },
     // 点击恢复到公司页面
