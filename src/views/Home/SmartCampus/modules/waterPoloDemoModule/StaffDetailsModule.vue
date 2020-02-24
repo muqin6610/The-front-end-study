@@ -90,7 +90,7 @@ export default {
         getTbaleData() {
             this.tableData = [
                 {
-                    img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                    img: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
                     number: '223241',
                     class: '初一一班',
                     sex: '男',
@@ -98,7 +98,7 @@ export default {
                     temperature: '37',
                 },
                 {
-                    img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                    img: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
                     number: '223241',
                     class: '初一一班',
                     sex: '男',
@@ -106,7 +106,7 @@ export default {
                     temperature: '37',
                 },
                 {
-                    img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                    img: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
                     number: '223241',
                     class: '初一一班',
                     sex: '男',
@@ -114,7 +114,7 @@ export default {
                     temperature: '37',
                 },
                 {
-                    img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                    img: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
                     number: '223241',
                     class: '初一一班',
                     sex: '男',
@@ -122,7 +122,7 @@ export default {
                     temperature: '37',
                 },
                 {
-                    img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                    img: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
                     number: '223241',
                     class: '初一一班',
                     sex: '男',
@@ -130,7 +130,7 @@ export default {
                     temperature: '37',
                 },
                 {
-                    img: 'https://user-gold-cdn.xitu.io/2019/11/5/16e39396b5133aae?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+                    img: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
                     number: '223241',
                     class: '初一一班',
                     sex: '男',
