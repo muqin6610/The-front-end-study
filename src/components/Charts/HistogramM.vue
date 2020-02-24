@@ -128,6 +128,7 @@ export default {
                    },
                ]
            });
+           histogram.resize()
            window.addEventListener("resize", () => { 
                if(this.$route.path === '/home/smartCampus/waterPoloDemo' || this.$route.path === '/home/smartCampus/waterPoloDemoM') {
                  histogram.resize();

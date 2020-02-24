@@ -90,6 +90,7 @@ export default {
           }
         ]
       });
+      ring.resize()
       window.addEventListener("resize", () => { 
          if(this.$route.path === '/home/smartCampus/waterPoloDemo' || this.$route.path === '/home/smartCampus/waterPoloDemoM') {
            ring.resize()
