@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div id="histogram" :style="{width: '100%', height: '550px'}"></div>
+    <div id="histogramM" :style="{width: '100%', height: '300px'}"></div>
   </div>
 </template>
 
 <script>
 export default {
     props: {
-        histogramData: {
+        histogramMData: {
             dateArr: {
                 type: Array,
                 default: []
@@ -23,7 +23,7 @@ export default {
         }
     },
     watch:{
-      histogramData:{
+      histogramMData:{
         handler: function (newval, oldVal) {
             this.init()
         },
@@ -38,8 +38,8 @@ export default {
     },
     methods: {
         init (){
-           let histogram = this.$echarts.init(document.getElementById('histogram'))
-           histogram.setOption({
+           let histogramM = this.$echarts.init(document.getElementById('histogramM'))
+           histogramM.setOption({
                grid: {
                    left: '1%',
                    right: '0',
@@ -54,11 +54,10 @@ export default {
                xAxis: {
                  // x轴底部横线
                  axisLine: {show:false},
-                 data: this.histogramData.dateArr,
+                 data: this.histogramMData.dateArr,
                  axisLabel: {
                       color: '#282c34',
                       fontSize: 12,
-                      // fontSize: 20,
                       interval: 0, // 坐标轴刻度标签的显示间隔
                       
                       rotate:25,
@@ -78,7 +77,6 @@ export default {
                       formatter: '{value} 人',
                       color: '#282c34',
                       fontSize: 12,
-                      // fontSize: 20,
                   },
                },
                // 设置x轴拖动条
@@ -117,21 +115,19 @@ export default {
                                  formatter: '{c}人',
                                  color: '#282c34',
                                  fontSize: 14,
-                                //  fontSize: 20,
                              }
                          }
                      },
                      // 设置柱的宽度
-　　　　　　　　　　   barWidth: 10,
-// 　　　　　　　　　　   barWidth: 50,
-                     data: this.histogramData.numArr
+　　　　　　　　　　   barWidth: 15,
+                     data: this.histogramMData.numArr
                    },
                ]
            });
-           histogram.resize()
+           histogramM.resize()
            window.addEventListener("resize", () => { 
                if(this.$route.path === '/home/smartCampus/waterPoloDemo' || this.$route.path === '/home/smartCampus/waterPoloDemoM') {
-                 histogram.resize();
+                 histogramM.resize();
                } 
             })
        }

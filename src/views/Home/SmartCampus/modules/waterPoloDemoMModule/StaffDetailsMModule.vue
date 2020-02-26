@@ -4,7 +4,7 @@
       <span class='temperature-text' @click='routerGo'>温度统计</span>/<span class='name-text'>{{rowData.name}}温度统计</span>
       <div class='temperature-content'>
         <div class='img-box'>
-          <img class='img-style' src="https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg" width="100" height="100"/>
+          <img class='img-style' src="https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg" width="80" height="80"/>
           <div class='img-text-box'>{{rowData.name}}温度情况统计</div>
         </div>
       </div>
@@ -165,7 +165,7 @@ export default {
 }
 // 顶部卡片
 .top-card {
-  height: 90px;
+  height: 60px;
   margin-top: 10px;
   border-radius: 5px;
 }
@@ -204,7 +204,7 @@ export default {
 }
 // 头像区域
 .img-style {
-  border-radius: 75px;
+  border-radius: 40px;
 }
 // 头像区域文本
 .img-text-box {

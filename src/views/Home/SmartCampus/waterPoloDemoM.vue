@@ -33,12 +33,11 @@
     <div class='my-card'>
       <div class='liquidfill-title'>{{showSelect ? '今日体温异常占比' : '体温异常占比'}}</div>
       <!--引入的水球图-->
-      <Liquidfill :liquidfillData='liquidfillData'/>
+      <LiquidfillM :liquidfillMData='liquidfillMData'/>
     </div>
     <div class='my-card'>
       <div class='statistics-top'>
         <span class='statistics-title'>体温统计表</span>
-        <el-button type="primary" class='export-button' @click='exportData'>导出数据</el-button>
       </div>
       <div class='select-search-box'>
         <transition name="el-fade-in">
@@ -98,7 +97,7 @@
       <div class='temperature-box'>
         <div class='temperature-chart'>
           <!--引入的柱状图-->
-          <HistogramM :histogramData='histogramData'/>
+          <HistogramM :histogramMData='histogramMData'/>
         </div>
       </div>
     </div>
@@ -120,7 +119,7 @@
        <div class='center-card-title'>{{startDate[0]}}至{{startDate[1]}}体温占比图</div>
        <div>
          <!-- 环状图 -->
-         <Ring :ringData='ringData'/>
+         <RingM :ringMData='ringMData'/>
        </div>
     </div>
     <div style='margin-bottom: 40px;' class='my-card'>
@@ -147,7 +146,7 @@
             <span style='color:#ff5858'>{{scope.row.bodyTemperature}}℃</span>
           </template>
         </el-table-column>
-        <el-table-column align='center' prop="" label="操作" width='150'>
+        <el-table-column align='center' prop="" label="操作">
           <template slot-scope='scope'>
             <span class='lookDetail' @click='lookDetails(scope.row.name)'>查看详情</span>
           </template>
@@ -171,32 +170,30 @@
 </template>
 
 <script>
-import Liquidfill from '@/components/Charts/Liquidfill'
-import Histogram from '@/components/Charts/Histogram'
+import LiquidfillM from '@/components/Charts/LiquidfillM'
 import HistogramM from '@/components/Charts/HistogramM'
-import Ring from '@/components/Charts/Ring'
+import RingM from '@/components/Charts/RingM'
 import { setStore } from '@/utils/storage.js'
 import { getApi } from '@/api/api.js' 
 export default {
   components: {
-    Liquidfill,
-    Histogram,
+    LiquidfillM,
     HistogramM,
-    Ring
+    RingM
   },
   data () {
     return {  
         // 传递给水球图组件数据
-        liquidfillData: {
+        liquidfillMData: {
           percent: 0,
         },
         // 传递给柱状图组价数据
-        histogramData: {
+        histogramMData: {
           dateArr: [],
           numArr: [0],
         },
         // 传递给环装图组件数据
-        ringData: {
+        ringMData: {
           dataArr: [
               { value: 0, name: "正常体温 36.1-37℃" },
               { value: 0, name: "低烧体温 37.1-38℃" },
@@ -289,7 +286,7 @@ export default {
       this.totalDiscernCount = 0
       this.normalCount = 0
       this.abnormalCount = 0
-      this.liquidfillData.percent = 0
+      this.liquidfillMData.percent = 0
       if(id == '0') id = ''
       let objData = {
         classId: id,
@@ -303,23 +300,23 @@ export default {
         this.totalDiscernCount = totalDiscernCount
         this.normalCount = normalCount
         this.abnormalCount = abnormalCount
-        this.liquidfillData.percent = accountedPercent
+        this.liquidfillMData.percent = accountedPercent
       }
     },
     // 获取柱状图数据
     async barChartsList() {
-      this.histogramData.dateArr = []
-      this.histogramData.numArr = []
+      this.histogramMData.dateArr = []
+      this.histogramMData.numArr = []
       let res = await getApi('barChartsList', this.sendData)
       if(res.success) {
         if(res.result.length) {
           for(let i = 0;i < res.result.length;i++) {
-            this.histogramData.dateArr.push(res.result[i].dateTime)
-            this.histogramData.numArr.push(res.result[i].personCount)
+            this.histogramMData.dateArr.push(res.result[i].dateTime)
+            this.histogramMData.numArr.push(res.result[i].personCount)
           }
         }else {
-          this.histogramData.numArr.push(0)
-          this.histogramData.dateArr.push('')
+          this.histogramMData.numArr.push(0)
+          this.histogramMData.dateArr.push('')
         }
       }
     },
@@ -335,9 +332,9 @@ export default {
       let res = await getApi('getAccountedPercent', this.sendData)
       if(res.success) {
         let { normal, lowFever, highFever} = res.result
-        this.ringData.dataArr[0].value = normal
-        this.ringData.dataArr[1].value = lowFever
-        this.ringData.dataArr[2].value = highFever
+        this.ringMData.dataArr[0].value = normal
+        this.ringMData.dataArr[1].value = lowFever
+        this.ringMData.dataArr[2].value = highFever
       }
     },
     // 获取体温异常表格数据
@@ -361,10 +358,6 @@ export default {
         this.pageSize = size
         this.pageCurrent = current
       }
-    },
-    // 点击导出数据
-    exportData() {
-      alert('导出数据了!')
     },
     // 点击部门信息人数
     clickPeople(item) {
@@ -508,6 +501,16 @@ export default {
   padding: 20px;
 }
 
+// 顶部标题
+.topcard-title {
+  font-size: 14px;
+}
+
+// 体温异常占比标题
+.liquidfill-title {
+  font-size: 14px;
+}
+
 // 顶部第一个盒子背景颜色
 .one-bgcolor {
   background: -webkit-linear-gradient(left, #61a4ff, #6ba0fe, #729eff, #769bff);
@@ -528,18 +531,18 @@ export default {
 // 统计卡片内容
 .card-content {
   border-radius: 5px;
-  margin: 10px;
-  height: 80px;
+  margin: 5px;
+  height: 50px;
 }
 
 // 卡片内容标题
 .card-content-title {
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
 }
 // 卡片内容文本
 .card-content-text {
-  font-size: 16px;
+  font-size: 14px;
   color: #fff;
 }
 
@@ -553,26 +556,20 @@ export default {
 
 // 统计盒子顶部
 .statistics-top {
-  height: 50px;
+  height: 30px;
 }
 
 // 体温统计表文本
 .statistics-title {
   float: left;
   padding-top: 5px;
-}
-
-// 导出按钮
-.export-button {
-  background: #657eff;
-  border: 0;
-  float: right;
+  font-size: 14px;
 }
 
 // 选择搜索盒子
 .select-search-box {
   margin-top: 5px;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 }
 
 // 选择盒子
@@ -595,7 +592,7 @@ export default {
   float: right;
   line-height: 32px;
   margin-left: 20px;
-  font-size: 24px;
+  font-size: 20px;
   color: #36a3f7;
   cursor: pointer;
 }
@@ -644,7 +641,7 @@ export default {
 }
 // 选择框
 /deep/ .el-select {
-  width: 120px;
+  width: 100px;
   margin: 10px 10px 0 0;
 }
 // input输入框
@@ -664,14 +661,14 @@ export default {
 
 // 中部卡片标题
 .center-card-title {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   color: #282c34;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 // 中部部门盒子
 .class-box {
-  height: 500px;
+  height: 200px;
   overflow: hidden;
 }
 // 中部部门信息盒子
@@ -701,21 +698,21 @@ export default {
   line-height: 20px;
   margin-top: 10px;
   float: left;
-  font-size: 14px;
+  font-size: 12px;
 }
 // 部门名
 .className {
   float: left;
   line-height: 40px;
   margin-left: 20px;
-  font-size: 14px;
+  font-size: 12px;
 }
 // 人数
 .numberPeople {
   line-height: 40px;
   margin-left: 80%;
   color: #36a3f7;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
 }
 </style>
