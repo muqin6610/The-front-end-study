@@ -1,5 +1,5 @@
 <template>
-  <div class='all-box'>
+  <div class='all-box'  @click='clickDom'>
     <div class='top-box'>
       <div class='mybox statistics'>
         <div v-if='showSelect' class='topcard-title'>今日温度统计</div>
@@ -498,7 +498,11 @@ export default {
       this.getList()
       this.barChartsList()
       this.getPersonWarnCount()
-    }
+    },
+    // 点击本页面
+    clickDom() {
+      this.peoplesShow = false
+    },
   }
 }
 </script>

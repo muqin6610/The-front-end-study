@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click='clickDom'>
     <div class='my-card'>
         <div v-if='showSelect' class='topcard-title'>今日温度统计</div>
         <div v-else class='topcard-title'><span style='cursor: pointer;' @click='clickPush'>温度统计</span>/{{startDate[0]}}至{{startDate[1]}}{{className}}</div>
@@ -43,7 +43,7 @@
         <transition name="el-fade-in">
           <div class='select-box' v-if='showSelect'>
             <el-date-picker
-              size="medium"
+              size="mini"
               v-model="startDate"
               @change='changeDate'
               type="daterange"
@@ -52,7 +52,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期">
             </el-date-picker>
-            <el-select size="medium" v-model="selectGrade" @change='changGrade' placeholder="请选择年级">
+            <el-select size="mini" v-model="selectGrade" @change='changGrade' placeholder="请选择年级">
               <el-option label="全部" value="all"></el-option>
               <el-option
                 v-for="item in gradeDatas"
@@ -61,7 +61,7 @@
                 :value="item">
               </el-option>
             </el-select>
-            <el-select size="medium" v-model="selectClass" @change='changeClass' placeholder="请选择部门">
+            <el-select size="mini" v-model="selectClass" @change='changeClass' placeholder="请选择部门">
               <el-option v-if='classDatas.length' label="全部" value="all"></el-option>
               <el-option
                 v-for="item in classDatas"
@@ -73,9 +73,10 @@
           </div>
         </transition>
         <div class='search-box'>
+          <span class='search-text' @click='clickSearch'>搜索</span>
           <div class='input-box'>
             <el-input
-              size="medium"
+              size="mini"
               placeholder="请输入部门或员工名字"
               v-model="input"
               @keyup.enter.native='clickSearch()'
@@ -90,10 +91,8 @@
               </div>
             </transition>
           </div>
-          <span class='search-text' @click='clickSearch'>搜索</span>
         </div>
       </div>
-      <el-divider></el-divider>
       <div class='temperature-box'>
         <div class='temperature-chart'>
           <!--引入的柱状图-->
@@ -489,7 +488,11 @@ export default {
       this.getList()
       this.barChartsList()
       this.getPersonWarnCount()
-    }
+    },
+    // 点击本页面
+    clickDom() {
+      this.peoplesShow = false
+    },
   }
 }
 </script>
@@ -569,7 +572,7 @@ export default {
 // 选择搜索盒子
 .select-search-box {
   margin-top: 5px;
-  margin-bottom: 80px;
+  margin-bottom: 10px;
 }
 
 // 选择盒子
@@ -579,20 +582,20 @@ export default {
 // 输入框盒子
 .input-box {
   margin-top: 5px;
-  float: left;
+  flex: 1;
 }
 // 搜索盒子
 .search-box {
   margin-top: 5px;
+  display: flex;
 }
 
 // 搜索文本
 .search-text {
+  width: 45px;
   margin-top: 5px;
-  float: right;
-  line-height: 32px;
-  margin-left: 20px;
-  font-size: 20px;
+  line-height: 24px;
+  font-size: 16px;
   color: #36a3f7;
   cursor: pointer;
 }
@@ -637,7 +640,7 @@ export default {
 
 // 日期选择
 /deep/ .el-date-editor {
-  width: 90%;
+  width: 100%;
 }
 // 选择框
 /deep/ .el-select {
