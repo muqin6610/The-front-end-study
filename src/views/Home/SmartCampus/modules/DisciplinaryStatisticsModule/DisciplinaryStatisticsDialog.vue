@@ -24,6 +24,7 @@
               <!-- 日期 -->
               <ul class="days">
                   <li 
+                  class="days-li"
                   :class='borderClass(val.day, val.day.getDate())'
                   v-for='(val,key) in days'
                   >
@@ -145,6 +146,14 @@ export default {
              day: d
            });
          }
+        // setTimeout(() => {
+        //   let arr = document.getElementsByClassName("days-li")
+        //   for(let i = 0;i < arr.length;i++) {
+        //     if(i == 5 || i == 6 || i == 12 || i == 13 || i == 19 || i == 20 || i == 26 || i == 27 || i == 33  || i == 34 || i == 40 || i == 41) {
+        //       arr[i].classList.add('grayColor')
+        //     }
+        //   }
+        // }, 200)
        }, 
        //其他月加class名'other'
        chooseClass(day) {
@@ -268,5 +277,8 @@ ul {
 .charts-box {
     width: 39%;
     margin-top: 30px;
+}
+.grayColor {
+  background: #e1e1e1;
 }
 </style>
