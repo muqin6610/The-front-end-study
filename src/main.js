@@ -37,6 +37,7 @@ Vue.use(ElementUI)
 //引入element的Message
 import { Message } from 'element-ui'
 
+
 // 引入进度条
 import NProgress from 'nprogress'
 //引入进度条样式
