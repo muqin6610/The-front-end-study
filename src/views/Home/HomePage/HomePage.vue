@@ -3,14 +3,14 @@
     <!--顶部统计-->
     <div class='myCard-box'>
       <el-card class='myCard'>
-        <i class='el-icon-s-custom el-icon'></i>
+        <i class='el-icon-s-custom el-icon' @click="viewsDatas"></i>
         <div class='myText'>
           <span class='myText-span'>访问量</span>
           <p style='font-weight:bold'>{{viewsData}}</p>
         </div>
       </el-card>
       <el-card class='myCard'>
-        <i class='el-icon-edit-outline el-icon'></i>
+        <i class='el-icon-edit-outline el-icon' @click="messageVolumes"></i>
         <div class='myText'>
           <span class='myText-span'>留言量</span>
           <p style='font-weight:bold'>{{messageVolume}}</p>
@@ -98,6 +98,22 @@ export default {
           this.bookeData = bookeData
           this.likes = likes
         }
+      },
+      viewsDatas() {
+        this.$popup({
+          title: '访问量',
+          content: '你好,现在的全部访问量为2515次,谢谢~',
+          btnText: '我知道了',
+          status:'1'
+        })
+      },
+      messageVolumes() {
+        this.$popup({
+          title: '留言量',
+          content: '你好,现在的全部留言量为4213条,谢谢~',
+          btnText: '前往板块管理',
+          status:'2'
+        })
       }
     }
 }

@@ -42,6 +42,10 @@ import NProgress from 'nprogress'
 //引入进度条样式
 import 'nprogress/nprogress.css'
 
+// 引入自定义全局组件
+import popupRegistry from './popup/popup'
+Vue.use(popupRegistry)
+
 // 引入websocket
 import { connectSocket } from "./api/socket"
 Vue.prototype.$connectSocket = connectSocket
