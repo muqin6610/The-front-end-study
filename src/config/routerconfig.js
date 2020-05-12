@@ -334,6 +334,13 @@ export const constantRouterMap = [
             meta:{
                 title:'黑名单列表'
             } },
+        { 
+            path: '/home/smartCampus/trafficRulesList',
+            name: 'trafficRulesList', 
+            component: () => import ('@/views/Home/SmartCampus/TrafficRulesList.vue'), 
+            meta:{
+                title:'班次管理'
+            } },
 
         { 
             path: '/home/myhomepage',
