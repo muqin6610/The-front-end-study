@@ -5,6 +5,7 @@
 export const constantRouterMap = [
     { 
         path: '/',
+        name: 'homePage', 
         redirect: '/home/homePage', 
         meta:{
                 title:'首页'

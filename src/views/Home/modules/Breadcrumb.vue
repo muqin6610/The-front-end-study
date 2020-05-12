@@ -1,7 +1,9 @@
 <template>
   <div class='el-breadcrumb-box'>
     <el-breadcrumb class='el-breadcrumb' separator="/">
-      <el-breadcrumb-item v-for='( item, index ) in breadcrumbList' :key='index' :to="item.path">{{ item.name }}</el-breadcrumb-item>
+      <el-breadcrumb-item v-for='( item, index ) in breadcrumbList' :key='index' :to="item.path">
+        {{item.meta.title}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>
@@ -10,20 +12,26 @@
 export default {
     data() {
         return {
-           // 面包屑数据
-           breadcrumbList:[], 
+          breadcrumbList: []
         }
     },
     created() {
       this.getBreadcrumb()
     },
+    watch: {
+      $route() {
+        this.getBreadcrumb()
+      }
+    },
     methods: {
         getBreadcrumb() {
-          this.breadcrumbList = [
-            {path:'/', name: '首页'},
-            {path:'/', name: '系统设置'},
-            {path:'/', name: '角色管理'},
-          ]
+          let matched = this.$route.matched.filter(item => item.name)
+          const first = matched[0]
+          if (first && first.name.trim().toLocaleLowerCase() !== 'HomePage'.toLocaleLowerCase()) {
+              matched = [{ path: '/', meta: { title: '首页' }}].concat(matched)
+          }
+          this.breadcrumbList = matched
+          console.log(this.breadcrumbList )
         }
     },
 }
