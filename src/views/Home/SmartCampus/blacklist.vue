@@ -2,7 +2,7 @@
   <el-card class='mycard'>
     <!--按钮区域-->
     <div>
-      <el-button type="primary" @click='addBlacklist'>新增黑名单</el-button>
+      <el-button type="primary" @click='add'>新增黑名单</el-button>
       <el-button>批量删除</el-button>
     </div>
     <!--表格区域-->
@@ -29,7 +29,7 @@
     </div>
 
     <!--新增黑名单抽屉-->
-    <BlacklistDrawer :blacklistDrawer='blacklistDrawer' @cancelBlacklist='cancelBlacklist'/>
+    <BlacklistDrawer ref="modalForm"/>
   </el-card>
 </template>
 
@@ -43,8 +43,6 @@ export default {
     },
     data() {
         return {
-            // 传递给新增黑名单组件
-            blacklistDrawer: false,
             tableData: []
         }
     },
@@ -55,17 +53,12 @@ export default {
         // 获取黑名单数据
         async getBlacklist() {
           let res = await getApi('getBlacklist', null)
-          if(res.success) {
-            this.tableData = res.result
-          }
+          if(res.success) { this.tableData = res.result  }
         },
         // 点击新增黑名单
-        addBlacklist() {
-            this.blacklistDrawer = true
-        },
-        // 取消新增黑名单
-        cancelBlacklist() {
-            this.blacklistDrawer = false
+        add() {
+          this.$refs.modalForm.add()
+          this.$refs.modalForm.title = "新增黑名单"
         },
         // 选择表格
         handleSelectionChange(val) {

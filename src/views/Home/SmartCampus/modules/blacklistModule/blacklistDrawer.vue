@@ -1,10 +1,10 @@
 <template>
   <el-drawer
-    :visible.sync="blacklistDrawer"
-    :before-close="submitForm"
+    :visible.sync="visible"
+    :before-close="close"
     :show-close='false'
-    title="新增黑名单"
-    size='30%'
+    :title="title"
+    size='500px'
     >
     <div>
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
@@ -43,22 +43,18 @@
           textAlign: 'right',
         }"
       >
-        <el-button @click="submitForm">取 消</el-button>
-        <el-button type="primary" @click="resetForm('ruleForm')">确 定</el-button>
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="handleOk('ruleForm')">确 定</el-button>
     </div>
   </el-drawer>
 </template>
 
 <script>
 export default {
-    props: {
-      blacklistDrawer: {
-        type:Boolean,
-        default: false,
-      }
-    },
     data() {
         return {
+           title: '',
+           visible: false,
            ruleForm: {
              realName: '',
              type: '',
@@ -78,40 +74,49 @@ export default {
         }
     },
     methods: {
-        // 取消
-        submitForm() {
-          this.$emit('cancelBlacklist')
-        },
-        // 确定
-        resetForm() {
-          this.$emit('cancelBlacklist')
-        },
-        // 照片上传时
-        beforeAvatarUpload(file) {
-          const isJPG = file.type === 'image/jpeg'
-          const isLt2M = file.size / 1024 / 1024 < 2
+      close() {
+        this.visible = false
+      },
+      add() {
+        this.edit({})
+      },
+      edit(row) {
+        this.visible = true
+      },
+      // 取消
+      handleCancel() {
+        this.close()
+      },
+      // 确定
+      handleOk() {
+        this.close()
+      },
+      // 照片上传时
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 < 2
 
-          if (!isJPG) {
-            Message.error('上传头像图片只能是 JPG 格式!')
+        if (!isJPG) {
+          Message.error('上传头像图片只能是 JPG 格式!')
+        }
+        if (!isLt2M) {
+          Message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isJPG && isLt2M
+      },
+      // 照片状态改变时的钩子
+      handleAvatarChange(file, fileList) {
+        console.log(file)
+        if (file.status === "success") {
+          let response = file.response
+          console.log(response)
+          if(response.success){
+            this.ruleForm.faceImg = response.message
+          }else{
+            Message.warning(response.message)
           }
-          if (!isLt2M) {
-            Message.error('上传头像图片大小不能超过 2MB!')
-          }
-          return isJPG && isLt2M
-        },
-        // 照片状态改变时的钩子
-        handleAvatarChange(file, fileList) {
-          console.log(file)
-          if (file.status === "success") {
-            let response = file.response
-            console.log(response)
-            if(response.success){
-              this.ruleForm.faceImg = response.message
-            }else{
-              Message.warning(response.message)
-            }
-          }
-        },
+        }
+      },
     },
 }
 </script>
