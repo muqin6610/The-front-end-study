@@ -339,7 +339,7 @@ export const constantRouterMap = [
             name: 'trafficRulesList', 
             component: () => import ('@/views/Home/SmartCampus/TrafficRulesList.vue'), 
             meta:{
-                title:'班次管理'
+                title:'通行规则'
             } },
 
         { 

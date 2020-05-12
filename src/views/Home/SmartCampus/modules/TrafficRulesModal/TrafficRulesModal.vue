@@ -1,30 +1,30 @@
 <template>
   <el-drawer
     size='720px'
-    :visible.sync="rulesData.visible"
+    :visible.sync="visible"
     :show-close='false'
     :before-close="close"
-    :title="rulesData.title"
+    :title="title"
     >
-      <el-form ref="form" :model="form" label-width="110px">
-        <el-form-item label="规则名称">
+      <el-form :rules="rules" ref="form" :model="form" label-width="110px">
+        <el-form-item label="规则名称" prop="ruleTimeName">
           <el-input style="width:220px;" placeholder="请输入规则名称" v-model="form.ruleTimeName" />
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item label="开始时间" prop="startTs">
           <el-date-picker
             v-model="form.startTs"
             type="datetime"
             placeholder="选择开始时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item label="结束时间" prop="endTs">
           <el-date-picker
             v-model="form.endTs"
             type="datetime"
             placeholder="选择结束时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="过闸次数">
+        <el-form-item label="过闸次数" prop="count">
           <el-input-number :min="0" style="width:220px;" v-model="form.count"/>
         </el-form-item>
         <el-form-item label="通行限制">
@@ -307,32 +307,19 @@
         <el-button :style="{marginRight: '8px'}" @click="handleCancel">
           取消
         </el-button>
-        <el-button @click="handleOk" type="primary">确认</el-button>
+        <el-button @click="handleOk('form')" type="primary">确认</el-button>
       </div>
   </el-drawer>
 </template>
 
 <script>
+import { postApi, putApi } from '@/api/api.js'
 
   export default {
-    props: {
-      rulesData: {
-        visible: {
-          type: Boolean,
-          default: false
-        },
-        title: {
-          type: String,
-          default: ''
-        }
-      }
-    },
     data () {
       return {
-        currentTimestamp: null,
-        endTimestamp: null,
-        startDate: null,
-        endDate: null,
+        title: '',
+        visible: false,
         MondayData: [],
         TuesdayData: [],
         WednesdayData: [],
@@ -377,13 +364,27 @@
           Saturday: [],
           Sunday: [],
         },
-        // 过闸时间类型
         typeData: 'weekly',
+        model: {},
         form: {
           ruleTimeName: '',
           startTs: '',
           endTs: '',
           count: '',
+        },
+        rules: {
+          ruleTimeName: [
+            { required: true, message: '请输入规则名称', trigger: 'blur' }
+          ],
+          startTs: [
+            { required: true, message: '请选择开始日期', trigger: 'blur' }
+          ],
+          endTs: [
+            { required: true,  message: '请选择结束日期', trigger: 'blur' }
+          ],
+          count: [
+            { required: true,  message: '请输入过闸次数', trigger: 'blur' }
+          ]
         },
       }
     },
@@ -391,16 +392,13 @@
     },
     methods: {
       add () {
-        this.edit({});
+        this.edit({})
       },
-      edit (record) {
-        this.form.resetFields();
-        this.model = Object.assign({}, record);
-        this.visible = true;
+      edit (row) {
+        this.visible = true
+        this.model = Object.assign({}, row)
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'ruleTimeName', 'count'))
-          
-          if(this.title == this.$t('m.trafficRules.edit')) {
+          if(this.model.id) {
             // 每周时间段回显
             let weekly = JSON.parse(this.model.weekly)
             let Monday = weekly.Monday.split(';')
@@ -482,70 +480,42 @@
             }
           }
 
-		  //时间格式化
-          this.form.setFieldsValue({startTs:this.model.startTs?moment(this.model.startTs):null})
-          this.form.setFieldsValue({endTs:this.model.endTs?moment(this.model.endTs):null})
+          this.form = {
+            ruleTimeName:  this.model.ruleName,
+            startTs:  this.model.startTime,
+            endTs:  this.model.endTime,
+            count:  this.model.count,
+          }
         });
 
       },
       close () {
-        this.$emit('close');
-        this.visible = false;
-        this.startDate = null;
-        this.endDate = null
+        this.visible = false
+        this.$refs.form.resetFields()
       },
-      handleOk () {
-        this.currentTimestamp = getFormat(new Date()).time
-        const that = this;
-        // 触发表单验证
-        this.form.validateFields((err, values) => {
-          if(this.endTimestamp < this.currentTimestamp) {
-            this.$message.warning(this.$t('m.trafficRules.endTimeTips'))
-            this.endDate = ''
-            if(this.model.id) {
-              this.form.setFieldsValue({ endTs: moment(this.model.endTs) })
-            }else {
-              this.form.setFieldsValue({ endTs: null })
-            }
-            return false
-          }
-          if (!err) {
-            that.confirmLoading = true;
-            let httpurl = '';
-            let method = '';
-            if(!this.model.id){
-              httpurl+=this.url.add;
-              method = 'post';
-            }else{
-              httpurl+=this.url.edit;
-               method = 'put';
-            }
-  
+      handleOk (form) {
+        this.$refs[form].validate(async (valid) => {
+          if (valid) {
             this.getTimePicker()
-  
-            let formData = Object.assign(this.model, values);
-            //时间格式化
-            formData.startTs = formData.startTs?formData.startTs.format('YYYY-MM-DD HH:mm:ss'):null;
-            formData.endTs = formData.endTs?formData.endTs.format('YYYY-MM-DD HH:mm:ss'):null;
-  
+            let formData = this.form
             formData.weekly = this.weekly
-            
-            console.log(formData)
-            httpAction(httpurl,formData,method).then((res)=>{
-              if(res.success){
-                that.$message.success(res.message);
-                that.$emit('ok');
-                that.resetDate()
-              }else{
-                that.$message.warning(res.message);
-              }
-            }).finally(() => {
-              that.confirmLoading = false;
-              that.close();
-            })
-  
-  
-  
+            let res = ''
+            if(!this.model.id){
+              res = await postApi('addTrafficRulesList', formData)
+            }else{
+              res = await putApi('editTrafficRulesList', formData)
+            }
+            console.log(res)
+            if(res.success){
+              this.$message.success(res.message)
+              this.resetDate()
+            }else{
+              this.$message.warning(res.message)
+            }
+            this.close()
+          } else {
+            console.log('error submit!!')
+            return false
           }
         })
       },
@@ -786,18 +756,6 @@
               }
               this.weekly.Sunday = this.weekly.Sunday.join(';')
             }
-      },
-      // 日期格式转化
-      dateFormat(D) {
-        let date = new Date(D)
-        let year = date.getFullYear()
-        // 日期格式中月份是从0开始因此要加上1
-        let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-        let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-        let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-        let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-        let seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-        return year + "-"+ month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
       },
     }
   }

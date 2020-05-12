@@ -232,3 +232,31 @@ export function transFormat(str, l, r) {
   str = str.replace(reg, r)
   return str
 }
+
+/**
+*返回yyyy-mm-dd hh:mm:ss日期格式
+*@param D: new Date()
+*@return json: ymdhms: yyy-mm-dd hh:mm:ss, yyyy-mm-dd h:m, yyyy-mm-dd, mm-dd, hh:mm:ss, hh:mm,
+*yyyy年mm月dd日 hh:mm:ss, ymd: yyyy年mm月dd日, mm月dd日
+ */
+dateFormat(D) {
+  let date = new Date(D)
+  let year = date.getFullYear()
+  // 日期格式中月份是从0开始因此要加上1
+  let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+  let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+  let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+  let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+  let seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+  return {
+    ymdhms: year + "-"+ month + "-" + day + " " + hours + ":" + minutes + ":" + seconds,
+    ymdhm: year + "-" + month + "-" + day + " " + hours + ":" + minutes,
+    ymd: year + "-" + month + "-" + day,
+    md: month + "-" + day,
+    hms: hours + ":" + minutes + ":" + seconds,
+    hm: hours + ":" + minutes,
+    ymdhmsCN: year + "年" + month + "月" + day + "日" + " " + hours + ":" + minutes + ":" + seconds,
+    ymdCN: year + "年" + month + "月" + day + "日",
+    mdCN: month + "月" + day + "日",
+  }
+},

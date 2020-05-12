@@ -10,21 +10,25 @@
       <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="name" label="姓名">
+          <el-table-column prop="ruleName" label="规则名称" align="center">
+          </el-table-column> 
+          <el-table-column prop="startTime" label="开始日期" align="center">
           </el-table-column>
-          <el-table-column prop="type" label="类型">
+          <el-table-column prop="endTime" label="结束日期" align="center">
           </el-table-column>
-          <el-table-column label="操作" width='120'>
+          <el-table-column prop="count" label="过闸次数" align="center">
+          </el-table-column>
+          <el-table-column label="操作" width='120' align="center">
             <template slot-scope='scope'>
-              <span style='color:#409eff;margin-right:15px;cursor: pointer;'>编辑</span>
-              <span style='color:#409eff;cursor: pointer;'>删除</span>
+              <span class="edit-text" @click="edit(scope.row)">编辑</span>
+              <span class="delete-text">删除</span>
             </template>
           </el-table-column>
        </el-table>
     </div>
 
     <!--新增黑名单抽屉-->
-    <TrafficRulesModal :rulesData='rulesData' @close='close'/>
+    <TrafficRulesModal ref="modalForm"/>
   </el-card>
 </template>
 
@@ -38,10 +42,6 @@ export default {
     },
     data() {
         return {
-            rulesData: {
-              visible: false,
-              title: '',
-            },
             tableData: []
         }
     },
@@ -51,18 +51,17 @@ export default {
     methods: {
         // 获取黑名单数据
         async getBlacklist() {
-          let res = await getApi('getBlacklist', null)
-          if(res.success) {
-            this.tableData = res.result
-          }
+          let res = await getApi('getTrafficRulesList', null)
+          if(res.success) { this.tableData = res.result }
         },
         // 点击新增黑名单
         add() {
-            this.rulesData.visible = true
-            this.rulesData.title = "新增"
+          this.$refs.modalForm.add()
+          this.$refs.modalForm.title = "新增规则"
         },
-        close() {
-          this.rulesData.visible = false
+        edit(row) {
+          this.$refs.modalForm.edit(row)
+          this.$refs.modalForm.title = "编辑规则"
         },
         // 取消新增黑名单
         cancelBlacklist() {
@@ -98,4 +97,13 @@ export default {
 /deep/ .has-gutter {
     color: #282c34;
 }  
+.edit-text {
+  color: #409eff;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.delete-text {
+  color: red;
+  cursor: pointer;
+}
 </style>
