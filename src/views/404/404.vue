@@ -2,7 +2,7 @@
     <div class="error">
         <span class="aaa">404</span> <br><br>
         <span class="bbb">访问的页面暂时迷路</span> <br><br><br>
-        <span class="bbb">请返回平台重新选择页面，谢谢！</span>
+        <span class="bbb">请您稍等,<span class='num'>{{num}}</span>秒后将返回首页!</span>
     </div>
 </template>
 
@@ -10,8 +10,21 @@
 export default {
     data() {
         return {
-            
+           num: 3, 
+           timer: '',
         }
+    },
+    created() {
+        this.timer = setInterval(() => {
+            setTimeout(() => {
+             if(this.num === 0) {
+                 this.$router.push('/')
+                 clearInterval(this.timer)
+             }else {
+                 this.num --
+             }
+            }, 1)
+        },1000)
     },
     methods: {
         
@@ -33,5 +46,8 @@ export default {
         font-size: 30px;
         color: #001529;
     }
+}
+.num {
+    font-weight: bold;
 }
 </style>
