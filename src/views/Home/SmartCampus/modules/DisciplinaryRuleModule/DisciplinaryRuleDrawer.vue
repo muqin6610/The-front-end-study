@@ -1,17 +1,19 @@
 <template>
   <el-drawer
-    :visible.sync="DisciplinaryRuleShow"
-    :before-close="submitForm"
+    :visible.sync="visible"
+    :before-close="close"
     :show-close='false'
-    title="编辑规则"
+    :title="title"
     size='30%'
     >
     <div>
       <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="80px" class="demo-ruleForm">
         <el-form-item label="时间">
           <el-time-picker
+            @change="selectChange"
             is-range
-            v-model="selectTime"
+            arrow-control
+            v-model="ruleForm.selectTime"
             range-separator="至"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
@@ -32,39 +34,47 @@
           textAlign: 'right',
         }"
       >
-        <el-button @click="submitForm">取 消</el-button>
-        <el-button type="primary" @click="resetForm">确 定</el-button>
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="handleOk">确 定</el-button>
     </div>
   </el-drawer>
 </template>
 
 <script>
 export default {
-    props: {
-      DisciplinaryRuleShow: {
-        type:Boolean,
-        default: false,
-      }
-    },
     data() {
         return {
-           ruleForm: {
-               starTime: '',
-               endTime: '',
-           },
-           selectTime: [],
+          title: '',
+          visible: false,
+          ruleForm: {
+              selectTime: [],
+          },
         }
     },
     methods: {
-        // 取消
-        submitForm() {
-          this.$emit('cancelDrawer')
-        },
-        // 确定
-        resetForm() {
-          this.$emit('cancelDrawer')
-          console.log(this.ruleForm.time)
-        },
+      selectChange(val) {
+        console.log(val)
+      },
+      add() {
+        this.edit({})
+      },
+      edit(row) {
+        this.visible = true
+        this.model = Object.assign({}, row)
+        this.$nextTick(() => {
+          if(this.model.id) {
+            let arr = this.model.time.split('-')
+            this.ruleForm.selectTime = arr
+          }
+        })
+      },
+      close() {
+        this.visible = false
+      },
+      handleCancel() { this.close() },
+      handleOk() {
+        this.close()
+      },
     },
 }
 </script>

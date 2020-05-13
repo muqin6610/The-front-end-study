@@ -13,12 +13,13 @@
           </el-table-column>
           <el-table-column label="操作" width='120'>
             <template slot-scope='scope'>
-              <span style='color:#409eff;margin-right:15px;cursor: pointer;'>编辑</span>
+              <span class="edit-text" @click="edit(scope.row)">编辑</span>
             </template>
           </el-table-column>
        </el-table>
       </div>
-      <DisciplinaryRuleDrawer :DisciplinaryRuleShow='DisciplinaryRuleShow' @cancelDrawer='cancelDrawer'/>
+      <!--新增违纪规则-->
+      <DisciplinaryRuleDrawer ref="ruleForm"/>
     </el-card>
 </template>
 
@@ -32,7 +33,6 @@ export default {
     },
     data() {
         return {
-           DisciplinaryRuleShow: false,
            tableData: [] 
         }
     },
@@ -43,27 +43,26 @@ export default {
         // 获取违纪规则数据
         async getDisciplinaryRule() {
             let res = await getApi('getDisciplinaryRule', null)
-            if(res.success) {
-                this.tableData = res.result
-            }
+            if(res.success) this.tableData = res.result
         },
         // 点击新增规则
-        addRule() {
-            this.DisciplinaryRuleShow = true
+        addRule() { 
+            this.$refs.ruleForm.add()
+            this.$refs.ruleForm.title = "新增规则"
         },
-        // 关闭抽屉
-        cancelDrawer() {
-            this.DisciplinaryRuleShow = false
+        // 编辑规则
+        edit(row) {
+            this.$refs.ruleForm.edit(row)
+            this.$refs.ruleForm.title = "编辑规则"
         },
         // 选择表格
         handleSelectionChange(val) {
           this.multipleSelection = []
-          // 添加选中的学生id到数组
-          for (let i = 0; i < val.length; i++) {
-              if (this.multipleSelection.indexOf(val[i].id) === -1) {
-                  this.multipleSelection.push(val[i].id)
+          val.forEach(item => {
+              if (this.multipleSelection.indexOf(item.id) === -1) {
+                  this.multipleSelection.push(item.id)
               }
-          }
+          })
         },
     },
 }
@@ -84,4 +83,9 @@ export default {
 /deep/ .has-gutter {
     color: #282c34;
 } 
+.edit-text {
+  color: #409eff;
+  margin-right: 15px;
+  cursor: pointer;
+}
 </style>
