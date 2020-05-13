@@ -349,6 +349,13 @@ export const constantRouterMap = [
                 title:'教师管理'
             } },
         { 
+            path: '/home/smartCampus/renewalCnter',
+            name: 'renewalCnter', 
+            component: () => import ('@/views/Home/SmartCampus/RenewalCnter.vue'), 
+            meta:{
+                title:'续费中心'
+            } },
+        { 
             path: '/home/myhomepage',
             name: 'myhomepage', 
             component: () => import ('@/views/Home/Users/myhomepage.vue'), 
