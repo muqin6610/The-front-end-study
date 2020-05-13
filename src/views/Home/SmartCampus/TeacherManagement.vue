@@ -111,7 +111,7 @@
     <!--批量添加老师-->
     <BatchTeacherDialog :batchAddObj='batchAddObj' @close='shutDownAdd'/>
     <!--编辑教师人员弹窗-->
-    <EditPersonDialog :editPersonObj='editPersonObj' @close='shutDownEditPerson'/>
+    <EditPersonDialog ref="editForm"/>
   </el-card>
 </template>
 
@@ -122,7 +122,6 @@
   import { getApi, deleteApi } from '@/api/api.js'
 
   export default {
-    name: "TemperatureLogList",
     components: {
       TeacherDialog,
       EditPersonDialog,
@@ -203,18 +202,7 @@
         data === 'ok' ? this.getListTeacher() : ''
       },
       // 编辑人员
-      editPerson(data) {
-        this.editPersonObj = {
-          showEditPerson: true,
-          personDatas: data,
-          teacherVal: this.rolesTitle,
-        }
-      },
-      // 退出编辑教师人员弹窗
-      shutDownEditPerson(data) {
-        this.editPersonObj.showEditPerson = false
-        data === 'ok' ? this.getListTeacher() : ''
-      },
+      editPerson(row) { this.$refs.editForm.edit(row) },
       // 删除人员
        deletePerson(id) {
          MessageBox.confirm("你确定删除吗?", '提示', {

@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { getApi } from '@/api/api.js'
+import { getApi, postApi } from '@/api/api.js'
 
 export default {
     data() {
@@ -228,13 +228,13 @@ export default {
 
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            let res = await postAction(this.url.addTeacher, this.ruleForm)
+            let res = await postApi("addTeacher", this.ruleForm)
             if(res.success) {
-                Message.success(res.message)
-                this.close()
+                this.$message.success(res.message)
             }else {
-                Message.warning(res.message)
+                this.$message.warning(res.message)
             }
+            this.close()
           } else {
             console.log('error submit!!')
             return false
