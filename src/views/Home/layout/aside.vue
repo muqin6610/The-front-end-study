@@ -78,6 +78,7 @@ export default {
                               { path: '/home/smartCampus/disciplinaryStatistics', name:'违纪统计' },
                               { path: '/home/smartCampus/deviceManagement', name:'设备管理' },
                               { path: '/home/smartCampus/trafficRulesList', name:'通行规则' },
+                              { path: '/home/smartCampus/teacherManagement', name:'教师管理' },
                             ] },
                             { path: '/home/swatAuxiliary', name:'特警辅助', class:'el-icon-user-solid', children: [
                               { path: '/home/swatAuxiliary/tableDemo', name:'成绩考核表格' },

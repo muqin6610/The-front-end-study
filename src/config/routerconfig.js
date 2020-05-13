@@ -341,7 +341,13 @@ export const constantRouterMap = [
             meta:{
                 title:'通行规则'
             } },
-
+        { 
+            path: '/home/smartCampus/teacherManagement',
+            name: 'teacherManagement', 
+            component: () => import ('@/views/Home/SmartCampus/TeacherManagement.vue'), 
+            meta:{
+                title:'教师管理'
+            } },
         { 
             path: '/home/myhomepage',
             name: 'myhomepage', 
