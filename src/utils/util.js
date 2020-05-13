@@ -239,7 +239,7 @@ export function transFormat(str, l, r) {
 *@return json: ymdhms: yyy-mm-dd hh:mm:ss, yyyy-mm-dd h:m, yyyy-mm-dd, mm-dd, hh:mm:ss, hh:mm,
 *yyyy年mm月dd日 hh:mm:ss, ymd: yyyy年mm月dd日, mm月dd日
  */
-dateFormat(D) {
+export function dateFormat(D) {
   let date = new Date(D)
   let year = date.getFullYear()
   // 日期格式中月份是从0开始因此要加上1
@@ -259,4 +259,4 @@ dateFormat(D) {
     ymdCN: year + "年" + month + "月" + day + "日",
     mdCN: month + "月" + day + "日",
   }
-},
+}

@@ -4,6 +4,7 @@
       <div style='float:left'>
         <span style='margin-right: 20px'>日期</span>
         <el-date-picker
+          :clearable="false"
           v-model="selectDate"
           type="date"
           value-format="yyyy-MM-dd"
@@ -11,6 +12,7 @@
         </el-date-picker>
         <span style='margin-right: 20px;margin-left:20px;'>班级</span>
         <el-select v-model="selectClass" placeholder="请选择班级">
+          <el-option label="全部" value="0"></el-option>
           <el-option
             v-for="item in classDatas"
             :key="item.value"
@@ -64,7 +66,7 @@
        :total="tableData.length">
      </el-pagination>
     </div>
-    <DisciplinaryStatisticsDialog :statisticsObj='statisticsObj'/>
+    <DisciplinaryStatisticsDialog ref="statisticsForm"/>
   </el-card>
 </template>
 
@@ -73,6 +75,7 @@ import DisciplinaryStatisticsDialog from './modules/DisciplinaryStatisticsModule
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 import { getApi } from '@/api/api.js'
+import { dateFormat } from '@/utils/util.js'
 
 export default {
     components: {
@@ -80,47 +83,31 @@ export default {
     },
     data() {
         return {
-            // 选择的日期
             selectDate: '',
-            // 搜索的数据
             search: '',
-            // 当前页
             currentPage: 1,
-            // 选择的班级
             selectClass: '',
-            // 班级数据源
             classDatas: [],
-            // 传递给弹出框
-            statisticsObj: {
-              statisticsShow: false,
-              name: '',
-              date: '',
-              date: '',
-              month: '',
-            },
             tableData: [],
         }
     },
     created() {
+      this.selectDate = dateFormat(new Date()).ymd
+      this.selectClass = '0'
+    },
+    mounted() {
       this.getClassData()
+      this.getPersonnel()
     },
     watch:{
       selectDate(val,oldVal){
         if(oldVal !== val) {
-          if(this.selectClass) {
-            this.getPersonnel()
-          }else {
-            return false
-          }
+          if(this.selectClass) this.getPersonnel()
         }
       },
       selectClass(val,oldVal) {
         if(oldVal !== val) {
-          if(this.selectDate) {
-            this.getPersonnel()
-          }else {
-            return false
-          }
+          if(this.selectDate) this.getPersonnel()
         }
       }
     },
@@ -128,17 +115,13 @@ export default {
         // 获取班级
         async getClassData() {
           let res = await getApi('getClassData', null)
-          if(res.success) {
-            this.classDatas = res.result
-          }
+          if(res.success) this.classDatas = res.result
         },
         // 获取人员
         async getPersonnel() {
           this.tableData = []
           let res = await getApi('getPersonnel', null)
-          if(res.success) {
-            this.tableData = res.result
-          }
+          if(res.success) this.tableData = res.result
         },
         // 搜索
         clickSearch() {
@@ -146,24 +129,16 @@ export default {
         },
         // 查看详情
         lookDetail(row) {
-          if(this.selectDate) {
-            let arr = this.selectDate.split('-')
-            this.statisticsObj = {
-              statisticsShow: true,
-              name: row.name,
-              img: row.img,
-              date: this.selectDate,
-              month: arr[1],
-            }
-          }else {
-            this.$message.warning('请先选择日期再查看详情!')
-          }
+          row.date = this.selectDate
+          let arr = this.selectDate.split('-')
+          this.$refs.statisticsForm.show(row)
+          this.$refs.statisticsForm.title = `${row.name}${arr[1]}月考勤统计详情`
         },
         handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+          console.log(`每页 ${val} 条`)
         },
         handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
+          console.log(`当前页: ${val}`)
         },
         //导出表格方法
         exportExcel(){
