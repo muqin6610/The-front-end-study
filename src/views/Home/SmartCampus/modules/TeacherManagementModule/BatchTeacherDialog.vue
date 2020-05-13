@@ -1,20 +1,16 @@
 <template>
-  <a-drawer
-      @close="shutDown"
-      :visible="this.batchAddObj.batchAddDrawer"
-      custom-class="demo-drawer"
-      ref="drawer"
-      :closable='false'
-      :with-header='false'
-      :width="550"
-      :wrapStyle="{height: 'calc(100% - 108px)',overflow: 'auto',paddingBottom: '108px'}"
+  <el-drawer
+      :before-close="close"
+      :visible.sync="visible"
+      size="550px"
+      :show-close='false'
+      :title="title"
       >
-      <div class='a-drawer-title'>{{$t('m.teacherManagement.addBulk')}}</div>
       <div class='demo-drawer__contnet'>
-        <span style='font-size: 18px;'>{{$t('m.teacherManagement.bulkUploadTips')}}</span>
+        <span style='font-size: 18px;'>批量上传仅支持ZIP格式文件，请将照片按照姓名_账号.jpg命名,默认密码为:123456</span>
         <div class="role-box">
-          <span style="margin-right: 15px;">{{$t('m.teacherManagement.role')}}</span>
-          <el-select style="width:40%" v-model="personRoleId" :placeholder="$t('m.teacherManagement.selectRole')">
+          <span style="margin-right: 15px;">选择角色</span>
+          <el-select style="width:40%" v-model="personRoleId" placeholder="请选择角色">
             <el-option
               v-for="item in roleDatas"
               :key="item.id"
@@ -28,62 +24,61 @@
             style='padding-top: 20px;'
             class="upload-demo"
             drag
-            :headers="headers"
             :before-upload='beforeUpload'
             :on-change = 'handleChange'
             :on-progress="beforeProgress" 
             :show-file-list="false"
-            :action="uploadFile">
+            action="https://jsonplaceholder.typicode.com/posts/">
             <i class="el-icon-upload"></i>
-            <div class="el-upload__text">{{$t('m.teacherManagement.dragTheFile')}}<em>{{$t('m.teacherManagement.clickUpload')}}</em></div>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           </el-upload>
           <el-progress v-if='percentage > 0' style='padding-top: 10px;' :percentage="percentage" :format="format" :color="customColor"></el-progress>
           <div style='padding-top: 10px;'>
-            <a href='#' @click="downloadImportZip()">{{$t('m.teacherManagement.downloadTemplate')}}</a>
+            <a href='#' @click="downloadImportZip()">点击下载模板</a>
           </div>
 
           <div v-if='showUploadTbale' class='upload-table-box'>
             <div class='upload-tabs-title-box'>
-              <span>{{$t('m.teacherManagement.thisBatchUpload')}}{{uploadFileData.successNumber + uploadFileData.errorNumber}}{{$t('m.teacherManagement.peopleSuccess')}}{{uploadFileData.successNumber ? uploadFileData.successNumber : 0}}{{$t('m.teacherManagement.peopleFailure')}}{{uploadFileData.errorNumber ? uploadFileData.errorNumber : 0}}{{$t('m.classManagement.peopleFailureDetails')}}</span>
+              <span>本次批量上传{{uploadFileData.successNumber + uploadFileData.errorNumber}}成功{{uploadFileData.successNumber ? uploadFileData.successNumber : 0}}失败{{uploadFileData.errorNumber ? uploadFileData.errorNumber : 0}}点击查看失败详情。</span>
             </div>
             <el-tabs v-model="uploadActiveName">
-              <el-tab-pane :label="$t('m.teacherManagement.successList')" name="uploadFirst">
+              <el-tab-pane label="成功列表" name="uploadFirst">
                 <el-table :data="successDatas" style="width: 100%">
-                 <el-table-column prop="faceImg" :label="$t('m.teacherManagement.photo')">
+                 <el-table-column prop="faceImg" label="照片">
                    <template slot-scope="scope">
                     <span style='display:none'>{{scope.row.faceImg}}</span>
                     <el-popover
                       placement="right"
                       width="200"
                       trigger="click">
-                      <img :src="getAvatarView(scope.row.faceImg)" width="100%" height="100%"/>
-                      <img style='cursor:pointer;border-radius:5px' slot="reference" :src="getAvatarView(scope.row.faceImg)" width="30" height="30"/>
+                      <img :src="scope.row.faceImg" width="100%" height="100%"/>
+                      <img style='cursor:pointer;border-radius:5px' slot="reference" :src="scope.row.faceImg" width="30" height="30"/>
                     </el-popover>
                    </template>
                  </el-table-column>
-                 <el-table-column prop="realName" :label="$t('m.teacherManagement.name')">
+                 <el-table-column prop="realName" label="姓名">
                  </el-table-column>
-                 <el-table-column prop="username" :label="$t('m.teacherManagement.accountNumber')">
+                 <el-table-column prop="username" label="账号">
                  </el-table-column>
                </el-table>
               </el-tab-pane>
-              <el-tab-pane :label="$t('m.teacherManagement.failureList')" name="uploadSecond">
+              <el-tab-pane label="失败列表" name="uploadSecond">
                 <el-table :data="failureDatas" style="width: 100%">
-                 <el-table-column prop="faceImg" :label="$t('m.teacherManagement.photo')">
+                 <el-table-column prop="faceImg" label="照片">
                    <template slot-scope="scope">
                     <span style='display:none'>{{scope.row.faceImg}}</span>
                     <el-popover
                       placement="right"
                       width="200"
                       trigger="click">
-                      <img :src="getAvatarView(scope.row.faceImg)" width="100%" height="100%"/>
-                      <img style='cursor:pointer;border-radius:5px' slot="reference" :src="getAvatarView(scope.row.faceImg)" width="30" height="30"/>
+                      <img :src="scope.row.faceImg" width="100%" height="100%"/>
+                      <img style='cursor:pointer;border-radius:5px' slot="reference" :src="scope.row.faceImg" width="30" height="30"/>
                     </el-popover>
                    </template>
                  </el-table-column>
-                 <el-table-column prop="realName" :label="$t('m.teacherManagement.name')">
+                 <el-table-column prop="realName" label="姓名">
                  </el-table-column>
-                 <el-table-column prop="passengerCode" :label="$t('m.teacherManagement.accountNumber')">  
+                 <el-table-column prop="passengerCode" label="账号">  
                  </el-table-column>
                </el-table>
               </el-tab-pane>
@@ -102,128 +97,64 @@
         textAlign: 'right',
       }"
     >
-<!--      <el-button @click="shutDown">{{$t('m.teacherManagement.cancel')}}</el-button>-->
-      <el-button type="primary" @click='determine'>{{$t('m.teacherManagement.determine')}}</el-button>
+      <el-button type="primary" @click='handleOk'>确定</el-button>
     </div>
-    </a-drawer>
+    </el-drawer>
 </template>
 
 <script>
-
+import { getApi } from '@/api/api.js'
+import { setStore, getStore } from '@/utils/storage.js'
 export default {
-    props: {
-        batchAddObj: {
-            batchAddDrawer: {
-                type: Boolean,
-                default: false,
-            },
-        }
-    },
     data() {
         return {
+          title: '批量添加',
+          visible: false,
           orgCode: '',
           personRoleId: '',
           roleDatas: [],
-          // 上传进度条
           percentage: 0,
-          // 默认选中的上传成功和失败列表
           uploadActiveName: 'uploadFirst',
-          // 上传文件的失败数据
           failureDatas: [],
-          // 上传文件成功后的数据
           successDatas: [],
-          // 文件上传返回的数据
           uploadFileData: {},
-          // 控制上传成功后表格的显示和隐藏
           showUploadTbale: false,
-          // 上传组件的头部设置
-          headers:{},
-          url: {
-            // 教师角色添加
-            add: "/park/teacherRole/add",
-            // 下载模板
-            downloadImportZips:"/park/passenger/downloadImportZips",
-            // 文件上传
-            importUploadFile:window._CONFIG['domianURL']+'/park/teacherManege/importUploadFilePassenger2',
-            // 回显照片地址
-            imgerver: window._CONFIG['domianURL']+"/sys/common/view",
-            // 获取学校角色
-            getSchoolRoleList: '/park/schoolRole/getSchoolRoleList',
-          },
         }
     },
-    watch: {
-       batchAddObj:{
-         handler(newVal, oldVal) {
-               if(newVal.batchAddDrawer){
-                 this.getSchoolRoleList()
-               }
-           },
-           deep: true
-       }
-    },
     created() {
-      // 获取token
-      const token = Vue.ls.get(ACCESS_TOKEN)
-      this.headers = {"X-Access-Token":token}
-
-      // 获取orgCode
-      this.orgCode = getStore("pro__Login_Userinfo").value.orgCode
-    },
-    computed:{
-      // 文件上传
-      uploadFile() {
-        const deptId = this.personRoleId
-        const sysOrgCode = this.orgCode
-        let formData = new FormData()
-        formData.append("deptId",deptId)
-        formData.append("sysOrgCode",sysOrgCode)
-        return this.url.importUploadFile+"/"+deptId+"/"+sysOrgCode
-      }
+      this.orgCode = getStore("userInfo").orgCode
     },
     methods: {
+      add() {
+        this.getSchoolRoleList()
+        this.visible = true
+      },
+      close() {
+        this.visible = false
+        this.showUploadTbale = false
+        this.percentage = 0
+        this.$refs.upload.clearFiles()
+      },
       // 获取学校角色
       async getSchoolRoleList() {
-        let res = await getAction(this.url.getSchoolRoleList, null)
+        let res = await getApi('getSchoolRoleList', null)
         if(res.success) {
           this.roleDatas = res.result
-          if(this.roleDatas === null || !this.roleDatas.length) {return false}
+          if(this.roleDatas === null || !this.roleDatas.length) return false
           this.personRoleId = this.roleDatas[0].id
         }
       },
-      // 取消
-      shutDown() {
-        this.$emit('close')
-        // 关闭成功失败列表
-        this.showUploadTbale = false
-        // 清空已上传的文件列表
-        this.$refs.upload.clearFiles()
-        // 重置进度条
-        this.percentage = 0
-      },
       // 确定
-      determine() {
-        this.$emit('close', 'ok')
-        // 关闭成功失败列表
-        this.showUploadTbale = false
-        // 重置进度条
-        this.percentage = 0
-        // 清空已上传的文件列表
-        this.$refs.upload.clearFiles()
-      },
-      // 照片地址拼接
-      getAvatarView: function (avatar) {
-        return this.url.imgerver + "/" + avatar
-      },
+      handleOk() { this.close() },
        // 文件上传前的钩子
        beforeUpload: function(file){
         if(!this.personRoleId) {
-          Message.warning(this.$t('m.teacherManagement.addBulkPrompt'))
+          this.$message.warning("请先选择角色,再上传文件")
           return false
         }
         let fileType = file.type
         if(fileType.indexOf('zip') < 0){
-          Message.warning(this.$t('m.teacherManagement.pleaseInputImgFile'))
+          this.$message.warning("上传的文件必须为zip格式")
           return false
         }
         //TODO 验证文件大小
@@ -234,17 +165,13 @@ export default {
          console.log(file,'上传状态')
          if (status === "success") {
            this.percentage = 100
-           // 打开上传成功后的表格
            this.showUploadTbale = true
-           // 保存上传文件返回的数据
            this.uploadFileData = file.response.result
-           // 失败数据
            this.failureDatas = file.response.result.passengerFailureList
-           // 成功数据
            this.successDatas = file.response.result.passengerList
   
          } else if (status === "fail") {
-           Message.error(`${file.name} file upload failed.`)
+           this.$message.error(`${file.name} file upload failed.`)
          }
        },
        // 上传文件的进度
@@ -253,7 +180,7 @@ export default {
          loadProgress == 100 ? this.percentage = 99 : this.percentage = loadProgress
        },
        format() {
-        return this.percentage === 100 ? this.$t('m.teacherManagement.carryOut') : `${this.percentage}%`;
+        return this.percentage === 100 ? "完成" : `${this.percentage}%`;
       },
       customColor(percentage) {
         if (percentage < 70) {
@@ -275,7 +202,7 @@ export default {
             a.click()
             document.body.removeChild(a)
           }else {
-            Message.error(response.data.message)
+            this.$message.error(response.data.message)
           }
         }).catch(function (error) {
           console.log(error)
@@ -286,16 +213,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 批量添加老师抽屉标题
-.a-drawer-title {
-    line-height: 60px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #21252b;
-    border-bottom: 1px solid #dcdfe6;
-    padding-left: 15px;
-    margin-bottom: 20px;
-}
+// 抽屉标题
+/deep/ .el-drawer__header {
+  font-size: 30px;
+  font-weight: bold;
+  color: #21252b;
+  border-bottom: 1px solid #dcdfe6;
+  padding-left: 15px;
+  margin-bottom: 20px;
+} 
 // 上传区域
 /deep/ .el-upload-dragger {
   background: #f2f2f2;
@@ -307,5 +233,12 @@ export default {
 }
 .role-box {
   margin-top: 20px;
+}
+.demo-drawer__contnet {
+  margin-left: 40px;
+}
+a {
+  color: #1890ff;
+  text-decoration: none;
 }
 </style>

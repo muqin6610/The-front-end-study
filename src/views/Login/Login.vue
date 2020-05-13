@@ -45,7 +45,7 @@ export default {
     created() {
       // 判断是否选择了记住密码
       if(getStore('checked') === 'true') {
-         let { username, password } = getStore('userInfo')
+         let { username, password } = getStore('accountData')
          this.checked = true
          this.ruleForm = {
            username: username,
@@ -62,9 +62,9 @@ export default {
             if(res.success) {
               this.$message.success(res.message)
               setStore('checked', this.checked)
-              setStore('userInfo', this.ruleForm)
+              setStore('accountData', this.ruleForm)
               setStore('token', res.token)
-              //跳转到首页
+              setStore('userInfo', res.userInfo)
               this.$router.push('/')
             }else {
               this.$message.error(res.message)

@@ -109,7 +109,7 @@
     <!--新建老师抽屉--> 
     <TeacherDialog ref="teacherForm"/>
     <!--批量添加老师-->
-    <BatchTeacherDialog :batchAddObj='batchAddObj' @close='shutDownAdd'/>
+    <BatchTeacherDialog ref="batchForm"/>
     <!--编辑教师人员弹窗-->
     <EditPersonDialog ref="editForm"/>
   </el-card>
@@ -129,20 +129,6 @@
     },
     data () {
       return {
-        // 传递给新建老师抽屉 
-        teacherObj: {
-            teacherDrawer: false,
-        },
-        // 传递给批量新建老师
-        batchAddObj: {
-          batchAddDrawer: false,
-        },
-        // 传递给编辑人员弹窗
-        editPersonObj: {
-          showEditPerson: false,
-          personDatas: {},
-          teacherVal: '',
-        },
         defaultImg: 'this.src="' + require('../../../assets/image/Snipaste_2019-11-27_10-07-38.png') +'"',
         total: null,
         pageSize: 10,
@@ -168,7 +154,7 @@
       // 获取学校角色
       async getSchoolRoleList() {
         let res = await getApi('getSchoolRoleList', null)
-        if(res.success) { this.roleDatas = res.result }
+        if(res.success) this.roleDatas = res.result
       },
       // 获取教师人员
       async getListTeacher(pageNo, pageSize) {
@@ -195,23 +181,18 @@
       // 添加老师
       newteacher() { this.$refs.teacherForm.add() },
       // 批量添加老师
-      batchAdd() { this.batchAddObj.batchAddDrawer = true },
-      // 关闭批量添加老师
-      shutDownAdd(data) {
-        this.batchAddObj.batchAddDrawer = false
-        data === 'ok' ? this.getListTeacher() : ''
-      },
+      batchAdd() { this.$refs.batchForm.add() },
       // 编辑人员
       editPerson(row) { this.$refs.editForm.edit(row) },
       // 删除人员
        deletePerson(id) {
-         MessageBox.confirm("你确定删除吗?", '提示', {
+         this.$confirm("你确定删除吗?", '提示', {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: 'warning'
         }).then(async () => {
 
-          let res = await deleteAction(this.url.delete, {id: id})
+          let res = await deleteApi('deleteTeacher', {id: id})
           if(res.success) {
               this.$message.success(res.message)
               this.getListTeacher()
@@ -219,7 +200,7 @@
               this.$message.warning(res.message)
           }
         }).catch(() => {
-          Message({
+          this.$message({
             type: 'info',
             message: "取消删除"
           })        
@@ -228,16 +209,13 @@
        // 批量删除人员
        batchDelete() {
         if(this.multipleSelection.length != 0){
-            MessageBox.confirm("你确定删除吗?", '提示', {
+            this.$confirm("你确定删除吗?", '提示', {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: 'warning'
           }).then(async () => {
-              this.delLoading = true;
-            //将数组转为字符串用逗号隔开
             let ids = this.multipleSelection.join(',')
-            let res = await deleteAction(this.url.deleteBatch,{ids: ids})
-            this.delLoading = false;
+            let res = await deleteApi('batchTeacher',{ids: ids})
             if(res.success){
               this.$message.success(res.message)
               this.getListTeacher()
@@ -245,7 +223,7 @@
               this.$message.error(res.message)
             }
           }).catch(() => {
-            Message({
+            this.$message({
               type: 'info',
               message: "取消删除"
             });          
@@ -254,8 +232,6 @@
           this.$message.warning("请选择需要删除的人员")
         }
        },
-      // 取消编辑
-      shutDownEdit() { this.editRoleDialog.showEditDialog = false },
       // 选择角色
       changRole() { this.getListTeacher() },
       // 搜索
@@ -273,14 +249,12 @@
       sizeChange(val) { this.getListTeacher(1, val) },
       // 选择表格
       handleSelectionChange(val) {
-        // 清除旧值以本次为准
         this.multipleSelection = []
-        // 添加选中的学生id到数组
-        for (let i = 0; i < val.length; i++) {
-            if (this.multipleSelection.indexOf(val[i].id) === -1) {
-                this.multipleSelection.push(val[i].id)
+        val.forEach(item => {
+            if (this.multipleSelection.indexOf(item.id) === -1) {
+                this.multipleSelection.push(item.id)
             }
-        }
+        })
       },
     }
   }
