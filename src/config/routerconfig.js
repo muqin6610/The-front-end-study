@@ -330,7 +330,7 @@ export const constantRouterMap = [
         { 
             path: '/home/smartCampus/blacklist',
             name: 'blacklist', 
-            component: () => import ('@/views/Home/SmartCampus/blacklist.vue'), 
+            component: () => import ('@/views/Home/SmartCampus/Blacklist.vue'), 
             meta:{
                 title:'黑名单列表'
             } },

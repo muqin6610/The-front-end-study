@@ -76,20 +76,52 @@ export default {
     methods: {
       close() {
         this.visible = false
+        this.$refs.ruleForm.resetFields()
       },
       add() {
         this.edit({})
       },
       edit(row) {
         this.visible = true
+        this.model = Object.assign({}, row)
+        console.log(this.model)
+        this.$nextTick(() => {
+          if(this.model.id) {
+            this.ruleForm = {
+              realName: this.model.name,
+              type: this.model.type,
+              faceImg: this.model.img,
+            }
+          }
+        })
       },
       // 取消
       handleCancel() {
         this.close()
       },
       // 确定
-      handleOk() {
-        this.close()
+      handleOk(ruleForm) {
+        this.$refs[ruleForm].validate(async (valid) => {
+          if (valid) {
+            let formData = this.form
+            let res = ''
+            if(!this.model.id){
+              res = await postApi('addBlacklist', formData)
+            }else{
+              res = await putApi('editBlacklist', formData)
+            }
+            console.log(res)
+            if(res.success){
+              this.$message.success(res.message)
+            }else{
+              this.$message.warning(res.message)
+            }
+            this.close()
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
       // 照片上传时
       beforeAvatarUpload(file) {
