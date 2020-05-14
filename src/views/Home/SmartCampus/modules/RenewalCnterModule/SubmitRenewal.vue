@@ -9,22 +9,22 @@
         <div class='left-box'>
           <el-form class='el-form-left' label-width="120px">
             <el-form-item label="打款方:">
-              <span class='span-text'>深圳市宝马科技股份有限公司附属分公司</span>
+              <span class='span-text'>{{moneyMaker}}</span>
             </el-form-item>
             <el-form-item label="纳税人识别号:">
-              <span class='span-text'>4235452125464412359X</span>
+              <span class='span-text'>{{form.identifier}}</span>
             </el-form-item>
             <el-form-item label="联系人:">
-              <span class='span-text'>钦先生</span>
+              <span class='span-text'>{{form.contactPerson}}</span>
             </el-form-item>
             <el-form-item label="电话号码:">
-              <span class='span-text'>19564646635</span>
+              <span class='span-text'>{{form.phone}}</span>
             </el-form-item>
             <el-form-item label="打款金额:">
-              <span class='span-text'>38,000元</span>
+              <span class='span-text'>{{form.amount}}</span>
             </el-form-item>
             <el-form-item label="打款项目:">
-              <span class='span-text'>购买2019-11-01至2020-11-01系统服务外加升级</span>
+              <span class='span-text'>购买{{this.dateRange}}系统服务外加升级</span>
             </el-form-item>
           </el-form>
         </div>
@@ -71,14 +71,45 @@
 </template>
 
 <script>
+import { getStore } from '@/utils/storage.js'
+import { dateFormat } from '@/utils/util'
+
   export default {
     data() {
         return {
             active: 1,
+            form: {},
+            moneyMaker: '',
+            dateRange: '',
         }
     },
     created() {
-
+      let toDay = dateFormat(new Date()).ymd
+      let year = dateFormat(new Date()).y
+      let month = dateFormat(new Date()).m
+      let day = dateFormat(new Date()).d
+      this.moneyMaker = getStore('userInfo').departName
+      this.form = getStore('renewalForm')
+      
+      switch(this.form.yearNum) {
+        case '一年':
+          this.dateRange = `${toDay}至${year + 1}-${month}-${day}`
+          break
+        case '两年':
+          this.dateRange = `${toDay}至${year + 2}-${month}-${day}`
+          break
+        case '三年':
+          this.dateRange = `${toDay}至${year + 3}-${month}-${day}`
+          break
+        case '四年':
+          this.dateRange = `${toDay}至${year + 4}-${month}-${day}`
+          break
+        case '大于五年':
+          this.dateRange = `${toDay}至${year + 5}-${month}-${day}之后`
+          break
+        default:
+          break
+      }
     },
     methods: {
       goHomePage() {

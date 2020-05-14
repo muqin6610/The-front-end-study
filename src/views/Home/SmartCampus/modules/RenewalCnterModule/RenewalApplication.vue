@@ -3,7 +3,7 @@
     <el-card class='el-card'>
         <span class='title-text'>设备数量</span>
         <div class='radio-box'>
-            <el-radio-group v-model="radio1">
+            <el-radio-group v-model="deviceNumber">
               <el-radio-button label="10">小于10台</el-radio-button>
               <el-radio-button label="30">小于30台</el-radio-button>
               <el-radio-button label="100">小于100台</el-radio-button>
@@ -15,35 +15,55 @@
     <el-card class='el-card'>
         <span class='title-text'>续费金额</span>
         <div class='card-box'>
-          <div class='item-card' @click='clickImte(0)'>
+          <div class='item-card' @click="clickImte({
+            index: 0,
+            amount: '3800元',
+            yearNum: '一年',
+          })">
             <div class='icon-box'>
               <i class='el-icon-check'></i>
             </div>
             <div class='amount-box'>3800元</div>
             <div class='time-box'>一年</div>
           </div>
-          <div class='item-card' @click='clickImte(1)'>
+          <div class='item-card' @click="clickImte({
+            index: 1,
+            amount: '5800元',
+            yearNum: '两年',
+          })">
             <div class='icon-box'>
               <i class='el-icon-check'></i>
             </div>
             <div class='amount-box'>5800元</div>
             <div class='time-box'>两年</div>
           </div>
-          <div class='item-card' @click='clickImte(2)'>
+          <div class='item-card' @click="clickImte({
+            index: 2,
+            amount: '11000元',
+            yearNum: '三年',
+          })">
             <div class='icon-box'>
               <i class='el-icon-check'></i>
             </div>
             <div class='amount-box'>11000元</div>
             <div class='time-box'>三年</div>
           </div>
-          <div class='item-card' @click='clickImte(3)'>
+          <div class='item-card' @click="clickImte({
+            index: 3,
+            amount: '13000元',
+            yearNum: '四年',
+          })">
             <div class='icon-box'>
               <i class='el-icon-check'></i>
             </div>
             <div class='amount-box'>13000元</div>
             <div class='time-box'>四年</div>
           </div>
-          <div class='item-card' @click='clickImte(4)'>
+          <div class='item-card' @click="clickImte({
+            index: 4,
+            amount: '20000元',
+            yearNum: '大于五年',
+          })">
             <div class='icon-box'>
               <i class='el-icon-check'></i>
             </div>
@@ -106,16 +126,20 @@
         </div>
     </el-card>
     <div>
-        <el-button type='primary' @click='submit'>确认提交</el-button>
+        <el-button type='primary' @click="handleOk('ruleForm')">确认提交</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import { setStore } from '@/utils/storage.js'
+
   export default {
     data() {
         return {
-            radio1: '',
+            amount: '',
+            deviceNumber: '',
+            yearNum: '',
             ruleForm: {
               Invoice: '',
               identifier: '',
@@ -124,48 +148,44 @@
             },
             rules: {
               Invoice: [
-                { required: true, validator: 'validatePass', trigger: 'blur' }
+                { required: true, message: '请输入发票抬头', trigger: 'blur' }
               ],
               identifier: [
-                { required: true, validator: 'validatePass2', trigger: 'blur' }
+                { required: true, message: '请输入纳税人识别号', trigger: 'blur' }
               ],
               contactPerson: [
-                { required: true, validator: 'checkAge', trigger: 'blur' }
+                { required: true, message: '请输入联系人', trigger: 'blur' }
               ],
               phone: [
-                { required: true, validator: 'checkAge', trigger: 'blur' }
+                { required: true, message: '请输入电话号码', trigger: 'blur' }
               ]
             }
         }
     },
     methods: {
-        submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
+        handleOk(ruleForm) {
+          this.$refs[ruleForm].validate((valid) => {
             if (valid) {
-              alert('submit!')
+              let formData = Object.assign({}, this.ruleForm, {deviceNumber: this.deviceNumber, amount: this.amount, yearNum: this.yearNum})
+              setStore('renewalForm', formData)
+              this.$router.push('/home/smartCampus/submitRenewal')
+              this.$refs.ruleForm.resetFields()
             } else {
               console.log('error submit!!')
               return false
             }
-          });
+          })
         },
-        resetForm(formName) {
-          this.$refs[formName].resetFields()
-        },
-        submit() {
-            this.$router.push('/home/smartCampus/submitRenewal')
-        },
-        clickImte(index) {  
+        clickImte(obj) {  
+          this.amount = obj.amount
+          this.yearNum = obj.yearNum
           let itemName =  document.getElementsByClassName("item-card")
           let icon = document.getElementsByClassName("el-icon-check")
-          // 判断类名的添加和移除
           for(let i = 0;i < itemName.length;i++) {
-              if(i === index) {
-                  // 给当前点击元素添加类名
+              if(i === obj.index) {
                   itemName[i].classList.add("blueColor")
                   icon[i].classList.add('iconColor')
               }else {
-                  // 移除其他元素的类名
                   itemName[i].classList.remove("blueColor")
                   icon[i].classList.remove('iconColor')
               }

@@ -258,5 +258,8 @@ export function dateFormat(D) {
     ymdhmsCN: year + "年" + month + "月" + day + "日" + " " + hours + ":" + minutes + ":" + seconds,
     ymdCN: year + "年" + month + "月" + day + "日",
     mdCN: month + "月" + day + "日",
+    y: year,
+    m: month,
+    d: day
   }
 }
