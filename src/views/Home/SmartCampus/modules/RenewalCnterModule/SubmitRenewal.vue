@@ -20,9 +20,6 @@
             <el-form-item label="电话号码:">
               <span class='span-text'>19564646635</span>
             </el-form-item>
-            <el-form-item label="电话号码:">
-              <span class='span-text'>19564646635</span>
-            </el-form-item>
             <el-form-item label="打款金额:">
               <span class='span-text'>38,000元</span>
             </el-form-item>
@@ -81,13 +78,11 @@
         }
     },
     created() {
-        this.$bus.$on("submitData", data => {
-          console.log(data,'111111')
-        })
+
     },
     methods: {
       goHomePage() {
-        this.$router.push('/')
+        this.$router.push('/home/smartCampus/renewalCnter')
       }
     },
   }
@@ -125,7 +120,7 @@
   margin-bottom: 0
 }
 .el-form-right {
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .icon-qian {
   font-size: 30px;

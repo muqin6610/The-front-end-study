@@ -13,7 +13,7 @@
             :header-cell-style="{background:'#fafafa',color:'#2c2626'}">
             <el-table-column prop="passengerCode" label="操作类型" align='center'>
             </el-table-column>
-            <el-table-column align='center' prop="name" label="申请内容">
+            <el-table-column show-overflow-tooltip align='center' prop="name" label="申请内容">
             </el-table-column>
             <el-table-column align='center' prop="departName" label="操作时间">
             </el-table-column>

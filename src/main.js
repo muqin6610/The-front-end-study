@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 
+import vueBus from './utils/eventBus'
+Vue.use(vueBus)
+
 import myaxios from "./utils/axios"
 Vue.use(myaxios)
 
@@ -16,11 +19,11 @@ import VueCropper from 'vue-cropper'
 Vue.use(VueCropper)
 
 // 引入日历
-import { calendar } from "./utils/calendar";
+import { calendar } from "./utils/calendar"
 Vue.prototype.$calendar = calendar
 
 // 引入日期时间计算转化插件
-import { timeDate } from "./utils/timeDate";
+import { timeDate } from "./utils/timeDate"
 Vue.prototype.$timeDate = timeDate
 
 // 引入打印

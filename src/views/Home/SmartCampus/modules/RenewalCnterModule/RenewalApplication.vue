@@ -56,17 +56,17 @@
         <span class='title-text'>发票信息</span>
         <div class='form-box'>
             <el-form size="small" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
-              <el-form-item label="发票抬头" prop="pass" style="width: 450px;">
-                <el-input type="text" v-model="ruleForm.pass" placeholder="请输入发票抬头"></el-input>
+              <el-form-item label="发票抬头" prop="Invoice" style="width: 450px;">
+                <el-input type="text" v-model="ruleForm.Invoice" placeholder="请输入发票抬头"></el-input>
               </el-form-item>
-              <el-form-item label="纳税人识别号" prop="checkPass" style="width: 450px;">
-                <el-input type="text" v-model="ruleForm.checkPass" placeholder="请输入纳税人识别号"></el-input>
+              <el-form-item label="纳税人识别号" prop="identifier" style="width: 450px;">
+                <el-input type="text" v-model="ruleForm.identifier" placeholder="请输入纳税人识别号"></el-input>
               </el-form-item>
-              <el-form-item label="联系人" prop="age" style="width: 450px;">
-                <el-input type="text" v-model="ruleForm.age" placeholder="请输入联系人"></el-input>
+              <el-form-item label="联系人" prop="contactPerson" style="width: 450px;">
+                <el-input type="text" v-model="ruleForm.contactPerson" placeholder="请输入联系人"></el-input>
               </el-form-item>
-              <el-form-item label="电话号码" prop="age" style="width: 450px;">
-                <el-input type="text" v-model="ruleForm.age" placeholder="请输入电话号码"></el-input>
+              <el-form-item label="电话号码" prop="phone" style="width: 450px;">
+                <el-input type="text" v-model="ruleForm.phone" placeholder="请输入电话号码"></el-input>
               </el-form-item>
             </el-form>
         </div>
@@ -117,18 +117,22 @@
         return {
             radio1: '',
             ruleForm: {
-              pass: '',
-              checkPass: '',
-              age: ''
+              Invoice: '',
+              identifier: '',
+              contactPerson: '',
+              phone: ''
             },
             rules: {
-              pass: [
+              Invoice: [
                 { required: true, validator: 'validatePass', trigger: 'blur' }
               ],
-              checkPass: [
+              identifier: [
                 { required: true, validator: 'validatePass2', trigger: 'blur' }
               ],
-              age: [
+              contactPerson: [
+                { required: true, validator: 'checkAge', trigger: 'blur' }
+              ],
+              phone: [
                 { required: true, validator: 'checkAge', trigger: 'blur' }
               ]
             }
@@ -146,17 +150,12 @@
           });
         },
         resetForm(formName) {
-          this.$refs[formName].resetFields();
+          this.$refs[formName].resetFields()
         },
         submit() {
-            this.$emit('submit')
-            this.$bus.$emit("submitData", {
-              num: 'this.num',
-              deg: 'this.deg',
-              show_data: 'this.show_data'
-            })
+            this.$router.push('/home/smartCampus/submitRenewal')
         },
-        clickImte(index) {
+        clickImte(index) {  
           let itemName =  document.getElementsByClassName("item-card")
           let icon = document.getElementsByClassName("el-icon-check")
           // 判断类名的添加和移除
