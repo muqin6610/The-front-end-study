@@ -391,9 +391,7 @@ import { postApi, putApi } from '@/api/api.js'
     created () {
     },
     methods: {
-      add () {
-        this.edit({})
-      },
+      add () { this.edit({}) },
       edit (row) {
         this.visible = true
         this.model = Object.assign({}, row)

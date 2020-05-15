@@ -158,7 +158,6 @@
       },
       // 获取教师人员
       async getListTeacher(pageNo, pageSize) {
-        // 开启加载
         this.loading = true
         let res = await getApi('getTeacherList', {
           personRoleId: this.selectRole, 
@@ -168,7 +167,6 @@
           pageSize: pageSize,
         })
         console.log(res,'教师人员数据')
-        // 关闭加载
         this.loading = false
         if(res.success) {
           let { records, total, size, current } = res.result
@@ -251,9 +249,9 @@
       handleSelectionChange(val) {
         this.multipleSelection = []
         val.forEach(item => {
-            if (this.multipleSelection.indexOf(item.id) === -1) {
-                this.multipleSelection.push(item.id)
-            }
+          if (this.multipleSelection.indexOf(item.id) === -1) {
+              this.multipleSelection.push(item.id)
+          }
         })
       },
     }

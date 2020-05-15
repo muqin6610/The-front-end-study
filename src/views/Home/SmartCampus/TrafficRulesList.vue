@@ -52,16 +52,14 @@ export default {
           tableData: []
         }
     },
-    created() {
-        this.getBlacklist()
-    },
+    created() { this.getBlacklist() },
     methods: {
         // 获取黑名单数据
         async getBlacklist() {
           this.loading = true
           let res = await getApi('getTrafficRulesList', null)
           this.loading = false
-          if(res.success) { this.tableData = res.result }
+          if(res.success) this.tableData = res.result
         },
         add() {
           this.$refs.modalForm.add()
@@ -129,11 +127,11 @@ export default {
         // 选择表格
         handleSelectionChange(val) {
           this.multipleSelection = []
-          for (let i = 0; i < val.length; i++) {
-              if (this.multipleSelection.indexOf(val[i].id) === -1) {
-                  this.multipleSelection.push(val[i].id)
-              }
-          }
+          val.forEach(item => {
+            if (this.multipleSelection.indexOf(item.id) === -1) {
+                this.multipleSelection.push(item.id)
+            }
+          })
         },
     },
 }

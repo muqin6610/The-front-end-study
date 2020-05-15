@@ -171,9 +171,7 @@ import { getApi, putApi } from '@/api/api.js'
           this.getTeachClassList(this.model.personId)
         })
       },
-      close() {
-        this.visible = false
-      },
+      close() { this.visible = false },
       // 获取学校角色
       async getSchoolRoleList() {
         let res = await getApi('getSchoolRoleList', null)
@@ -202,9 +200,7 @@ import { getApi, putApi } from '@/api/api.js'
         if(res.success) {
           let resData = res.result
           resData.forEach(item => {
-            if(this.selectClassData.indexOf(item.classId) === -1) {
-              this.selectClassData.push(item.classId)
-            }
+            if(this.selectClassData.indexOf(item.classId) === -1) this.selectClassData.push(item.classId)
           })
           this.selectClass()
         }
@@ -216,12 +212,11 @@ import { getApi, putApi } from '@/api/api.js'
         let res = await getApi('getDormRoomList', null)
         if(res.success && res.result.length) {
           // console.log(res, '区域列表')
-          this.dormRoomDatas = res.result
-          for(let i = 0;i < res.result.length;i++) {
-            if(this.dormRoomIds.indexOf(res.result[i].id) === -1) {
-              this.dormRoomIds.push(res.result[i].id)
-            }
-          }
+          let resData = res.result
+          this.dormRoomDatas = resData
+          resData.forEach(item => {
+            if(this.dormRoomIds.indexOf(item.id) === -1) this.dormRoomIds.push(item.id)
+          })
         }
       },
       // 获取学校数据（年级，班级等）
@@ -282,9 +277,7 @@ import { getApi, putApi } from '@/api/api.js'
       async handleOk() {
         let arr = []
         this.tags.forEach(item => {
-          if(arr.indexOf(item.id) === -1) {
-            arr.push(item.id)
-          }
+          if(arr.indexOf(item.id) === -1) arr.push(item.id)
         })
         this.ruleForm.classIds = arr.join(',')
         this.getAddOrDleteArea()

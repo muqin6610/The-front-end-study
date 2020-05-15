@@ -186,13 +186,13 @@ export default {
       // 获取学校角色
       async getSchoolRoleList() {
         let res = await getApi('getSchoolRoleList', null)
-        if(res.success) { this.roleDatas = res.result }
+        if(res.success) this.roleDatas = res.result
       },
       // 获取学校数据（年级，班级等）
       async getSchoolDatas() {
         let res = await getApi('getSchoolDatas', null)
         // console.log(res)
-        if (res.success) { this.gradeDatas = res.result.children }
+        if (res.success) this.gradeDatas = res.result.children
       },
       // 获取区域列表
       async getDormRoomList() {
@@ -201,39 +201,32 @@ export default {
         let res = await getApi('getDormRoomList', null)
         // console.log(res)
         if(res.success) {
-          this.dormRoomDatas = res.result
-          for(let i = 0;i < res.result.length;i++) {
-            if(this.dormRoomIds.indexOf(res.result[i].id) === -1) {
-              this.dormRoomIds.push(res.result[i].id)
+          let resData = res.result
+          this.dormRoomDatas = resData
+          resData.forEach(item => {
+            if(this.dormRoomIds.indexOf(item.id) === -1) {
+              this.dormRoomIds.push(item.id)
             }
-          }
+          })
         }
       },
       // 取消添加老师
-      handleCancel() {
-        this.close()
-      },
+      handleCancel() { this.close() },
       // 确认添加老师
       handleOk(formName) {
-        this.ruleForm.areaIds = this.checkedDormRoom.join(',');
-        this.ruleForm.personId = "3";
+        this.ruleForm.areaIds = this.checkedDormRoom.join(',')
+        this.ruleForm.personId = "3"
         let arr = []
-        // 获取执教班级
-        for(let i = 0;i < this.tags.length;i++) {
-          if(arr.indexOf(this.tags[i].id) === -1) {
-            arr.push(this.tags[i].id)
+        this.tags.forEach(item => {
+          if(arr.indexOf(item.id) === -1) {
+            arr.push(item.id)
           }
-        }
+        })
         this.ruleForm.classIds = arr.join(',')
-
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             let res = await postApi("addTeacher", this.ruleForm)
-            if(res.success) {
-                this.$message.success(res.message)
-            }else {
-                this.$message.warning(res.message)
-            }
+            res.success ? this.$message.success(res.message) : this.$message.warning(res.message)
             this.close()
           } else {
             console.log('error submit!!')
@@ -244,15 +237,13 @@ export default {
       // 选择完年级
       selectGrade(val) {
         this.classDatas = this.gradeDatas.filter(item => {
-          if(item.id === val) {
-            return item.children
-          }
+          if(item.id === val) return item.children
         })
       },
       // 选择完班级
       selectClass(val) {
         this.tags = []
-        this.selectClassData.forEach((item, index, array) => {
+        this.selectClassData.forEach(item => {
           this.tags.push({
             name: item.label,
             id: item.id,
@@ -283,10 +274,10 @@ export default {
           if(response.success){
             this.ruleForm.faceImg = response.message
           }else{
-            Message.warning(response.message)
+            this.$message.warning(response.message)
           }
         }else if(file.status === "fail") {
-          Message.warning('上传出错')
+          this.$message.warning('上传出错')
         }
       },
       handleCheckAllChange(val) {
@@ -300,14 +291,10 @@ export default {
       },
       // 点击标签关闭
       clickTag(id, index) {
-        // 关闭班级标签
         this.tags.splice(index, 1)
-        // 关闭班级标签删除对应的选中班级
-        for(let i = 0;i < this.selectClassData.length;i++) {
-          if(this.selectClassData[i].id === id) {
-            this.selectClassData.splice(i, 1)
-          }
-        }
+        this.selectClassData.forEach((item, index) => {
+          if(item.id === id)  this.selectClassData.splice(index, 1)
+        })
       },
     },
 }
