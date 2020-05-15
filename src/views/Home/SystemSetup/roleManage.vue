@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column label="操作" align='center' width='150'>
           <template slot-scope='scope'>
-            <el-button size='small' style='float:left' type='primary'>编辑</el-button>
+            <el-button size='small' style='float:left' type='primary' @click="edit(scope.row)">编辑</el-button>
             <el-button size='small' style='float:right' plain @click='deleteUser(scope.row.id)'>删除</el-button>
           </template>
         </el-table-column>
@@ -58,12 +58,13 @@
     </el-pagination>
 
     <!--新增角色组件-->
-    <RoleManageModule :showRoleModule='showRoleModule' @colseDialog='colseDialog'/>
+    <RoleManageModule ref="roleForm" @OK='colseDialog'/>
   </div>
 </template>
 
 <script>
 import RoleManageModule from './modules/roleManageModule.vue'
+import { getApi } from '@/api/api.js'
 
 export default {
     components: {
@@ -72,123 +73,20 @@ export default {
     data() {
         return {
            multipleSelection: [],
-           // 传值给子组件
-           showRoleModule:false,
-           //表格数据源
-           tableData: [{
-            date: '2019-10-02',
-            level:'S',
-            name: '管理员',
-            people: '1',
-            maxPeople: '2',
-            phone: '18475435693',
-            id: '1',
-            switchs: true,
-          }, {
-            date: '2019-10-06',
-            name: '十级用户',
-            level: 'A',
-            people: '3',
-            maxPeople: '10',
-            phone: '17475436193',
-            id: '2',
-            switchs: true,
-          }, {
-            date: '2016-10-08',
-            name: '九级用户',
-            maxPeople: '15',
-            people: '5',
-            level: 'A',
-            phone: '13875035693',
-            id: '3',
-            switchs: true,
-          }, {
-            date: '2016-10-13',
-            name: '八级用户',
-            people: '10',
-            maxPeople: '25',
-            level: 'A',
-            phone: '17476431693',
-            id: '4',
-            switchs: false,
-          }, {
-            date: '2016-10-13',
-            name: '七级用户',
-            maxPeople: '40',
-            level: 'B',
-            people: '15',
-            phone: '17476431693',
-            id: '5',
-            switchs: false,
-          }, {
-            date: '2016-10-13',
-            name: '六级用户',
-            level: 'B',
-            people: '18',
-            maxPeople: '55',
-            phone: '17476431693',
-            id: '6',
-            switchs: true,
-          }, {
-            date: '2016-10-13',
-            name: '五级用户',
-            level: 'C',
-            people: '25',
-            maxPeople: '75',
-            phone: '17476431693',
-            id: '7',
-            switchs: true,
-          }, {
-            date: '2016-10-13',
-            name: '四级用户',
-            level: 'C',
-            people: '30',
-            maxPeople: '90',
-            phone: '17476431693',
-            id: '8',
-            switchs: true,
-          }, {
-            date: '2016-10-13',
-            name: '三级用户',
-            level: 'D',
-            people: '30',
-            maxPeople: '100',
-            phone: '17476431693',
-            id: '9',
-            switchs: true,
-          }, {
-            date: '2016-10-13',
-            name: '二级用户',
-            level: 'D',
-            people: '35',
-            maxPeople: '150',
-            phone: '17476431693',
-            id: '10',
-            switchs: true,
-          }, {
-            date: '2016-10-13',
-            name: '一级用户',
-            level: 'E',
-            people: '50',
-            maxPeople: '200',
-            phone: '17476431693',
-            id: '11',
-            switchs: true,
-          }] ,
+           tableData: []
         }
     },
+    created() {
+      this.getRoleData()
+    },
     methods: {
-        // 点击新增角色
-        addRole() {
-          this.showRoleModule = true
+        addRole() { this.$refs.roleForm.add() },
+        edit(row) { this.$refs.roleForm.edit(row) },
+        async getRoleData() {
+          let res = await getApi('getRoleData', null)
+          if(res.success) this.tableData = res.result
         },
-        // 关闭子组件
-        colseDialog(data) {
-          this.showRoleModule = false
-          if(data) {
-            // 确定新增用户
-          }
-        },
+        colseDialog() { this.getRoleData() },
         // 点击删除
         deleteUser(id) {
           this.$confirm('你确定要删除吗?', '提示', {
@@ -198,10 +96,10 @@ export default {
           }).then(async () => {
             let res = await httpDelete(this.url.delete,{id:id})
             if(res.success){
-              this.$message.success('删除成功')
-              this.getPliceUserList()
+              this.$message.success(res.message)
+              this.getRoleData()
             }else {
-              this.$message.error('删除失败')
+              this.$message.error(res.message)
             }
           }).catch(() => {
             this.$message({
@@ -221,10 +119,10 @@ export default {
               let ids = this.multipleSelection.join(',')
               let res = await deleteAction(this.url.deleteBatch,{ids:ids})
               if(res.success){
-                this.$message.success('删除成功')
-                this.getPliceUserList()
+                this.$message.success(res.message)
+                this.getRoleData()
               }else {
-                this.$message.error('删除失败')
+                this.$message.error(res.message)
               }
             }).catch(() => {
               this.$message({
@@ -239,11 +137,11 @@ export default {
         //表格多选值
         handleSelectionChange(val) {
            this.multipleSelection = []
-           for (let i = 0; i < val.length; i++) {
-               if (this.multipleSelection.indexOf(val[i].id) === -1) {
-                   this.multipleSelection.push(val[i].id)
-               }
-           }
+           val.forEach(item => {
+             if (this.multipleSelection.indexOf(item.id) === -1) {
+                 this.multipleSelection.push(item.id)
+             }
+           })
         },
         //修改角色状态
         chageSwitch(id, state) {

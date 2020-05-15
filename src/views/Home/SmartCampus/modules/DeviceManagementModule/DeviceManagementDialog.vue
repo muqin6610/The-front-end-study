@@ -2,8 +2,8 @@
   <el-dialog
   title="搜索设备"
   width='60%'
-  :before-close="handleClose"
-  :visible.sync="showDeviceDialog">
+  :before-close="close"
+  :visible.sync="visible">
     <div class='tabel-box'>
       <el-table v-loading="loading" element-loading-text="....." element-loading-spinner="el-icon-loading" empty-text='请将设备开机并连至同一局域网进行搜索' :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55">
@@ -26,32 +26,24 @@
 
 <script>
 export default {
-    props: {
-      showDeviceDialog: {
-        type: Boolean,
-        default: false,
-      }
-    },
     data() {
         return {
-            loading: false,
-            tableData: [],
+          visible: false,
+          loading: false,
+          tableData: [],
         }
     },
     methods: {
         // 选择表格
         handleSelectionChange(val) {
           this.multipleSelection = []
-          // 添加选中的学生id到数组
-          for (let i = 0; i < val.length; i++) {
-              if (this.multipleSelection.indexOf(val[i].id) === -1) {
-                  this.multipleSelection.push(val[i].id)
-              }
-          }
+          val.forEach(item => {
+            if (this.multipleSelection.indexOf(item.id) === -1) this.multipleSelection.push(item.id)
+          })
         },
-        // 关闭弹框
-        handleClose() {
-          this.$emit('close')
+        show() { this.visible = true },
+        close() {
+          this.visible = false
           this.tableData = []
         },
         // 点击搜索

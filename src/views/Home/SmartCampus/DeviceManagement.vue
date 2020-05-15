@@ -34,7 +34,7 @@
           </el-table>
         </div>
       </div>
-      <DeviceManagementDialog :showDeviceDialog='showDeviceDialog' @close='close'/>
+      <DeviceManagementDialog ref="deviceForm"/>
     </el-card>
 </template>
 
@@ -47,8 +47,6 @@ export default {
     },
     data() {
         return {
-            // 打开搜索设备弹窗
-            showDeviceDialog: false,
             search: '',
             tableData: [
                 {
@@ -95,21 +93,12 @@ export default {
         // 选择表格
         handleSelectionChange(val) {
           this.multipleSelection = []
-          // 添加选中的学生id到数组
-          for (let i = 0; i < val.length; i++) {
-              if (this.multipleSelection.indexOf(val[i].id) === -1) {
-                  this.multipleSelection.push(val[i].id)
-              }
-          }
+          val.forEach(item => {
+            if (this.multipleSelection.indexOf(item.id) === -1) this.multipleSelection.push(item.id)
+          })
         },
         // 点击搜索设备
-        searchDevice() {
-            this.showDeviceDialog = true
-        },
-        // 关闭弹框
-        close() {
-            this.showDeviceDialog = false
-        },
+        searchDevice() { this.$refs.deviceForm.show() },
     },
 }
 </script>

@@ -55,9 +55,7 @@ export default {
       selectChange(val) {
         console.log(val)
       },
-      add() {
-        this.edit({})
-      },
+      add() { this.edit({}) },
       edit(row) {
         this.visible = true
         this.model = Object.assign({}, row)
@@ -68,13 +66,9 @@ export default {
           }
         })
       },
-      close() {
-        this.visible = false
-      },
+      close() { this.visible = false },
       handleCancel() { this.close() },
-      handleOk() {
-        this.close()
-      },
+      handleOk() { this.close() },
     },
 }
 </script>
