@@ -58,7 +58,7 @@
 	    </el-pagination>
     </div>
     <!-- 编辑警员弹出框 -->
-    <EditPersonDialog :PersonData='PersonData' @colseEditPerson='colseEditPerson'/>
+    <EditPersonDialog ref="personForm" @ok='colseEditPerson'/>
    </el-card>
     <div class='footer-button-box'>
       <el-button @click='abrogate'>返回</el-button>  
@@ -78,11 +78,6 @@ export default {
     },
     data() {
         return {
-        //传给弹框子组件的数据
-        PersonData:{
-          editPersonDialog:false,
-          rowData:{},
-        },
         //加载效果
         loading:false,
         //页面标题内容(部队名称)
@@ -184,18 +179,9 @@ export default {
         this.$router.push('/home/swatAuxiliary/addFuzz')
       },
       //点击编辑按钮获取id对应的角色权限,并弹出编辑框
-      editPerson(row){
-        this.PersonData.rowData = row
-        this.PersonData.editPersonDialog = true
-      },
-      //提交编辑数据
-      submitEditPerson(dataObj){
- 
-      },
+      editPerson(row){ this.$refs.personForm.edit(row) },
       //关闭弹框
-      colseEditPerson(){
-        this.PersonData.editPersonDialog = false
-      },
+      colseEditPerson(){ },
       //表格多选值
       handleSelectionChange(val) {
          this.multipleSelection = []
