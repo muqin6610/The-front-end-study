@@ -40,6 +40,8 @@ Vue.use(ElementUI)
 //引入element的Message
 import { Message } from 'element-ui'
 
+import './assets/iconfont/iconfont.css'
+
 
 // 引入进度条
 import NProgress from 'nprogress'

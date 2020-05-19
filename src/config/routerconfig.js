@@ -50,6 +50,13 @@ export const constantRouterMap = [
             meta:{
                 title:'首页'
             } },
+        { 
+            path: '/home/homePage/dataKanban',
+            name: 'dataKanban', 
+            component: () => import ('@/views/Home/HomePage/modules/DataKanban.vue'), 
+            meta:{
+                title:'数据看板'
+            } },
 
         { 
             path: '/home/systemSetup',

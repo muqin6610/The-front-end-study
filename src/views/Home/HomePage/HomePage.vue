@@ -31,7 +31,7 @@
         </div>
       </el-card>
     </div>
-    
+    <el-button icon="el-icon-view" size="mini" type="primary" class="kanban" @click="goKanban">数据看板</el-button>
     <!--访问量折线图-->
     <el-card class='line-chart-card'>
       <p>访问量趋势</p>
@@ -114,6 +114,9 @@ export default {
           btnText: '前往板块管理',
           status:'2'
         })
+      },
+      goKanban() {
+        this.$router.push("/home/homePage/dataKanban")
       }
     }
 }
@@ -169,5 +172,8 @@ export default {
   position: relative;
   width: 100%;
   height: calc(100vh - 84px);
+}
+.kanban {
+  margin: 20px 0 0 30px;
 }
 </style>
