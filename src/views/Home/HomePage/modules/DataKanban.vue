@@ -256,6 +256,7 @@ import { getApi } from '@/api/api.js'
 $cn-heght: 45px;
 $bc-color: #01e1e3;
 $theme-color: #010f24;
+$white-color: #FFF;
 
 .kanban {
     background: $theme-color;
@@ -657,7 +658,7 @@ $theme-color: #010f24;
             flex: 1;
             margin-left: 10px;
             .content-text {
-                color: #fff;
+                color: $white-color;
             }
             .content-number {
                 position: relative;
@@ -849,13 +850,14 @@ $theme-color: #010f24;
             }
         }
         .list-item-title {
-            color: #fff;
+            color: $white-color;
         }
     }
     .abnormal-box {
         position: relative;
         height: 100%;
         padding: 10px;
+        padding-right: 0;
         border: 1px solid $bc-color;
         .top-after {
             content: ' ';
@@ -995,7 +997,7 @@ $theme-color: #010f24;
             }
         }
         .list-item-title {
-            color: #fff;
+            color: $white-color;
         }
     }
 }
