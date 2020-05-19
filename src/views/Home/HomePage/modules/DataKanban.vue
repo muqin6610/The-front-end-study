@@ -61,6 +61,11 @@
             <i class="before2"></i>
             <i class="before3"></i>
             <i class="before4"></i>
+            <i class="top-after"></i>
+            <i class="top-before"></i>
+            <i class="top-before2"></i>
+            <i class="top-before3"></i>
+            <i class="top-border"></i>
             <div class="card-box">
                 <div class="icon-box">
                     <i class='iconfont icon-tianjiayonghu'></i>
@@ -99,29 +104,34 @@
                 <i class="before2"></i>
                 <i class="before3"></i>
                 <i class="before4"></i>
+                <i class="top-after"></i>
+                <i class="top-before"></i>
+                <i class="top-before2"></i>
+                <i class="top-before3"></i>
+                <i class="top-border"></i>
                 <p class="list-item-title">测温记录</p>
                 <div class="scroll-box">
-                    <div class="conter-content">
+                    <div class="conter-content" v-for="item in allList" :key="item.id">
                         <div class="item-box">
                             <div class="img-box">
-                                <img style="width: 100%;height: 100%;" :onerror='defaultImg' src="#">
+                                <img style="width: 100%;height: 100%;" class="cover" :onerror='defaultImg' :src="item.idImg">
                             </div>
                             <div class="information">
                                 <div>
                                     <span class="information-text">姓名:</span>
-                                    <span class="information-text">{{name}}</span>
+                                    <span class="information-text">{{item.name}}</span>
                                 </div>
                                 <div>
                                     <span class="information-text">温度:</span>
-                                    <span class="information-text">{{temperature}}</span>
+                                    <span :class="item.tempStatus === 0 ? 'information-text' : 'abnormal-text'">{{item.mappingTemp}}</span>
                                 </div>
                                 <div>
                                     <span class="information-text">时间:</span>
-                                    <span class="information-text">{{date}}</span>
+                                    <span class="information-text">{{item.passTs}}</span>
                                 </div>
                                 <div>
                                     <span class="information-text">来源:</span>
-                                    <span class="information-text">{{region}}</span>
+                                    <span class="information-text">{{item.areaName}}</span>
                                 </div>
                             </div>
                         </div>
@@ -138,29 +148,34 @@
                 <i class="before2"></i>
                 <i class="before3"></i>
                 <i class="before4"></i>
+                <i class="top-after"></i>
+                <i class="top-before"></i>
+                <i class="top-before2"></i>
+                <i class="top-before3"></i>
+                <i class="top-border"></i>
                 <p class="list-item-title">异常体温数据</p>
                 <div class="scroll-box">
-                    <div class="conter-content">
+                    <div class="conter-content" v-for="item in abnormalList" :key="item.id">
                         <div class="item-box">
                             <div class="img-box">
-                                <img style="width: 100%;height: 100%;" :onerror='defaultImg' src="#">
+                                <img style="width: 100%;height: 100%;" class="cover" :onerror='defaultImg' :src="item.idImg">
                             </div>
                             <div class="information">
                                 <div>
                                     <span class="information-text">姓名:</span>
-                                    <span class="information-text">{{name}}</span>
+                                    <span class="information-text">{{item.name}}</span>
                                 </div>
                                 <div>
                                     <span class="information-text">温度:</span>
-                                    <span class="abnormal-text">{{temperature}}</span>
+                                    <span class="abnormal-text">{{item.mappingTemp}}</span>
                                 </div>
                                 <div>
                                     <span class="information-text">时间:</span>
-                                    <span class="information-text">{{date}}</span>
+                                    <span class="information-text">{{item.passTs}}</span>
                                 </div>
                                 <div>
                                     <span class="information-text">来源:</span>
-                                    <span class="information-text">{{region}}</span>
+                                    <span class="information-text">{{item.areaName}}</span>
                                 </div>
                             </div>
                         </div>
@@ -174,21 +189,26 @@
 </template>
 
 <script>
+import { getApi } from '@/api/api.js'
+
   export default {
     data() {
         return {
             warningTips: "出现体温异常人员",
             showTips: false,
             title: "教育局管理平台",
-            total: 165648646,
-            warning: 150,
-            tested: 13151545,
-            name: "王超",
-            temperature: '36℃',
-            date: "2020-05-18 17:21:00",
-            region: "北门",
+            total: 0,
+            warning: 0,
+            tested: 0,
+            tempDisplayType: "0",
+            allList: [],
+            abnormalList: [],
             defaultImg: 'this.src="' + require('../../../../assets/image/avatarImg.jpg') +'"',
         }
+    },
+    created() {
+        this.getDisplayBoardLeft()
+        this.getDisplayBoardRight()
     },
     methods: {
         goPush() { this.$router.go(-1) },
@@ -198,6 +218,25 @@
                 this.showTips = false
             }, 4000)
         },
+        // 获取统计数据
+        async getDisplayBoardLeft() {
+            let res = await getApi('getDisplayBoardLeft', null)
+            if(res.success) {
+                let { enrollment, abnormalCount, todayLockageNumber } = res.result
+                this.total = enrollment
+                this.warning = abnormalCount
+                this.tested = todayLockageNumber
+            }
+        },
+        // 获取列表数据
+        async getDisplayBoardRight() {
+            let res = await getApi('getDisplayBoardRight', { tempDisplayType: this.tempDisplayType })
+            if(res.success) {
+                let { allList, abnormalList } = res.result
+                this.allList = allList
+                this.abnormalList = abnormalList
+            }
+        }
     },
   }
 </script>
@@ -464,6 +503,55 @@ $theme-color: #010f24;
     width: 40%;
     border: 1px solid $bc-color;
     position: relative;
+    .top-after {
+        content: ' ';
+        position: absolute;
+        width: 80px;
+        height: 20px;
+        background: $theme-color;
+        left: 110px;
+        top: -10px;
+    }
+    .top-border {
+        content: ' ';
+        position: absolute;
+        width: 80px;
+        height: 1px;
+        background: $bc-color;
+        left: 124px;
+        top: 10px;
+    }
+    .top-before {
+        content: ' ';
+        position: absolute;
+        width: 1px;
+        height: 14px;
+        background: $bc-color;
+        left: 120px;
+        top: -2px;
+        transform: rotate(-40deg);
+    }
+    .top-before2 {
+        content: ' ';
+        position: absolute;
+        width: 1px;
+        height: 14px;
+        background: $bc-color;
+        left: 185px;
+        top: -13px;
+        transform: rotate(-40deg);
+    }
+    .top-before3 {
+        content: '';
+        position: absolute;
+        top: -6px; 
+        left: 122px;
+        width: 60px;
+        height: 10px;
+        background: #01d9dc;
+        transform: skewX(40deg);
+        z-index: 1;
+    }
     .after1 {
         content: ' ';
         border: solid transparent;
@@ -617,6 +705,55 @@ $theme-color: #010f24;
         padding-right: 0;
         margin-right: 20px;
         border: 1px solid $bc-color;
+        .top-after {
+            content: ' ';
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            background: $theme-color;
+            left: 110px;
+            top: -10px;
+        }
+        .top-border {
+            content: ' ';
+            position: absolute;
+            width: 80px;
+            height: 1px;
+            background: $bc-color;
+            left: 124px;
+            top: 10px;
+        }
+        .top-before {
+            content: ' ';
+            position: absolute;
+            width: 1px;
+            height: 14px;
+            background: $bc-color;
+            left: 120px;
+            top: -2px;
+            transform: rotate(-40deg);
+        }
+        .top-before2 {
+            content: ' ';
+            position: absolute;
+            width: 1px;
+            height: 14px;
+            background: $bc-color;
+            left: 185px;
+            top: -13px;
+            transform: rotate(-40deg);
+        }
+        .top-before3 {
+            content: '';
+            position: absolute;
+            top: -6px; 
+            left: 122px;
+            width: 60px;
+            height: 10px;
+            background: #01d9dc;
+            transform: skewX(40deg);
+            z-index: 1;
+        }
         .after1 {
             content: ' ';
             border: solid transparent;
@@ -714,6 +851,55 @@ $theme-color: #010f24;
         height: 100%;
         padding: 10px;
         border: 1px solid $bc-color;
+        .top-after {
+            content: ' ';
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            background: $theme-color;
+            left: 110px;
+            top: -10px;
+        }
+        .top-border {
+            content: ' ';
+            position: absolute;
+            width: 80px;
+            height: 1px;
+            background: $bc-color;
+            left: 124px;
+            top: 10px;
+        }
+        .top-before {
+            content: ' ';
+            position: absolute;
+            width: 1px;
+            height: 14px;
+            background: $bc-color;
+            left: 120px;
+            top: -2px;
+            transform: rotate(-40deg);
+        }
+        .top-before2 {
+            content: ' ';
+            position: absolute;
+            width: 1px;
+            height: 14px;
+            background: $bc-color;
+            left: 185px;
+            top: -13px;
+            transform: rotate(-40deg);
+        }
+        .top-before3 {
+            content: '';
+            position: absolute;
+            top: -6px; 
+            left: 122px;
+            width: 60px;
+            height: 10px;
+            background: #01d9dc;
+            transform: skewX(40deg);
+            z-index: 1;
+        }
         .after1 {
             content: ' ';
             border: solid transparent;
@@ -897,5 +1083,9 @@ $theme-color: #010f24;
         background: rgba(249, 201, 201, 0);
         color: rgba(254, 254, 254, 0);
     }
+}
+
+.cover {
+  object-fit: cover;
 }
 </style>
