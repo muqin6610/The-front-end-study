@@ -190,6 +190,7 @@
 
 <script>
 import { getApi } from '@/api/api.js'
+// import { connectSocket } from '@/api/socket'
 
   export default {
     data() {
@@ -207,6 +208,11 @@ import { getApi } from '@/api/api.js'
         }
     },
     created() {
+        // let token = store.getters.token
+        // let url = window._CONFIG['socketURL'] + token
+        // 建立websocket连接
+        // connectSocket(url)
+
         this.getDisplayBoardLeft()
         this.getDisplayBoardRight()
     },
