@@ -269,7 +269,7 @@ $theme-color: #010f24;
         right: -1px; 
         top: -1px; 
         width: 16px;  
-        height: 4px; 
+        height: 8px; 
         background-color: $theme-color;
     }
 }
@@ -282,7 +282,7 @@ $theme-color: #010f24;
         left: -1px; 
         top: -1px; 
         width: 15px;  
-        height: 4px; 
+        height: 8px; 
         background-color: $theme-color;
     }
 }
@@ -295,7 +295,7 @@ $theme-color: #010f24;
         right: -1px; 
         top: -1px; 
         width: 15px;  
-        height: 4px; 
+        height: 8px; 
         background-color: $theme-color;
     }
 }
@@ -308,7 +308,7 @@ $theme-color: #010f24;
         left: -1px; 
         top: -1px; 
         width: 16px;  
-        height: 4px; 
+        height: 8px; 
         background-color: $theme-color;
     }
 }
@@ -325,7 +325,7 @@ $theme-color: #010f24;
         left: 0; 
         top: -2px; 
         width: 20px;  
-        height: 2px; 
+        height: 8px; 
         background-color: $theme-color;
     }
     &:after {
@@ -334,7 +334,7 @@ $theme-color: #010f24;
         right: 0; 
         bottom: -2px; 
         width: 50px;  
-        height: 2px; 
+        height: 8px; 
         background-color: $theme-color;
     }
 }
@@ -352,7 +352,7 @@ $theme-color: #010f24;
         left: 0; 
         top: -2px; 
         width: 20px;  
-        height: 2px; 
+        height: 8px; 
         background-color: $theme-color;
     }
 }
