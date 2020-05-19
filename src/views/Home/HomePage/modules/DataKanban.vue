@@ -197,7 +197,7 @@
             setTimeout(() => {
                 this.showTips = false
             }, 4000)
-        }
+        },
     },
   }
 </script>
