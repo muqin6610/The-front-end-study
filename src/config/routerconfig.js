@@ -55,7 +55,14 @@ export const constantRouterMap = [
             name: 'dataKanban', 
             component: () => import ('@/views/Home/HomePage/modules/DataKanban.vue'), 
             meta:{
-                title:'数据看板'
+                title:'温度看板'
+            } },
+        { 
+            path: '/home/homePage/dataKanbanTwo',
+            name: 'dataKanbanTwo', 
+            component: () => import ('@/views/Home/HomePage/modules/DataKanbanTwo.vue'), 
+            meta:{
+                title:'考勤看板'
             } },
 
         { 

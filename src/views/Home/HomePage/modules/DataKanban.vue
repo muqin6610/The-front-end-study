@@ -1,6 +1,6 @@
 <template>
   <div class="kanban">
-    <div id='getSocket' @click='clickSocket' style="color: #FFF">点击预警</div>
+    <div id='getSocket' @click='clickSocket' style="color: #fff">点击报警</div>
     <!--顶部预警-->
     <div v-if="showTips" class="warning-box">
         {{warningTips}}
@@ -71,8 +71,8 @@
                     <i class='iconfont icon-tianjiayonghu'></i>
                 </div>
                 <div class="content-box">
-                    <span class="content-text">总注册人数</span>
-                    <div class="content-number">{{total}}<span class="end-text">人</span></div>
+                    <span class="content-text">已测温人数</span>
+                    <div class="content-number">{{tested}}<span class="end-text">人</span></div>
                 </div>
             </div>
             <div class="card-box">
@@ -86,11 +86,13 @@
             </div>
             <div class="card-box">
                 <div class="icon-box">
-                    <i class='iconfont icon-shuju'></i>
+                    <i class='iconfont icon-jingshigantanhao'></i>
                 </div>
                 <div class="content-box">
-                    <span class="content-text">已测体温数据</span>
-                    <div class="content-number">{{tested}}<span class="end-text">人</span></div>
+                    <span class="content-text">体温异常占比</span>
+                    <div class="content-proportion">
+                        <KanabnLiquidfill :liquidfillData="liquidfillData"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,27 +113,27 @@
                 <i class="top-border"></i>
                 <p class="list-item-title">测温记录</p>
                 <div class="scroll-box">
-                    <div class="conter-content" v-for="item in allList" :key="item.id">
+                    <div class="conter-content">
                         <div class="item-box">
                             <div class="img-box">
-                                <img style="width: 100%;height: 100%;" class="cover" :onerror='defaultImg' :src="item.idImg">
+                                <img style="width: 100%;height: 100%;" class="cover" :onerror='defaultImg' src="getAvatarView(item.idImg)">
                             </div>
                             <div class="information">
                                 <div>
                                     <span class="information-text">姓名:</span>
-                                    <span class="information-text">{{item.name}}</span>
+                                    <span class="information-text">王超</span>
                                 </div>
                                 <div>
                                     <span class="information-text">温度:</span>
-                                    <span :class="item.tempStatus === 0 ? 'information-text' : 'abnormal-text'">{{item.mappingTemp}}</span>
+                                    <span class="abnormal-text">42℃</span>
                                 </div>
                                 <div>
-                                    <span class="information-text">时间:</span>
-                                    <span class="information-text">{{item.passTs}}</span>
+                                    <span class="information-text">时间</span>
+                                    <span class="information-text">2020-05-05 18:22:00</span>
                                 </div>
                                 <div>
                                     <span class="information-text">来源:</span>
-                                    <span class="information-text">{{item.areaName}}</span>
+                                    <span class="information-text">南大门</span>
                                 </div>
                             </div>
                         </div>
@@ -155,31 +157,30 @@
                 <i class="top-border"></i>
                 <p class="list-item-title">异常体温数据</p>
                 <div class="scroll-box">
-                    <div class="conter-content" v-for="item in abnormalList" :key="item.id">
-                        <div class="item-box">
-                            <div class="img-box">
-                                <img style="width: 100%;height: 100%;" class="cover" :onerror='defaultImg' :src="item.idImg">
+                    <div class="conter-content abnorma-content-box">
+                        <div class="item-box abnorma-item-box">
+                            <div class="img-box abnorma-img-box">
+                                <img style="width: 100%;height: 100%;" class="cover" :onerror='defaultImg' src="getAvatarView(item.idImg)">
                             </div>
                             <div class="information">
                                 <div>
-                                    <span class="information-text">姓名:</span>
-                                    <span class="information-text">{{item.name}}</span>
+                                    <span class="abnorma-information-text">姓名:</span>
+                                    <span class="abnorma-information-text">王超</span>
                                 </div>
                                 <div>
-                                    <span class="information-text">温度:</span>
-                                    <span class="abnormal-text">{{item.mappingTemp}}</span>
+                                    <span class="abnorma-information-text">温度:</span>
+                                    <span class="abnormal-text">42℃</span>
                                 </div>
                                 <div>
-                                    <span class="information-text">时间:</span>
-                                    <span class="information-text">{{item.passTs}}</span>
+                                    <span class="abnorma-information-text">时间:</span>
+                                    <span class="abnorma-information-text">2020-05-25 18:22:00</span>
                                 </div>
                                 <div>
-                                    <span class="information-text">来源:</span>
-                                    <span class="information-text">{{item.areaName}}</span>
+                                    <span class="abnorma-information-text">来源:</span>
+                                    <span class="abnorma-information-text">南大门</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="information-border"></div>
                     </div>
                 </div>
             </div>
@@ -189,60 +190,84 @@
 </template>
 
 <script>
-import { getApi } from '@/api/api.js'
-// import { connectSocket } from '@/api/socket'
+import KanabnLiquidfill from '@/components/Charts/KanabnLiquidfill'
 
   export default {
+    components: {
+        KanabnLiquidfill
+    },
     data() {
         return {
+            liquidfillData: {
+                percent: 0
+            },
             warningTips: "出现体温异常人员",
             showTips: false,
-            title: "教育局管理平台",
-            total: 0,
+            title: "智慧校园平台",
             warning: 0,
             tested: 0,
-            tempDisplayType: "0",
+            tempDisplayType: null,
             allList: [],
             abnormalList: [],
             defaultImg: 'this.src="' + require('../../../../assets/image/avatarImg.jpg') +'"',
         }
     },
     created() {
-        // let token = store.getters.token
-        // let url = window._CONFIG['socketURL'] + token
+        // let userId = store.getters.userInfo.id
+        // let url = window._CONFIG['socketURL'] + userId
         // 建立websocket连接
         // connectSocket(url)
 
-        this.getDisplayBoardLeft()
-        this.getDisplayBoardRight()
+        // let departInfo = getStore("departInfo")
+        // departInfo.departNameAbbr ? this.title = departInfo.departNameAbbr + this.$t('m.platform') : this.title = this.$t('m.cloudPlatform')
+        // this.getTempSet()
+    },
+    mounted() {
+
     },
     methods: {
+        async getTempSet() {
+            let res = await getAction(this.url.getTempSet, null)
+            if(res.success) {
+                let { tempDisplayType } = res.result[0]
+                this.tempDisplayType = tempDisplayType
+            }
+            this.getDisplayBoardLeft()
+            this.getDisplayBoardRight()
+        },
         goPush() { this.$router.go(-1) },
         clickSocket() {
             this.showTips = true
             setTimeout(() => {
                 this.showTips = false
             }, 4000)
+            // this.getDisplayBoardLeft()
+            // this.getDisplayBoardRight()
         },
         // 获取统计数据
         async getDisplayBoardLeft() {
-            let res = await getApi('getDisplayBoardLeft', null)
+            let res = await getAction(this.url.getDisplayBoardLeft, null)
+            console.log(res)
             if(res.success) {
-                let { enrollment, abnormalCount, todayLockageNumber } = res.result
-                this.total = enrollment
+                let { abnormalCount, todayLockageNumber, accountedPercent } = res.result
                 this.warning = abnormalCount
                 this.tested = todayLockageNumber
+                this.liquidfillData.percent = accountedPercent
             }
         },
         // 获取列表数据
         async getDisplayBoardRight() {
-            let res = await getApi('getDisplayBoardRight', { tempDisplayType: this.tempDisplayType })
+            let res = await getAction(this.url.getDisplayBoardRight, { tempDisplayType: this.tempDisplayType })
             if(res.success) {
                 let { allList, abnormalList } = res.result
-                this.allList = allList
-                this.abnormalList = abnormalList
+                this.allList = allList.records
+                this.abnormalList = abnormalList.records
             }
         }
+    },
+    destroyed() {
+        // webSocket.close()
+        // window.isOk = null
     },
   }
 </script>
@@ -257,6 +282,8 @@ $cn-heght: 45px;
 $bc-color: #01e1e3;
 $theme-color: #010f24;
 $white-color: #FFF;
+$al-color: #f50001;
+$item-color: #6d1d20;
 
 .kanban {
     background: $theme-color;
@@ -281,11 +308,11 @@ $white-color: #FFF;
     transform: translateY(-50%);
     border: 2px solid $bc-color;
     height: $cn-heght;
+    line-height: 40px;
     text-align: center;
-    line-height: $cn-heght;
     color: $bc-color;
     font-size: 24px;
-    box-shadow: 0px 0px 10px #2e606e inset;
+    box-shadow: 0px 0px 15px #2c808d inset;
 }
 .left-box {
     display: flex;
@@ -307,28 +334,28 @@ $white-color: #FFF;
     border: 0.5px solid $bc-color;
 }
 .left-border {
-    margin: 27px auto;
+    margin: 30px auto;
     position: relative;
     &:before {
         content:""; 
         position: absolute; 
         right: -1px; 
         top: -1px; 
-        width: 16px;  
-        height: 8px; 
+        width: 17px;  
+        height: 4px; 
         background-color: $theme-color;
     }
 }
 .right-border {
-    margin: 48px auto;
+    margin: 50px auto;
     position: relative;
     &:before {
         content:""; 
         position: absolute; 
         left: -1px; 
         top: -1px; 
-        width: 15px;  
-        height: 8px; 
+        width: 14px;  
+        height: 4px; 
         background-color: $theme-color;
     }
 }
@@ -340,28 +367,28 @@ $white-color: #FFF;
         position: absolute; 
         right: -1px; 
         top: -1px; 
-        width: 15px;  
-        height: 8px; 
+        width: 17px;  
+        height: 4px; 
         background-color: $theme-color;
     }
 }
 .right-border-two {
-    margin: 66px auto;
+    margin: 68px auto;
     position: relative;
     &:before {
         content:""; 
         position: absolute; 
         left: -1px; 
         top: -1px; 
-        width: 16px;  
-        height: 8px; 
+        width: 14px;  
+        height: 4px; 
         background-color: $theme-color;
     }
 }
 .quadrilateral {
     border: 2px solid $bc-color;
     height: 20px;
-    margin-top: 26px;
+    margin-top: 30px;
     position: relative;
     border-left: 0;
     border-right: 0;
@@ -371,7 +398,7 @@ $white-color: #FFF;
         left: 0; 
         top: -2px; 
         width: 20px;  
-        height: 8px; 
+        height: 4px; 
         background-color: $theme-color;
     }
     &:after {
@@ -379,8 +406,8 @@ $white-color: #FFF;
         position: absolute; 
         right: 0; 
         bottom: -2px; 
-        width: 50px;  
-        height: 8px; 
+        width:50px;  
+        height: 4px; 
         background-color: $theme-color;
     }
 }
@@ -388,7 +415,7 @@ $white-color: #FFF;
 .quadrilateral-two {
     border: 2px solid $bc-color;
     height: 20px;
-    margin-top: 45px;
+    margin-top: 48px;
     position: relative;
     border-left: 0;
     border-right: 0;
@@ -398,7 +425,7 @@ $white-color: #FFF;
         left: 0; 
         top: -2px; 
         width: 20px;  
-        height: 8px; 
+        height: 4px; 
         background-color: $theme-color;
     }
 }
@@ -412,7 +439,7 @@ $white-color: #FFF;
     position: relative;
     position: absolute;
     right: 1px;
-    top: 28px;
+    top: 32px;
     &:before{
         content: '';
         position: absolute;
@@ -420,7 +447,7 @@ $white-color: #FFF;
         right: 0; 
         bottom: 0; 
         left: 0;
-        background: #01d9dc;
+        background: $bc-color;
         transform: skewX(40deg);
         z-index: 1;
     }
@@ -431,7 +458,7 @@ $white-color: #FFF;
     position: relative;
     position: absolute;
     right: 6px;
-    top: 55px;
+    top: 58px;
     &:before{
         content: '';
         position: absolute;
@@ -439,27 +466,27 @@ $white-color: #FFF;
         right: 0; 
         bottom: 0; 
         left: 0;
-        background: #01d9dc;
+        background: $bc-color;
         transform: skewX(40deg);
         z-index: 1;
     }
 }
 .left-line {
-    height: 24px;
+    height: 25px;
     width: 2px;
     background: $bc-color;
     transform: rotate(-40deg);
     position: absolute;
     left: -8px;
-    top: -1px;
+    top: -2px;
 }
 .right-line {
-    height: 27px;
+    height: 25px;
     width: 2px;
     background: $bc-color;
     transform: rotate(-40deg);
     position: absolute;
-    right: -9px;
+    right: -8px;
     top: -3px;
 }
 .left-line-two {
@@ -469,7 +496,7 @@ $white-color: #FFF;
     transform: rotate(-40deg);
     position: absolute;
     left: -8px;
-    top: -1px;
+    top: -2px;
 }
 .right-line-two {
     height: 25px;
@@ -477,7 +504,7 @@ $white-color: #FFF;
     background: $bc-color;
     transform: rotate(-40deg);
     position: absolute;
-    right: -9px;
+    right: -8px;
     top: -3px;
 }
 .close-itme {
@@ -495,9 +522,9 @@ $white-color: #FFF;
     font-weight: bold;
     background: $theme-color;
     position: absolute;
-    top: 25px;
+    top: 15px;
     right: 0;
-    box-shadow: 0px 0px 10px #2e606e inset;
+    box-shadow: 0px 0px 15px #2c808d inset;
     cursor: pointer;
 }
 
@@ -555,7 +582,7 @@ $white-color: #FFF;
         left: 122px;
         width: 60px;
         height: 10px;
-        background: #01d9dc;
+        background: $bc-color;
         transform: skewX(40deg);
         z-index: 1;
     }
@@ -640,14 +667,14 @@ $white-color: #FFF;
         right: -1px;
     }
     .card-box {
-        height: 122px;
-        margin: 20px 20px 35px 20px;
+        height: 90px;
+        margin: 20px 20px 45px 20px;
         display: flex;
         .icon-box {
-            width: 80px;
+            width: 90px;
             height: 100%;
             text-align: center;
-            line-height: 122px;
+            line-height: 90px;
             background: #032639;
             .iconfont {
               color: $bc-color;
@@ -660,17 +687,44 @@ $white-color: #FFF;
             .content-text {
                 color: $white-color;
             }
+            .content-proportion {
+                box-shadow: 0px 0px 15px #2c808d inset;
+                position: relative;
+                border: 1px solid $bc-color;
+                height: 200px;
+                margin-top: 10px;
+                &:after {
+                    content: ' ';
+                    position: absolute;
+                    width: 1px;
+                    height: 15px;
+                    background: $bc-color;
+                    left: 3px;
+                    top: -2px;
+                    transform: rotate(40deg);
+                }
+                &:before {
+                    content: ' ';
+                    border: solid transparent;
+                    position: absolute;
+                    border-width: 5px;
+                    border-top-color: $theme-color;
+                    border-left-color: $theme-color;
+                    top: -1px;
+                    left: -1px;
+                }
+            }
             .content-number {
                 position: relative;
                 border: 1px solid $bc-color;
-                height: 80px;
-                margin-top: 20px;
+                height: 60px;
+                margin-top: 10px;
                 text-align: center;
-                line-height: 80px;
+                line-height: 60px;
                 color: $bc-color;
                 font-family: "led regular";
-                font-size: 3.5vw;
-                box-shadow: 0px 0px 10px #2c808d inset;
+                font-size: 3vw;
+                box-shadow: 0px 0px 15px #2c808d inset;
                 &:after {
                     content: ' ';
                     position: absolute;
@@ -699,7 +753,7 @@ $white-color: #FFF;
     }
 }
 .list-box {
-    height: 470px;
+    height: 540px;
     flex: 1;
     display: flex;
     .list-item {
@@ -707,7 +761,7 @@ $white-color: #FFF;
     }
     .recording-box {
         position: relative;
-        height: 100%;
+        height: 96%;
         padding: 10px;
         padding-right: 0;
         margin-right: 20px;
@@ -757,154 +811,7 @@ $white-color: #FFF;
             left: 122px;
             width: 60px;
             height: 10px;
-            background: #01d9dc;
-            transform: skewX(40deg);
-            z-index: 1;
-        }
-        .after1 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-top-color: $bc-color;
-            border-right-color: $bc-color;
-            right: 0px;
-            top: 0px;
-        }
-        .before1 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-top-color: $theme-color;
-            border-right-color: $theme-color;
-            top: -1px;
-            right: -1px;
-        }
-        .after2 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-top-color: $bc-color;
-            border-left-color: $bc-color;
-            left: 0px;
-            top: 0px;
-        }
-        .before2 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-top-color: $theme-color;
-            border-left-color: $theme-color;
-            top: -1px;
-            left: -1px;
-        }
-        .after3 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-bottom-color: $bc-color;
-            border-left-color: $bc-color;
-            left: 0px;
-            bottom: 0px;
-        }
-        .before3 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-bottom-color: $theme-color;
-            border-left-color: $theme-color;
-            bottom: -1px;
-            left: -1px;
-        }
-        .after4 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-bottom-color: $bc-color;
-            border-right-color: $bc-color;
-            right: 0px;
-            bottom: 0px;
-        }
-        .before4 {
-            content: ' ';
-            border: solid transparent;
-            position: absolute;
-            border-width: 5px;
-            border-bottom-color: $theme-color;
-            border-right-color: $theme-color;
-            bottom: -1px;
-            right: -1px;
-        }
-        .scroll-box {
-            height: 90%;
-            overflow-y: auto;
-            scrollbar-width: none; // 隐藏滚动条火狐
-            &::-webkit-scrollbar {// 隐藏滚动条谷歌
-              display: none;
-            }
-        }
-        .list-item-title {
-            color: $white-color;
-        }
-    }
-    .abnormal-box {
-        position: relative;
-        height: 100%;
-        padding: 10px;
-        padding-right: 0;
-        border: 1px solid $bc-color;
-        .top-after {
-            content: ' ';
-            position: absolute;
-            width: 80px;
-            height: 20px;
-            background: $theme-color;
-            left: 110px;
-            top: -10px;
-        }
-        .top-border {
-            content: ' ';
-            position: absolute;
-            width: 80px;
-            height: 1px;
             background: $bc-color;
-            left: 124px;
-            top: 10px;
-        }
-        .top-before {
-            content: ' ';
-            position: absolute;
-            width: 1px;
-            height: 14px;
-            background: $bc-color;
-            left: 120px;
-            top: -2px;
-            transform: rotate(-40deg);
-        }
-        .top-before2 {
-            content: ' ';
-            position: absolute;
-            width: 1px;
-            height: 14px;
-            background: $bc-color;
-            left: 185px;
-            top: -13px;
-            transform: rotate(-40deg);
-        }
-        .top-before3 {
-            content: '';
-            position: absolute;
-            top: -6px; 
-            left: 122px;
-            width: 60px;
-            height: 10px;
-            background: #01d9dc;
             transform: skewX(40deg);
             z-index: 1;
         }
@@ -1000,16 +907,165 @@ $white-color: #FFF;
             color: $white-color;
         }
     }
+    .abnormal-box {
+        position: relative;
+        height: 96%;
+        padding: 10px;
+        border: 1px solid $al-color;
+        .top-after {
+            content: ' ';
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            background: $theme-color;
+            left: 110px;
+            top: -10px;
+        }
+        .top-border {
+            content: ' ';
+            position: absolute;
+            width: 80px;
+            height: 1px;
+            background: $al-color;
+            left: 124px;
+            top: 10px;
+        }
+        .top-before {
+            content: ' ';
+            position: absolute;
+            width: 1px;
+            height: 14px;
+            background: $al-color;
+            left: 120px;
+            top: -2px;
+            transform: rotate(-40deg);
+        }
+        .top-before2 {
+            content: ' ';
+            position: absolute;
+            width: 1px;
+            height: 14px;
+            background: $al-color;
+            left: 185px;
+            top: -13px;
+            transform: rotate(-40deg);
+        }
+        .top-before3 {
+            content: '';
+            position: absolute;
+            top: -6px; 
+            left: 122px;
+            width: 60px;
+            height: 10px;
+            background: $al-color;
+            transform: skewX(40deg);
+            z-index: 1;
+        }
+        .after1 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-top-color: $al-color;
+            border-right-color: $al-color;
+            right: 0px;
+            top: 0px;
+        }
+        .before1 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-top-color: $theme-color;
+            border-right-color: $theme-color;
+            top: -1px;
+            right: -1px;
+        }
+        .after2 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-top-color: $al-color;
+            border-left-color: $al-color;
+            left: 0px;
+            top: 0px;
+        }
+        .before2 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-top-color: $theme-color;
+            border-left-color: $theme-color;
+            top: -1px;
+            left: -1px;
+        }
+        .after3 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-bottom-color: $al-color;
+            border-left-color: $al-color;
+            left: 0px;
+            bottom: 0px;
+        }
+        .before3 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-bottom-color: $theme-color;
+            border-left-color: $theme-color;
+            bottom: -1px;
+            left: -1px;
+        }
+        .after4 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-bottom-color: $al-color;
+            border-right-color: $al-color;
+            right: 0px;
+            bottom: 0px;
+        }
+        .before4 {
+            content: ' ';
+            border: solid transparent;
+            position: absolute;
+            border-width: 5px;
+            border-bottom-color: $theme-color;
+            border-right-color: $theme-color;
+            bottom: -1px;
+            right: -1px;
+        }
+        .scroll-box {
+            height: 93%;
+            overflow-y: auto;
+            scrollbar-width: none; // 隐藏滚动条火狐
+            &::-webkit-scrollbar {// 隐藏滚动条谷歌
+              display: none;
+            }
+            .abnorma-content-box {
+                background: $item-color;
+            }
+        }
+        .list-item-title {
+            color: $white-color;
+        }
+    }
 }
 
 .conter-content {
     position: relative;
-    height: 100px;
+    height: 90px;
     margin: 0;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     .information-border {
         border-bottom: 2px solid #014858;
-        margin: 18px 0 0 30px;
+        margin: 20px 0 0 30px;
     }
     .item-box {
         height: 90px;
@@ -1020,10 +1076,22 @@ $white-color: #FFF;
             border: 4px solid #05354f;
             margin-right: 10px;
         }
+        .abnorma-img-box {
+            border: 4px solid $item-color;
+            height: 90%;
+        }
         .information {
             flex: 1;
             .information-text {
                 color: $bc-color;
+                margin-right: 10px;
+                font-size: 0.8vw;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .abnorma-information-text {
+                color: $white-color;
                 margin-right: 10px;
                 font-size: 0.8vw;
                 white-space: nowrap;
@@ -1039,12 +1107,18 @@ $white-color: #FFF;
                 text-overflow: ellipsis;
             }
         }
-    }   
+    }  
+}
+.abnorma-content-box {
+    height: 100px;
+    .abnorma-item-box {
+        height: 100%;
+    } 
 }
 
 .warning-box {
    position: absolute;
-   width: 250px;
+   width: 400px;
    height: 50px;
    left: 0; 
    top: 70px; 
@@ -1053,7 +1127,7 @@ $white-color: #FFF;
    z-index: 1000; 
    background: rgba(251, 2, 2, 1);
    color: rgba(254, 254, 254, 1);
-   animation: glow 700ms ease-out infinite alternate;
+   animation: glow 600ms ease-out infinite alternate;
    text-align: center;
    line-height: 50px;
    font-size: 20px;

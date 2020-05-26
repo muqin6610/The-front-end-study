@@ -13,6 +13,13 @@
       "unicode_decimal": 58910
     },
     {
+      "icon_id": "689255",
+      "name": "警示 感叹号 ！",
+      "font_class": "jingshigantanhao",
+      "unicode": "e7f3",
+      "unicode_decimal": 59379
+    },
+    {
       "icon_id": "827886",
       "name": "预警",
       "font_class": "yujing",
