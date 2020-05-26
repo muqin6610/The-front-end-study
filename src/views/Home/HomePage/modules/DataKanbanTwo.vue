@@ -668,7 +668,7 @@ $white-color: #FFF;
         }
         .upper-item {
             height: 40%;
-            width: 45%;
+            width: 40%;
             padding: 10px;
             .content-text {
                 color: $white-color;
