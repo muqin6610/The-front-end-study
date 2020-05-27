@@ -7,6 +7,7 @@
 const connectSocket = host => {  
     
   let timeoutID = ''
+  window.isOk = false
   window.webSocket = new WebSocket(host)
   /*建立连接*/  
   webSocket.onopen = evt => {  
@@ -41,12 +42,13 @@ const connectSocket = host => {  
       console.log(evt.data,'接收到的具体消息')
       // 保存消息到全局
       window.getMessage = dataJson
+      if(evt.data === "newTemperatureLogAbnormalCondition") isOk = true
      // 获取报警页面按钮ID
       let socketID = document.querySelector('#getSocket')
+      let socketAId = document.querySelector('#getAttendance')
       // 触发此ID的点击事件
-      if(socketID) {
-        socketID.click()
-      }
+      if(socketID)  socketID.click()
+      if(socketAId)  socketAId.click()
     }
   }
   /*连接发生错误时*/  
