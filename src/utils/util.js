@@ -188,7 +188,7 @@ export function objArrDemp(objArr, para) {
 export function num_filter(num) {
   num = num ? num - 0 : 0;
   if (num > 9 ) {
-    return "…"
+    return "…";
   }else{
     return num;
   }
@@ -202,7 +202,7 @@ export function num_filter(num) {
 export function ninenum_filter(num) {
   num = num ? num - 0 : 0;
   if (num > 99 ) {
-    return "99+"
+    return "99+";
   }else{
     return num;
   }
@@ -215,7 +215,6 @@ export function ninenum_filter(num) {
  */
 export function bank_filter(val) {
   val += '';
-  console.log(val)
   val = val.replace(/(\s)/g,'').replace(/(\d{4})/g,'$1 ').replace(/\s*$/,'');
   return val;
 }
@@ -228,26 +227,26 @@ export function bank_filter(val) {
 *@return string 替换完成的字符串 
  */
 export function transFormat(str, l, r) {
-  let reg = new RegExp(l, 'g') // g表示全部替换，默认替换第一个
-  str = str.replace(reg, r)
-  return str
+  let reg = new RegExp(l, 'g'); // g表示全部替换，默认替换第一个
+  str = str.replace(reg, r);
+  return str;
 }
 
 /**
 *返回yyyy-mm-dd hh:mm:ss日期格式
-*@param D: new Date()
+*@param new Date() 日期
 *@return json: ymdhms: yyy-mm-dd hh:mm:ss, yyyy-mm-dd h:m, yyyy-mm-dd, mm-dd, hh:mm:ss, hh:mm,
 *yyyy年mm月dd日 hh:mm:ss, ymd: yyyy年mm月dd日, mm月dd日
  */
 export function dateFormat(D) {
-  let date = new Date(D)
-  let year = date.getFullYear()
+  let date = new Date(D);
+  let year = date.getFullYear();
   // 日期格式中月份是从0开始因此要加上1
-  let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-  let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-  let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-  let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-  let seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+  let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+  let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  let seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   return {
     ymdhms: year + "-"+ month + "-" + day + " " + hours + ":" + minutes + ":" + seconds,
     ymdhm: year + "-" + month + "-" + day + " " + hours + ":" + minutes,
@@ -261,5 +260,115 @@ export function dateFormat(D) {
     y: year,
     m: month,
     d: day
-  }
+  };
+}
+
+/**
+*深克隆
+*@param object: 需要克隆的对象{}
+*@return object: 克隆后的对象
+ */
+export function deepClone(obj, hash = new WeakMap()) {
+    let target = null;
+    // 判断是否为null
+    if (obj === null) return null;
+    // 设置hash表，判断是否是循环引用
+    if (hash.has(obj)) return hash.get(obj);
+    // 判断Symbol
+    let symKeys = Object.getOwnPropertySymbols(obj);
+    if (symKeys.length) {
+        symKeys.forEach(symKey =>{
+            if (typeof obj[symKey] === 'object') {
+                target[symKey] = deepClone(obj[symKey], hash);
+            } else {
+                target[symKey] = obj[symKey];
+            }
+        });
+    }
+    // 判断是否是对象，如果不是对象，则直接返回，如果是对象，则继续执行
+    if (typeof obj === 'object' || typeof obj === 'function') {
+        let result;
+        hash.set(obj, target);
+        let objType = Object.prototype.toString.call(obj);
+        switch (objType) {
+        case '[object Object]':
+            target = {};
+            break;
+        case '[object Array]':
+            target = [];
+            break;
+        case '[object Map]':
+            // 处理Map对象
+            result = new Map();
+            obj.forEach((value, key) =>{
+                result.set(key, deepClone(value, hash))
+            }) 
+            return result
+            break;
+        case '[object Set]':
+            // 处理Set对象
+            obj.forEach((value) =>{
+                result.add(deepClone(value, hash))
+            }) 
+            return result
+            break;
+        case '[object Date]':
+            // 处理Date对象
+            return new Date(obj)
+            break;
+        default:
+            // 直接返回正则、函数
+            return obj;
+            break;
+        }
+    } else {
+        // 不是对象的情况
+        return obj;
+    }
+    for (var key in obj) {
+        if (typeof obj[key] === 'object') {
+            target[key] = deepClone(obj[key], hash);
+        } else {
+            target[key] = obj[key];
+        }
+    }
+    return target;
+}
+
+/**
+*防抖函数
+*@param function
+*@param number
+ */
+export function debounce(fn, time) {
+    let timer;
+    return function() {
+        let that = this;
+        let args = arguments;
+        if(timer) clearTimeout(timer);
+        let callNow = !timer;
+        timer = setTimeout(() => {
+            fn.apply(that, args);
+        }, time);
+        if (callNow) fn.apply(that, args);
+    }
+}
+
+/**
+*防抖函数
+*@param function
+*@param number
+ */
+export function throttle(fn, time) {
+    let timer;
+    return function() {
+        let that = this;
+        let args = arguments;
+        if(!timer) {
+            timer = setTimeout(() => {
+                timer = null;
+                fn.apply(that, args);
+            }, time);
+        }
+    }
 }

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app {
+            height: 120px;
+            width: 100%;
+            background: #383e4a;
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    </div>
+</body>
+<script>
+    let num = 1;
+    let app = document.getElementById('app');
+
+    function count() {
+        app.innerHTML = num ++;
+    };
+    // app.onmousemove = count;
+    // app.onmousemove = throttle(count, 1000);
+    app.onmousemove = debounce(count, 1000);
+
+    // 深拷贝
+    let objClone = {
+        a: "undefined",
+        b: null,
+        c: [1, 2, 3, 4],
+        d: {
+            a: "is",
+            b: 10,
+            c: null,
+            d: [ "2", "3"],
+            e: {
+                a: 11,
+                b: function() {
+                    return true
+                }
+            }
+        },
+        e: Symbol("aaa"),
+        f: /'123'/,
+        fn: function() {
+            return true;
+        }
+    };
+
+    function deepClone(obj, hash = new WeakMap()) {
+        let target = null;
+        // 判断是否为null
+        if (obj === null) return null;
+        // 设置hash表，判断是否是循环引用
+        if (hash.has(obj)) return hash.get(obj);
+        // 判断Symbol
+        let symKeys = Object.getOwnPropertySymbols(obj);
+        if (symKeys.length) {
+            symKeys.forEach(symKey =>{
+                if (typeof obj[symKey] === 'object') {
+                    target[symKey] = deepClone(obj[symKey], hash);
+                } else {
+                    target[symKey] = obj[symKey];
+                }
+            });
+        }
+        // 判断是否是对象，如果不是对象，则直接返回，如果是对象，则继续执行
+        if (typeof obj === 'object' || typeof obj === 'function') {
+            let result;
+            hash.set(obj, target);
+            let objType = Object.prototype.toString.call(obj);
+            switch (objType) {
+            case '[object Object]':
+                target = {};
+                break;
+            case '[object Array]':
+                target = [];
+                break;
+            case '[object Map]':
+                // 处理Map对象
+                result = new Map();
+                obj.forEach((value, key) =>{
+                    result.set(key, deepClone(value, hash))
+                }) 
+                return result
+                break;
+            case '[object Set]':
+                // 处理Set对象
+                obj.forEach((value) =>{
+                    result.add(deepClone(value, hash))
+                }) 
+                return result
+                break;
+            case '[object Date]':
+                // 处理Date对象
+                return new Date(obj)
+                break;
+            default:
+                // 直接返回正则、函数
+                return obj;
+                break;
+            }
+        } else {
+            // 不是对象的情况
+            return obj;
+        }
+        for (var key in obj) {
+            if (typeof obj[key] === 'object') {
+                target[key] = deepClone(obj[key], hash);
+            } else {
+                target[key] = obj[key];
+            }
+        }
+        return target;
+    }
+
+// 防抖
+function debounce(fn, time) {
+    let timer;
+    return function() {
+        let that = this;
+        let args = arguments;
+        if(timer) clearTimeout(timer);
+        let callNow = !timer;
+        timer = setTimeout(() => {
+            fn.apply(that, args);
+        }, time)
+        if (callNow) fn.apply(that, args);
+    }
+}
+
+// 节流
+function throttle(fn, time) {
+    let timer;
+    return function() {
+        let that = this;
+        let args = arguments;
+        if(!timer) {
+            timer = setTimeout(() => {
+                timer = null;
+                fn.apply(that, args);
+            }, time)
+        }
+    }
+}
+
+</script>
+</html>
