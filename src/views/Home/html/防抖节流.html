@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app {
+            height: 120px;
+            width: 100%;
+            background: #383e4a;
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    </div>
+</body>
+<script>
+let num = 1;
+let app = document.getElementById('app');
+function count() {
+    app.innerHTML = num ++;
+};
+// app.onmousemove = count;
+// app.onmousemove = throttle(count, 2000);
+app.onmousemove = debounce(count, 1000);
+
+// // 防抖
+function debounce(fn, time) {
+    if (typeof func !== 'function') {
+        throw Error('func必须是一个函数')
+    };
+    let timer;
+    return function() {
+        let that = this;
+        let args = arguments;
+        if(timer) clearTimeout(timer);
+        let callNow = !timer;
+        timer = setTimeout(() => {
+            fn.apply(that, args);
+        }, time)
+        if (callNow) fn.apply(that, args);
+    }
+}
+
+// 节流
+function throttle(fn, time) {
+    if (typeof func !== 'function') {
+        throw Error('func必须是一个函数')
+    };
+    let timer;
+    return function() {
+        let that = this;
+        let args = arguments;
+        if(!timer) {
+            timer = setTimeout(() => {
+                timer = null;
+                fn.apply(that, args);
+            }, time)
+        }
+    }
+}
+
+</script>
+</html>

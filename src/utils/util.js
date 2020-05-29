@@ -336,21 +336,24 @@ export function deepClone(obj, hash = new WeakMap()) {
 }
 
 /**
-*防抖函数
+*防抖函数(立即执行版)
 *@param function
 *@param number
  */
-export function debounce(fn, time) {
+export function debounce(fn, time = 200) {
+    if (typeof fn !== 'function') {
+        throw Error('fn必须是一个函数')
+    };
     let timer;
     return function() {
-        let that = this;
+        let context = this;
         let args = arguments;
         if(timer) clearTimeout(timer);
         let callNow = !timer;
         timer = setTimeout(() => {
-            fn.apply(that, args);
+            fn.apply(context, args);
         }, time);
-        if (callNow) fn.apply(that, args);
+        if (callNow) fn.apply(context, args);
     }
 }
 
@@ -359,15 +362,18 @@ export function debounce(fn, time) {
 *@param function
 *@param number
  */
-export function throttle(fn, time) {
+export function throttle(fn, time = 200) {
+    if (typeof fn !== 'function') {
+        throw Error('fn必须是一个函数')
+    };
     let timer;
     return function() {
-        let that = this;
+        let context = this;
         let args = arguments;
         if(!timer) {
             timer = setTimeout(() => {
                 timer = null;
-                fn.apply(that, args);
+                fn.apply(context, args);
             }, time);
         }
     }
