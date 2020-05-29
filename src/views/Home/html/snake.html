@@ -13,10 +13,20 @@
             height: 650px;
             width: 650px;
         }
+        .button-box {
+            background: #ffe1b9;
+            width: 650px;
+        }
     </style>
 </head>
 <body>
-    <div id="app"></div>
+    <div class="button-box">
+        <button onclick="start()">开始游戏</button>
+        <button onclick="renew()">重置游戏</button>
+    </div>
+    <div class="game">
+        <div id="app"></div>
+    </div>
 </body>
 <!-- <script src="./js/snake.js"></script> -->
 <script>
@@ -227,6 +237,11 @@
 <script>
 let map = document.getElementById("app");
 let game = new Game(map);
-game.start(50);
+function start() {
+    game.start(200);
+};
+function renew() {
+    location.reload()
+};
 </script>
 </html>
