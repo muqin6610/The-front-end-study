@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        #app {
+            background: #ffe1b9;
+            height: 650px;
+            width: 650px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<!-- <script src="./js/snake.js"></script> -->
+<script>
+;(function (window) {
+    // 存放食物的数组
+    let foodList = [];
+    // 食物构造函数
+    function Food(width = 20, height = 20, bgColor = "green", x = 0, y = 0) {
+        this.width = width;
+        this.height = height;
+        this.bgColor = bgColor;
+        this.x = x;
+        this.y = y;
+    };
+    // 食物渲染到地图
+    Food.prototype.render = function(map) {
+        // 每次渲染食物删除旧食物
+        remove(map);
+        // 生成随机食物坐标
+        this.x = Math.floor(Math.random() * map.offsetWidth / this.width) * this.width;
+        this.y = Math.floor(Math.random() * map.offsetHeight / this.height) * this.height;
+        // 创建食物dom
+        let foodDom = document.createElement("div");
+        foodDom.style.position = "absolute";
+        foodDom.style.left = this.x + "px";
+        foodDom.style.top = this.y + "px";
+        foodDom.style.width = this.width + "px";
+        foodDom.style.height = this.height + "px";
+        foodDom.style.backgroundColor = this.bgColor;
+        // 渲染到页面
+        map.appendChild(foodDom);
+        // 存储食物
+        foodList.push(foodDom);
+    };
+    // 删除食物
+    function remove(map) {
+        foodList.forEach(item => {
+            map.removeChild(item);
+        });
+        // 清空数组
+        foodList.length = 0
+    };
+    // 暴露Food
+    window.Food = Food;
+}(window))
+
+;(function (window) {
+    // 生成随机十六进制颜色
+    function getColor() {
+        let indexArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        let str = "#";
+        // 循环出6个随机字符
+        for(let i = 0;i < 6;i++) {
+            let s = Math.floor(Math.random() * 16);
+            str += indexArr[s];
+        };
+        return str;
+    };
+    // 存放蛇的数组
+    let snakeList = [];
+    // 蛇有宽高,坐标,背景色,是一个对象
+    function Snake(width = 20, height = 20, direction = "right") {
+        this.width = width;
+        this.height = height;
+        this.direction = direction;
+        this.body = [
+            {x: 3, y: 1, bgColor: 'red'},
+            {x: 2, y: 1, bgColor: 'green'},
+            {x: 1, y: 1, bgColor: 'yellow'},
+        ];
+    };
+    // 渲染蛇
+    Snake.prototype.render = function(map) {
+       // 渲染新蛇之前删除旧蛇
+       remove(map);
+       // 渲染每一节蛇的身体
+       for(let i = 0;i < this.body.length;i++) {
+           // 创建蛇dom
+           let snakeDom = document.createElement('div');
+           snakeDom.style.position = "absolute";
+           snakeDom.style.width = this.width + "px";
+           snakeDom.style.height = this.height + 'px';
+           snakeDom.style.left = this.body[i].x * this.width + "px";
+           snakeDom.style.top = this.body[i].y * this.height + "px";
+           snakeDom.style.backgroundColor = this.body[i].bgColor;
+           // 添加到地图
+           map.appendChild(snakeDom);
+           // 存储蛇
+           snakeList.push(snakeDom);
+       };
+    };
+    // 删除蛇
+    function remove(map) {
+        snakeList.forEach(item => {
+            map.removeChild(item);
+        });
+        // 清空数组
+        snakeList.length = 0;
+    };
+    // 使蛇动起来(写在原型,直接调用)
+    Snake.prototype.move = function (food, map) {
+        // 除蛇头外身体移动改变坐标,移出之后的坐标是上一节移动之前的坐标
+        for(let i = this.body.length - 1;i > 0;i--) {
+            this.body[i].x = this.body[i - 1].x;
+            this.body[i].y = this.body[i - 1].y;
+        };
+        // 蛇头根据键盘改变方向
+        switch (this.direction) {
+            case "right":
+                this.body[0].x ++;
+                break;
+            case "left":
+                this.body[0].x --;
+                break;
+            case "top":
+                this.body[0].y --;
+                break;
+            case "bottom":
+                this.body[0].y ++;
+                break;
+            default:
+                break;
+        };
+        // 判断有没有吃到食物
+        let snakeHeadX = this.body[0].x * this.width;// 蛇头x坐标
+        let snakeHeadY = this.body[0].y * this.height;// 蛇头y坐标
+        let foodX = food.x;// 食物x坐标
+        let foodY = food.y;// 食物y坐标
+        let lastSnakeUint = this.body[this.body.length - 1];// 蛇尾坐标 
+        if(snakeHeadX === foodX && snakeHeadY === foodY) { // 吃到
+            this.body.push({
+                x: lastSnakeUint.x,
+                y: lastSnakeUint.y,
+                bgColor: getColor(),
+            });
+            // 产生新的食物,就调用食物对象的render方法,重新给这个食物坐标
+            food.render(map);
+        };
+    };
+    // 暴露蛇
+    window.Snake = Snake;
+}(window))
+
+;(function (window) {
+    // 记录控制器
+    let that = null;
+    // 控制器构造函数
+    function Game(map) {
+        // 控制器对象包含蛇食物和地图
+        this.snake =  new Snake();
+        this.food =  new Food();
+        this.map = map;
+        that = this
+    };
+    // 开始方法(写在原型方便调用)
+    Game.prototype.start = function(time) {
+        // 显示食物
+        this.food.render(this.map);
+        this.snake.render(this.map);
+        // 让蛇动起来
+        snakeAutoMove(time);
+        // 键盘控制动
+        bindKey();
+    };
+    // 键盘控制方法
+    function bindKey() {
+        document.onkeydown = function (e = window.event) {
+            e = e;
+            switch (e.keyCode) {
+                case 37:
+                    if(this.snake.direction !== "right") this.snake.direction = "left";
+                    break;
+                case 38:
+                    if(this.snake.direction !== "bottom") this.snake.direction = "top";
+                    break;
+                case 39:
+                    if(this.snake.direction !== "left") this.snake.direction = "right";
+                    break;
+                case 40:
+                    if(this.snake.direction !== "top") this.snake.direction = "bottom";
+                    break;
+                default:
+                    break;
+            };
+        }.bind(that);
+    };
+    // 控制蛇不停的移动
+    function snakeAutoMove(time = 200){
+        let timeID = setInterval(function(){
+            this.snake.move(this.food,this.map);
+            //判断蛇是否出界
+            let snakeHeadX = this.snake.body[0].x * this.snake.width;
+            let snakeHeadY = this.snake.body[0].y * this.snake.height;
+            //判断出界条件
+            if (snakeHeadX < 0 || snakeHeadX >= this.map.offsetWidth || snakeHeadY < 0 || snakeHeadY >= this.map.offsetHeight) {
+                alert("小菜鸡,玩泥巴比较适合你!");
+                clearInterval(timeID);
+                return;   
+            };
+            //如果蛇移动产生新的坐标,新坐标出界了那上面就会有return,就不会在执行这个渲染代码
+            this.snake.render(this.map);
+        }.bind(that), time);
+    };
+    // 暴露Game
+    window.Game = Game;
+}(window))
+</script>
+<script>
+let map = document.getElementById("app");
+let game = new Game(map);
+game.start(50);
+</script>
+</html>
