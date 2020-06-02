@@ -2,12 +2,12 @@
   <div class='mycon'>
     <el-container>
       <!--顶部区域-->
-       <el-header>
+       <el-header id="header">
          <Topheader/>
        </el-header>
       <el-container>
         <!--侧边区域-->
-        <el-aside width="200px">
+        <el-aside width="200px" id="aside">
           <Aside/>
         </el-aside>
         <!--主体部分-->

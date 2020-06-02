@@ -223,7 +223,9 @@ import KanabnLiquidfill from '@/components/Charts/KanabnLiquidfill'
         // this.getTempSet()
     },
     mounted() {
-
+        document.getElementById("header").style.display = 'none'
+        document.getElementById("aside").style.display = 'none'
+        document.getElementById("kan").style = 'margin: 0'
     },
     methods: {
         async getTempSet() {
@@ -235,7 +237,10 @@ import KanabnLiquidfill from '@/components/Charts/KanabnLiquidfill'
             this.getDisplayBoardLeft()
             this.getDisplayBoardRight()
         },
-        goPush() { this.$router.go(-1) },
+        goPush() { 
+            this.$router.go(-1) 
+            screenfull.exit()
+        },
         clickSocket() {
             this.showTips = true
             setTimeout(() => {
@@ -268,6 +273,9 @@ import KanabnLiquidfill from '@/components/Charts/KanabnLiquidfill'
     destroyed() {
         // webSocket.close()
         // window.isOk = null
+        document.getElementById("header").style.display = 'block'
+        document.getElementById("aside").style.display = 'block'
+        document.getElementById("kan").style = 'margin: 10px'
     },
   }
 </script>

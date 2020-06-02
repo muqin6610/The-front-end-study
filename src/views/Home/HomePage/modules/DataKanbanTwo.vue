@@ -1,5 +1,5 @@
 <template>
-  <div class="kanban" @click='clickDom'>
+  <div id="kan" class="kanban" @click='clickDom'>
     <div id='getAttendance' @click='clickSocket'></div>
     <!--顶部-->
     <div class="top-bar">
@@ -138,6 +138,7 @@
 
 <script>
 import KanbanPie from '@/components/Charts/KanbanPie'
+import screenfull from 'screenfull'
 
   export default {
     components: {
@@ -174,6 +175,14 @@ import KanbanPie from '@/components/Charts/KanbanPie'
         }
     },
     created() {
+        window.onresize = () => {
+          // 全屏下监控是否按键了ESC
+          if (!this.checkFull()) {
+            // 全屏下按键esc后要执行的动作
+            this.isFullscreen = false
+          }
+        }
+        this.screenfull()
         // let userId = store.getters.userInfo.id
         // let url = window._CONFIG['socketURL'] + userId
         // // 建立websocket连接
@@ -189,11 +198,37 @@ import KanbanPie from '@/components/Charts/KanbanPie'
         this.itemName = this.options.length > 0 ? this.options[0].label : "暂无班次"
     },
     mounted() {
-
+        document.getElementById("header").style.display = 'none'
+        document.getElementById("aside").style.display = 'none'
+        document.getElementById("kan").style = 'margin: 0'
     },
     methods: {
+        // 全屏事件
+        screenfull() {
+          console.log(screenfull)
+          const el = document.getElementById('kan')
+          if (!screenfull.isEnabled) {
+            this.$message.warning('Your browser does not work')
+            return false
+          }
+          screenfull.toggle()
+        //   screenfull.request(el)
+          this.isFullscreen = true
+        },
+        // 是否全屏并按键ESC键的方法
+        checkFull() {
+          let isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
+          // to fix : false || undefined == undefined
+          if (isFull === undefined) {
+              isFull = false
+          }
+          return isFull
+        },
         getAvatarView(avatar) {  return this.url.imgerver + "/" + avatar },
-        goPush() { this.$router.go(-1) },
+        goPush() { 
+            this.$router.go(-1) 
+            screenfull.exit()
+        },
         clickSocket() {
             this.getDisplayBoardLeft()
             this.getDisplayBoardRight()
@@ -231,6 +266,9 @@ import KanbanPie from '@/components/Charts/KanbanPie'
     destroyed() {
         // webSocket.close()
         // window.isOk = null
+        document.getElementById("header").style.display = 'block'
+        document.getElementById("aside").style.display = 'block'
+        document.getElementById("kan").style = 'margin: 10px'
     },
   }
 </script>
@@ -248,8 +286,7 @@ $white-color: #FFF;
 
 .kanban {
     background: $theme-color;
-    border-radius: 5px;
-    height: 750px;
+    height: calc(100vh - 20px);
     position: relative;
     margin: 10px;
 }
