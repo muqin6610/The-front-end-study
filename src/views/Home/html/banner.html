@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <style>
+        .banner {
+           height: 500px;
+           position: relative;
+           overflow: hidden;
+        }
+        .wrap {
+           height: 500px;   
+           width: 10000px;  
+           position: absolute;  
+        }
+        .item {
+           width: 2000px;   
+           height: 500px;  
+           float: left;
+           color: white;   
+           text-align: center;
+        
+        }
+        img {
+           height: 100%;
+           width: 100%;
+        }
+        .dian{  
+           width: 200px;  
+           height: 30px; 
+           position: absolute; 
+           bottom: 10px;   
+           left: 50%;
+           transform: translate(-50%, -50%);
+        
+        }
+        .btn {   
+           width: 20px;    
+           height: 20px;   
+           border-radius: 50%;
+           background-color: white;    
+           float: left;    
+           margin: 5px;
+           margin-left: 20px;
+           cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 轮播图 -->
+    <div class="banner">
+        <div class="wrap">
+            <div class="item item4"><img src="image/index/4.jpg"></div>
+            <div class="item item1"><img src="image/index/1.jpg"></div>
+            <div class="item item2"><img src="image/index/2.jpg"></div>
+            <div class="item item3"><img src="image/index/3.jpg"></div>
+            <div class="item item4"><img src="image/index/4.jpg"></div>
+            <div class="item item1"><img src="image/index/1.jpg"></div>
+        </div>
+        <div class="dian">
+            <span class="btn"></span>
+            <span class="btn"></span>
+            <span class="btn"></span>
+            <span class="btn"></span>
+        </div>
+    </div>
+</body>
+<script>
+    // 下标要从1开始,以为播放的第一张图前面有一张最后那张图，下标要注意对应
+var wrap = document.getElementsByClassName("wrap")[0];
+var btn = document.getElementsByClassName("btn");
+var index = 0;
+var moveTimer;
+var timer;
+// 点击下一张
+function next(){
+    index ++;
+    if(index == 6){
+        index = 2;
+    }
+    moveWidthIndex();
+    btnCol();
+}
+
+// 具体移动的函数
+function moveWidthIndex(){
+    var l = index * -2000 - wrap.offsetLeft;
+    var count = 0;
+    clearInterval(moveTimer);
+    moveTimer = setInterval(function(){
+        count++;
+        wrap.style.left = wrap.offsetLeft + l/10 + "px";
+        if(count >= 10){
+            clearInterval(moveTimer);
+            wrap.style.left = index * -2000 + "px";
+        }       
+    }, 20);
+}
+timer = setInterval(function(){
+    next();
+}, 3000);
+// document.onclick = function(){
+//  index = 5;
+//  moveWidthIndex();
+// }
+for(var i = 0; i < btn.length; i++){
+    btn[i].index = i; 
+    btn[i].onclick = function(){
+        index = this.index + 1;
+        moveWidthIndex();
+        btnCol();
+        clearInterval(timer);
+        timer = setInterval(function(){
+            next();
+        }, 3000);
+    };
+};
+// 点击圆点按钮的函数
+function btnCol(){
+    for(var i = 0 ; i < btn.length ; i++){
+        btn[i].style.backgroundColor = "white";
+    };
+    if(index == 5){
+        index = 1;
+    };
+    btn[index - 1].style.backgroundColor = "grey";
+};
+// 鼠标移入停止自动轮播
+wrap.onmouseover = function() {
+    clearInterval(moveTimer);
+    clearInterval(timer);
+};
+// 鼠标移出开始自动轮播
+wrap.onmouseout = function() {
+    moveWidthIndex() ;
+    timer = setInterval(function(){
+        next();
+    }, 3000);  
+};
+</script>
+</html>
