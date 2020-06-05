@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>家庭理财</title>
+<link rel="stylesheet" type="text/css" href="statics/css/style.css" />
+</head>
+
+<body>
+<div style="height: 40px;"></div>
+<div class="lc">
+  <div class="items">
+      <div class="Scroll-left">
+        <div class="hd"> <a class="next"><</a> <a class="prev">></a> </div>
+        <div class="bd">
+          <ul class="picList">
+            <li>111</li>
+            <li>111 </li>
+            <li>111</li>
+            <li>111 </li>
+            <li>11111</li>
+            <li>1111</li>
+          </ul>
+        </div>
+      </div>
+  </div>
+</div>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script> 
+<script src="statics/js/jquery.SuperSlide.2.1.1.js" type="text/javascript" charset="utf-8"></script> 
+<script type="text/javascript">
+jQuery(".Scroll-left").slide({
+	titCell: ".hd ul",
+	mainCell: ".bd ul",
+	autoPage: true,
+	effect: "left",
+	autoPlay: true,
+	vis: 3
+});
+</script>
+</body>
+</html>
